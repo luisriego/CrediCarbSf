@@ -1,0 +1,15 @@
+kernel:
+  resource: ../../src/Kernel.php
+  type: annotation
+
+user_controllers:
+  resource: ../../src/Adapter/Framework/Http/Controller/User/
+  type: annotation
+  prefix: /api/users
+  trailing_slash_on_root: false
+
+#condo_controllers:
+#  resource: ../../src/Adapter/Framework/Http/Controller/Condo/
+#  type: annotation
+#  prefix: /api/condos
+#  trailing_slash_on_root: false
