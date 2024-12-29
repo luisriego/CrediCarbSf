@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreateUserController extends AbstractController
 {
-    public function __construct(private readonly CreateUser $createUserService)
-    {
-    }
+    public function __construct(private readonly CreateUser $createUserService) {}
 
     #[Route('/register', name: 'user_create', methods: ['POST'])]
     public function __invoke(CreateUserRequestDto $request): Response
@@ -25,7 +23,8 @@ class CreateUserController extends AbstractController
                 $request->name,
                 $request->email,
                 $request->password,
-                $request->age)
+                $request->age,
+            ),
         );
 
         return $this->json(['userId' => $responseDto->id], Response::HTTP_CREATED);

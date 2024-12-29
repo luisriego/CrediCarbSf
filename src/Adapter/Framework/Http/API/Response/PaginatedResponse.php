@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\API\Response;
 
+use function ceil;
+
 final class PaginatedResponse
 {
     private function __construct(
         private readonly array $items,
-        private readonly array $meta
-    ) {
-    }
+        private readonly array $meta,
+    ) {}
 
     public static function create(array $items, int $total, int $page, int $limit): self
     {
         if (0 === $limit) {
             $lastPage = 0;
         } else {
-            $lastPage = (int) \ceil($total / $limit);
+            $lastPage = (int) ceil($total / $limit);
         }
 
         $meta = [

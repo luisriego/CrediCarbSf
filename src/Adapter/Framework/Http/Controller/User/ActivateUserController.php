@@ -13,9 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActivateUserController extends AbstractController
 {
-    public function __construct(private readonly ActivateUser $useCase)
-    {
-    }
+    public function __construct(private readonly ActivateUser $useCase) {}
 
     #[Route('/activate', name: 'activate_user', methods: ['PUT'])]
     public function __invoke(ActivateUserRequestDto $request): Response

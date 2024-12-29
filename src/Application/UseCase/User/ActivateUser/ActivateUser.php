@@ -11,9 +11,7 @@ use App\Domain\Repository\UserRepositoryInterface;
 
 class ActivateUser
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     public function handle(ActivateUserInputDto $inputDto): ActivateUserOutputDto
     {

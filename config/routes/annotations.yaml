@@ -8,8 +8,8 @@ user_controllers:
   prefix: /api/users
   trailing_slash_on_root: false
 
-#condo_controllers:
-#  resource: ../../src/Adapter/Framework/Http/Controller/Condo/
+#Company_controllers:
+#  resource: ../../src/Adapter/Framework/Http/Controller/Company/
 #  type: annotation
-#  prefix: /api/condos
+#  prefix: /api/Companys
 #  trailing_slash_on_root: false

@@ -16,9 +16,8 @@ class CreateUser
 {
     public function __construct(
         private readonly UserRepositoryInterface $repository,
-        private readonly PasswordHasherInterface $passwordHasher
-    ) {
-    }
+        private readonly PasswordHasherInterface $passwordHasher,
+    ) {}
 
     public function handle(CreateUserInputDto $inputDto): CreateUserOutputDto
     {
@@ -31,11 +30,11 @@ class CreateUser
             $inputDto->name,
             $inputDto->email,
             $inputDto->password,
-            $inputDto->age
+            $inputDto->age,
         );
         $password = $this->passwordHasher->hashPasswordForUser($user, $inputDto->password);
         $user->setPassword($password);
-//        $user->setRoles(['ROLE_SYNDIC']);
+        //        $user->setRoles(['ROLE_SYNDIC']);
 
         $this->repository->save($user, true);
 

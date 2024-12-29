@@ -47,6 +47,12 @@ composer require --dev phpunit/phpunit symfony/test-pack'
 Run sf d:m:m -n --env=test to apply migrations on test enviroment
 composer dump-autoload --- when not found files after rename it
 
+to run the tests
+```
+vendor/bin/phpunit  // for all tests
+vendor/bin/phpunit --filter TestName // for an especific test
+```
+
 If .pem has access problems: 'chmod 644 public.pem private.pem'
 
 Then install the quality tools

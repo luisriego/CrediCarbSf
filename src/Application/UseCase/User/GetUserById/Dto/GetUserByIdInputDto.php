@@ -13,7 +13,7 @@ class GetUserByIdInputDto
     private const ARGS = ['id'];
 
     private function __construct(
-        public readonly ?string $id
+        public readonly ?string $id,
     ) {
         $this->assertNotNull(self::ARGS, [$this->id]);
     }

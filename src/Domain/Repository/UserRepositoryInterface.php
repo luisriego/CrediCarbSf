@@ -23,9 +23,9 @@ interface UserRepositoryInterface
 
     public function findOneByEmailOrFail(string $id): User;
 
-    public function findAllByCondoId(string $condoId): ?array;
+    public function findAllByCompanyId(string $CompanyId): ?array;
 
     public function search(UserFilter $filter): PaginatedResponse;
 
-//    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void;
+    //    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapter\Database\ORM\Doctrine\Repository;
 
 use App\Adapter\Framework\Http\API\Filter\UserFilter;
@@ -13,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+
+use function sprintf;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -65,7 +69,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements Password
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         $user->setPassword($newHashedPassword);
@@ -96,11 +100,11 @@ class DoctrineUserRepository extends ServiceEntityRepository implements Password
         return $user;
     }
 
-    public function findAllByCondoId(string $condoId): ?array
+    public function findAllByCompanyId(string $companyId): ?array
     {
         $result = $this->createQueryBuilder('u')
-            ->andWhere('u.condo = :val')
-            ->setParameter('val', $condoId)
+            ->andWhere('u.company = :val')
+            ->setParameter('val', $companyId)
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
@@ -114,7 +118,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements Password
     {
         $page = $filter->page;
         $limit = $filter->limit;
-        $condoId = $filter->condoId;
+        $companyId = $filter->companyId;
         $sort = $filter->sort;
         $order = $filter->order;
         $name = $filter->name;
@@ -122,20 +126,21 @@ class DoctrineUserRepository extends ServiceEntityRepository implements Password
         if ('' === $sort) {
             $sort = 'name';
         }
+
         if ('' === $order) {
             $order = 'desc';
         }
 
         $qb = $this->repository->createQueryBuilder('u');
-        $qb->orderBy(\sprintf('u.%s', $sort), $order);
+        $qb->orderBy(sprintf('u.%s', $sort), $order);
         $qb
-            ->andWhere('u.condo = :condoId')
-            ->setParameter(':condoId', $condoId);
+            ->andWhere('u.company = :companyId')
+            ->setParameter(':companyId', $companyId);
 
         if (null !== $name) {
             $qb
                 ->andWhere('u.name LIKE :name')
-                ->setParameter(':name', $name.'%');
+                ->setParameter(':name', $name . '%');
         }
 
         $paginator = new Paginator($qb->getQuery());
@@ -146,28 +151,28 @@ class DoctrineUserRepository extends ServiceEntityRepository implements Password
         return PaginatedResponse::create($paginator->getIterator()->getArrayCopy(), $paginator->count(), $page, $limit);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?User
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

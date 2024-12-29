@@ -18,8 +18,7 @@ class DeleteUserController extends AbstractController
     public function __construct(
         private readonly DeleteUser $useCase,
         private readonly UserRepositoryInterface $userRepo,
-    ) {
-    }
+    ) {}
 
     #[Route('/{id}', name: 'delete_user', methods: ['DELETE'])]
     public function __invoke(DeleteUserRequestDto $requestDto): Response
