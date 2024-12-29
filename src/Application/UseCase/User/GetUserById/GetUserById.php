@@ -11,9 +11,8 @@ use App\Domain\Repository\UserRepositoryInterface;
 class GetUserById
 {
     public function __construct(
-        private readonly UserRepositoryInterface $customerRepository
-    ) {
-    }
+        private readonly UserRepositoryInterface $customerRepository,
+    ) {}
 
     public function handle(GetUserByIdInputDto $dto): GetUserByIdOutputDto
     {

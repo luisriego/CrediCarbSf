@@ -14,19 +14,22 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ControllerTestBase extends WebTestCase
+/**
+ * @doesNotPerformAssertions
+ */
+abstract class ControllerTestBase extends WebTestCase
 {
     protected const ENDPOINT_USER = '/api/users/%s';
-    protected const ENDPOINT_CONDO = '/api/condos/%s';
+    protected const ENDPOINT_Company = '/api/Companys/%s';
     protected const ADMIN_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NzM3MDY5NTksImV4cCI6MTY3NTAwMjk1OSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGFwaS5jb20iLCJpZCI6ImU2N2Y4NDczLTgyYTUtNGY4ZS04YjFhLTNkYjUxMGNlMDA3MyJ9.H_tnEC6_B4m2W5k1s4EPe2y5f0USL8uwP-v-2kMcxNBsRE7Qbj1CH5X4_HX_gw6wW2EmPTF2DYuYUPwVQo9u0me2zlcvsfZDbjaG_99dnjrfz0yeDzsDkglbFY9x3sXAGWpJk3c58uyHTI1TiYisn2N8kvVteutAkrLz5TUv2__7OTqOhnjCbnpbWF6k8uvzJBT3HOyxkg_dxX1-KgI_CL8nPmZgsYjeulJGoIamgDaLlghurp3FDufJJKEV1Dnm3Sq5qhKCiDcuTGjuI69Zl38zkql4Lg4Q9JGMEbQJWZYS6YDXbt7f-hY6ZXeL0rfz-0NAy6smXwIVOHA410J7TQ';
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
-    protected const NON_EXISTING_CONDO_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
+    protected const NON_EXISTING_Company_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected const CREATE_USER_ENDPOINT = '/api/users/register';
-    protected const CREATE_CONDO_ENDPOINT = '/api/condos/create';
+    protected const CREATE_Company_ENDPOINT = '/api/Companys/create';
     protected const ACTIVATE_USER_ENDPOINT = '/api/users/activate';
-    protected const ACTIVATE_CONDO_ENDPOINT = '/api/condos/activate';
-    protected const ADD_USER_TO_CONDO_ENDPOINT = '/api/condos/add-user-to-condo';
-    protected const REMOVE_USER_FROM_CONDO_ENDPOINT = '/api/condos/remove-user-from-condo';
+    protected const ACTIVATE_Company_ENDPOINT = '/api/Companys/activate';
+    protected const ADD_USER_TO_Company_ENDPOINT = '/api/Companys/add-user-to-Company';
+    protected const REMOVE_USER_FROM_Company_ENDPOINT = '/api/Companys/remove-user-from-Company';
 
     protected static ?AbstractBrowser $admin = null;
     protected string $userId;
@@ -106,17 +109,17 @@ class ControllerTestBase extends WebTestCase
         return $responseData['userId'];
     }
 
-    protected function createCondo(): string
+    protected function createCompany(): string
     {
         $userId = $this->createUser();
 
         $payload = [
             'taxpayer' => '02024517000146',
-            'fantasyName' => 'Condomínio Matilda',
+            'fantasyName' => 'Companymínio Matilda',
             'userId' => $userId,
         ];
 
-        self::$admin->request(Request::METHOD_POST, self::CREATE_CONDO_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$admin->request(Request::METHOD_POST, self::CREATE_Company_ENDPOINT, [], [], [], \json_encode($payload));
 
         $response = self::$admin->getResponse();
 
@@ -126,6 +129,6 @@ class ControllerTestBase extends WebTestCase
 
         $responseData = $this->getResponseData($response);
 
-        return $responseData['condoId'];
+        return $responseData['CompanyId'];
     }
 }

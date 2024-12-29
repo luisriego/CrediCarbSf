@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Model;
 
 use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use function array_unique;
+use function sha1;
+use function uniqid;
 
 #[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -20,6 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const MIN_AGE = 18;
     public const NAME_MIN_LENGTH = 2;
     public const NAME_MAX_LENGTH = 80;
+    public const ID_LENGTH = 36;
 
     #[ORM\Column(type: 'string', length: 80)]
     private ?string $name;
@@ -41,8 +49,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'smallint')]
     private int $age;
 
-    #[ORM\ManyToOne(targetEntity: Condo::class, inversedBy: 'users')]
-    private ?Condo $condo = null;
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
+    private ?Company $Company = null;
 
     private function __construct(
         string $id,
@@ -52,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ?string $token,
         int $age,
         bool $isActive,
-        \DateTimeImmutable $createdOn,
+        DateTimeImmutable $createdOn,
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -72,10 +80,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $name,
             $email,
             $password,
-            \sha1(\uniqid()),
+            sha1(uniqid()),
             $age,
             false,
-            new \DateTimeImmutable()
+            new DateTimeImmutable(),
         );
     }
 
@@ -114,14 +122,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->token = $token;
     }
 
-    public function getCondo(): ?Condo
+    public function getCompany(): ?Company
     {
-        return $this->condo;
+        return $this->Company;
     }
 
-    public function setCondo(?Condo $condo): void
+    public function setCompany(?Company $Company): void
     {
-        $this->condo = $condo;
+        $this->Company = $Company;
     }
 
     public function getEmail(): ?string
@@ -129,12 +137,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
+    //    public function setEmail(string $email): self
+    //    {
+    //        $this->email = $email;
+    //
+    //        return $this;
+    //    }
 
     /**
      * A visual identifier that represents this user.
@@ -202,7 +210,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

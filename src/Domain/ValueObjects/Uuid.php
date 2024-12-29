@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects;
 
-class Uuid implements \Stringable
+use InvalidArgumentException;
+use Stringable;
+
+use function sprintf;
+
+class Uuid implements Stringable
 {
     public function __construct(protected readonly string $value)
     {
         $this->ensureIsValidUuid($value);
+    }
+
+    public function __toString(): string
+    {
+        return $this->value();
     }
 
     public static function random(): self
@@ -26,15 +36,10 @@ class Uuid implements \Stringable
         return $this->value() === $other->value();
     }
 
-    public function __toString(): string
-    {
-        return $this->value();
-    }
-
     private function ensureIsValidUuid(string $id): void
     {
         if (!\Symfony\Component\Uid\Uuid::isValid($id)) {
-            throw new \InvalidArgumentException(sprintf('<%s> does not allow the value <%s>.', static::class, $id));
+            throw new InvalidArgumentException(sprintf('<%s> does not allow the value <%s>.', static::class, $id));
         }
     }
 }

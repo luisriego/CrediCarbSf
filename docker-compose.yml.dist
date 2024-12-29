@@ -1,6 +1,6 @@
 services:
-  credicarb-app:
-    container_name: credicarb-app
+  cch-app:
+    container_name: cch-app
     build:
       context: ./docker
       args:
@@ -14,30 +14,30 @@ services:
     environment:
       XDEBUG_CLIENT_HOST: 172.17.0.1
       XDEBUG_CLIENT_PORT: 9003
-      PHP_IDE_CONFIG: serverName=credicarb-server
+      PHP_IDE_CONFIG: serverName=cch-server
     ports:
       - '1000:80'
     networks:
-      - credicarb-network
+      - cch-network
     depends_on:
-      - credicarb-mysql
+      - cch-mysql
 
-  credicarb-mysql:
-    container_name: credicarb-mysql
+  cch-mysql:
+    container_name: cch-mysql
     image: mysql:8.2.0
     ports:
       - '3336:3306'
     environment:
-      MYSQL_DATABASE: credicarb-app
+      MYSQL_DATABASE: cch-app
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - credicarb-mysql-data:/var/lib/mysql
+      - cch-mysql-data:/var/lib/mysql
     networks:
-      - credicarb-network
+      - cch-network
     command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
 
-  credicarb-mailpit:
-    container_name: credicarb-mailpit
+  cch-mailpit:
+    container_name: cch-mailpit
     image: axllent/mailpit
     ports:
       - "1025"
@@ -47,7 +47,7 @@ services:
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 networks:
-  credicarb-network:
+  cch-network:
 
 volumes:
-  credicarb-mysql-data:
+  cch-mysql-data:

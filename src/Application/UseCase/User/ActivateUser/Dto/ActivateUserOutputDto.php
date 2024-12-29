@@ -8,9 +8,7 @@ use App\Domain\Model\User;
 
 class ActivateUserOutputDto
 {
-    private function __construct(public readonly array $userData)
-    {
-    }
+    private function __construct(public readonly array $userData) {}
 
     public static function createFromModel(User $user): self
     {

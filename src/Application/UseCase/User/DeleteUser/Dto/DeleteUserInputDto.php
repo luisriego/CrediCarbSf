@@ -6,16 +6,17 @@ namespace App\Application\UseCase\User\DeleteUser\Dto;
 
 use App\Domain\Exception\InvalidArgumentException;
 
+use function is_null;
+
 class DeleteUserInputDto
 {
     private function __construct(
-        public readonly string $id
-    ) {
-    }
+        public readonly string $id,
+    ) {}
 
     public static function create(?string $id): self
     {
-        if (\is_null($id)) {
+        if (is_null($id)) {
             throw InvalidArgumentException::createFromMessage('User ID can\'t be null');
         }
 

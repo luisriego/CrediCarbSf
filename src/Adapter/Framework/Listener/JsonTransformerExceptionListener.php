@@ -17,7 +17,7 @@ class JsonTransformerExceptionListener
         $e = $event->getThrowable();
 
         $data = [
-            'class' => \get_class($e),
+            'class' => $e::class,
             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
             'message' => $e->getMessage(),
         ];
@@ -30,9 +30,9 @@ class JsonTransformerExceptionListener
             $data['code'] = Response::HTTP_BAD_REQUEST;
         }
 
-//        if ($e instanceof AccessDeniedException) {
-//            $data['code'] = Response::HTTP_FORBIDDEN;
-//        }
+        //        if ($e instanceof AccessDeniedException) {
+        //            $data['code'] = Response::HTTP_FORBIDDEN;
+        //        }
 
         $response = new JsonResponse($data, $data['code']);
 

@@ -7,10 +7,10 @@ namespace App\Adapter\Framework\Http\Dto\User;
 use App\Adapter\Framework\Http\Dto\RequestDto;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActivateUserRequestDto implements RequestDto
+readonly class ActivateUserRequestDto implements RequestDto
 {
-    public readonly ?string $id;
-    public readonly ?string $token;
+    public ?string $id;
+    public ?string $token;
 
     public function __construct(Request $request)
     {

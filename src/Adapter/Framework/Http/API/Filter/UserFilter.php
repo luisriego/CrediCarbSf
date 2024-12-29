@@ -4,59 +4,49 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\API\Filter;
 
-final class UserFilter
-{
-    private const PAGE = 1;
-    private const LIMIT = 10;
-    private const ALLOWED_SORT_PARAMS = ['name'];
-    private const ALLOWED_ORDER_PARAMS = ['asc', 'desc'];
+use App\Domain\Model\User;
+use InvalidArgumentException;
 
-    public readonly int $page;
-    public readonly int $limit;
+use function filter_var;
+use function is_numeric;
+use function sprintf;
+
+use const FILTER_VALIDATE_EMAIL;
+
+class UserFilter extends EntityFilter
+{
+    public readonly ?string $email;
+    public readonly ?string $companyId;
 
     public function __construct(
         int $page,
         int $limit,
-        public readonly string $condoId,
-        public readonly string $sort,
-        public readonly string $order,
-        public readonly ?string $name
+        string $sort,
+        string $order,
+        ?string $companyId,
+        ?string $name,
+        ?string $email,
     ) {
-        if (0 !== $page) {
-            $this->page = $page;
-        } else {
-            $this->page = self::PAGE;
-        }
-
-        if (0 !== $limit) {
-            $this->limit = $limit;
-        } else {
-            $this->limit = self::LIMIT;
-        }
-
-        $this->validateSort($this->sort);
-        $this->validateOrder($this->order);
+        parent::__construct($page, $limit, $sort, $order, $name);
+        $this->email = $email;
+        $this->companyId = $companyId;
     }
 
-    private function validateSort(?string $sort): void
+    public function validateCompanyId(): void
     {
-        if ('' === $sort) {
-            $sort = 'name';
+        if ($this->companyId !== null && !is_numeric($this->companyId)) {
+            throw new InvalidArgumentException(sprintf('Invalid company id format [%s]', $this->companyId));
         }
 
-        if (!\in_array($sort, self::ALLOWED_SORT_PARAMS, true)) {
-            throw new \InvalidArgumentException(\sprintf('Invalid sort param [%s]', $sort));
+        if ($this->companyId !== null && (mb_strlen($this->companyId) !== User::ID_LENGTH)) {
+            throw new InvalidArgumentException(sprintf('Invalid company id length [%s]', $this->companyId));
         }
     }
 
-    private function validateOrder(?string $order): void
+    public function validateEmail(): void
     {
-        if ('' === $order) {
-            $order = 'desc';
-        }
-
-        if (!\in_array($order, self::ALLOWED_ORDER_PARAMS, true)) {
-            throw new \InvalidArgumentException(\sprintf('Invalid order param [%s]', $order));
+        if ($this->email !== null && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException(sprintf('Invalid email format [%s]', $this->email));
         }
     }
 }

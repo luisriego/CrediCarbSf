@@ -6,6 +6,9 @@ namespace App\Domain\Exception;
 
 use InvalidArgumentException as NativeInvalidArgumentException;
 
+use function implode;
+use function sprintf;
+
 class InvalidArgumentException extends NativeInvalidArgumentException
 {
     public static function createFromMessage(string $message): self
@@ -15,16 +18,16 @@ class InvalidArgumentException extends NativeInvalidArgumentException
 
     public static function createFromArgument(string $argument): self
     {
-        return new static(\sprintf('Invalid argument [%s]', $argument));
+        return new static(sprintf('Invalid argument [%s]', $argument));
     }
 
     public static function createFromArray(array $arguments): self
     {
-        return new static(\sprintf('Invalid arguments [%s]', \implode(', ', $arguments)));
+        return new static(sprintf('Invalid arguments [%s]', implode(', ', $arguments)));
     }
 
     public static function createFromMinAndMaxLength(int $min, int $max): self
     {
-        return new static(\sprintf('Value must be min [%d] and max [%d] characters', $min, $max));
+        return new static(sprintf('Value must be min [%d] and max [%d] characters', $min, $max));
     }
 }

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\Trait;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 trait UpdatedOnTrait
 {
     #[ORM\Column(type: 'datetime')]
-    protected \DateTime $updatedOn;
+    protected DateTime $updatedOn;
 
-    public function getUpdatedOn(): \DateTime
+    public function getUpdatedOn(): DateTime
     {
         return $this->updatedOn;
     }
@@ -19,6 +20,6 @@ trait UpdatedOnTrait
     #[ORM\PrePersist]
     public function markAsUpdated(): void
     {
-        $this->updatedOn = new \DateTime();
+        $this->updatedOn = new DateTime();
     }
 }

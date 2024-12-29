@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Exception\User;
 
-class AccessDeniedException extends \DomainException
+use DomainException;
+
+class AccessDeniedException extends DomainException
 {
     public static function VoterFail()
     {

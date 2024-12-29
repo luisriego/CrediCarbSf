@@ -21,7 +21,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100 }
 
-#    App\Adapter\Framework\Security\EventListener\JWTCreatedListener:
+    App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:
+            public: true
+
+
+        #    App\Adapter\Framework\Security\EventListener\JWTCreatedListener:
 #        tags:
 #            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 #

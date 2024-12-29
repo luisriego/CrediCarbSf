@@ -10,9 +10,8 @@ use App\Domain\Repository\UserRepositoryInterface;
 class DeleteUser
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository
-    ) {
-    }
+        private readonly UserRepositoryInterface $userRepository,
+    ) {}
 
     public function handle(DeleteUserInputDto $dto): void
     {

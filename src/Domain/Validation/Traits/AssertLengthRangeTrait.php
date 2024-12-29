@@ -10,7 +10,7 @@ trait AssertLengthRangeTrait
 {
     public function assertValueRangeLength(string $value, int $min, int $max): void
     {
-        if (\strlen($value) < $min || \strlen($value) > $max) {
+        if (mb_strlen($value) < $min || mb_strlen($value) > $max) {
             throw InvalidArgumentException::createFromMinAndMaxLength($min, $max);
         }
     }

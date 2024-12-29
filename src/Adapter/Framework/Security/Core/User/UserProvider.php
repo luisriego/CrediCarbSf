@@ -13,16 +13,22 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+use function sprintf;
+
 readonly class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    public function __construct(private DoctrineUserRepository $userRepository)
+    public function __construct(private DoctrineUserRepository $userRepository) {}
+
+    public function __call(string $name, array $arguments): void
     {
+        // TODO: Implement @method void upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword)
+        // TODO: Implement @method UserInterface loadUserByIdentifier(string $identifier)
     }
 
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(\sprintf('Instances of %s are not supported', $user::class));
+            throw new UnsupportedUserException(sprintf('Instances of %s are not supported', $user::class));
         }
 
         return $this->loadUserByIdentifier($user->getUserIdentifier());
@@ -38,14 +44,8 @@ readonly class UserProvider implements UserProviderInterface, PasswordUpgraderIn
         try {
             return $this->userRepository->findOneByEmailOrFail($username);
         } catch (UserNotFoundException) {
-            throw new \Symfony\Component\Security\Core\Exception\UserNotFoundException(\sprintf('User %s not found, $username'));
+            throw new UserNotFoundException('User %s not found, $username');
         }
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        // TODO: Implement @method void upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword)
-        // TODO: Implement @method UserInterface loadUserByIdentifier(string $identifier)
     }
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newEncodedPassword): void
@@ -60,7 +60,7 @@ readonly class UserProvider implements UserProviderInterface, PasswordUpgraderIn
         try {
             return $this->userRepository->findOneByEmailOrFail($username);
         } catch (UserNotFoundException) {
-            throw new \Symfony\Component\Security\Core\Exception\UserNotFoundException(\sprintf('User %s not found, $username'));
+            throw new UserNotFoundException('User %s not found, $username');
         }
     }
 }

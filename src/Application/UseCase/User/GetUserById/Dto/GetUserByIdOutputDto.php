@@ -14,8 +14,7 @@ class GetUserByIdOutputDto
         public readonly string $email,
         public readonly string $password,
         public readonly int $age,
-    ) {
-    }
+    ) {}
 
     public static function create(User $user): self
     {
