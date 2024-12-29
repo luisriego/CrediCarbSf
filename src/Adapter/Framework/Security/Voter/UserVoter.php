@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Security\Voter;
 
+use App\Domain\Exception\User\AccessDeniedException;
 use App\Domain\Model\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -37,7 +38,10 @@ final class UserVoter extends Voter
         }
 
         /** @var User $tokenUser */
-        $tokenUser = $token->getUser();
+        if (null === $tokenUser = $token->getUser()) {
+            throw AccessDeniedException::UserNotLogged();
+        }
+        //        $tokenUser = $token->getUser();
 
         if (self::GET_USERS_COMPANY === $attribute) {
             foreach ($subject as $user) {

@@ -29,7 +29,7 @@ class UpdateUserController extends AbstractController
         /** @var User $userToUpdate */
         $userToUpdate = $this->userRepo->findOneByIdOrFail($id);
 
-//        $this->denyAccessUnlessGranted(UserVoter::UPDATE_USER, $userToUpdate);
+        $this->denyAccessUnlessGranted(UserVoter::UPDATE_USER, $userToUpdate);
 
         $responseDto = $this->useCase->handle($inputDto);
 
