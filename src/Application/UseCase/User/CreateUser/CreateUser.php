@@ -12,11 +12,11 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\ValueObjects\Uuid;
 
-class CreateUser
+readonly class CreateUser
 {
     public function __construct(
-        private readonly UserRepositoryInterface $repository,
-        private readonly PasswordHasherInterface $passwordHasher,
+        private UserRepositoryInterface $repository,
+        private PasswordHasherInterface $passwordHasher,
     ) {}
 
     public function handle(CreateUserInputDto $inputDto): CreateUserOutputDto
@@ -32,6 +32,7 @@ class CreateUser
             $inputDto->password,
             $inputDto->age,
         );
+
         $password = $this->passwordHasher->hashPasswordForUser($user, $inputDto->password);
         $user->setPassword($password);
         //        $user->setRoles(['ROLE_SYNDIC']);

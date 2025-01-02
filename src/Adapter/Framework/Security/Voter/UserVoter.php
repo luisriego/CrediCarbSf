@@ -63,13 +63,13 @@ final class UserVoter extends Voter
             return false;
         }
 
-        // ROLE_SYNDIC can update another users in his own Companyminium and itself
+        // ROLE_OPERATOR can update another data in his own Company and itself
         if (in_array($attribute, $this->allowedAttributes(), true)) {
             if ($this->security->isGranted('ROLE_ADMIN')) {
                 return true;
             }
 
-            if ($this->security->isGranted('ROLE_SYNDIC')) {
+            if ($this->security->isGranted('ROLE_OPERATOR')) {
                 return $tokenUser->getCompany() === $subject->getCompany();
             }
 

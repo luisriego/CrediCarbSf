@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CompanyHealthCheckControllerTest extends ControllerTestBase
 {
-    private const ENDPOINT = '/company/health-check';
+    private const ENDPOINT = '/api/company/health-check';
 
     public function testCompanyHealthCheck(): void
     {

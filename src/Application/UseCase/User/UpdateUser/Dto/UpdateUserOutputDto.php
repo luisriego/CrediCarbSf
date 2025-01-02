@@ -12,17 +12,18 @@ readonly class UpdateUserOutputDto
 
     public static function createFromModel(User $user): self
     {
+        $company = $user->getCompany();
         return new static([
             'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
             'age' => $user->getAge(),
-            'company' => [
-                'id' => $user->getCompany()->getId(),
-                'fantasyName' => $user->getCompany()->getFantasyName(),
-                'taxpayer' => $user->getCompany()->getTaxpayer(),
-            ],
+            'company' => $company ? [
+                'id' => $company->getId(),
+                'fantasyName' => $company->getFantasyName(),
+                'taxpayer' => $company->getTaxpayer(),
+            ] : null,
             'isActive' => $user->isActive(),
         ]);
     }

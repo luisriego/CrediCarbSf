@@ -17,22 +17,32 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # Let Controllers publicly accessible when not using the AbstractController class
+    # User controllers
+    App\Adapter\Framework\Http\Controller\User\ActivateUserController:
+        public: true
+    App\Adapter\Framework\Http\Controller\User\CreateUserController:
+        public: true
+
+    # Company controllers
+    App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:      # CreateCompanyController
+            public: true
+
+    # Event Listeners used to transform the exception into a JSON response
     App\Adapter\Framework\Listener\JsonTransformerExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100 }
 
-    App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:
-            public: true
+    # JWT Event Listeners used to add custom data to the JWT token
+    App\Adapter\Framework\Security\EventListener\JWTCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
+    # Doctrine Event Listeners used to hash the password before persisting the user
+    App\Adapter\Database\ORM\Doctrine\EventSubscriber\UserEventSubscriber:
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
 
-        #    App\Adapter\Framework\Security\EventListener\JWTCreatedListener:
-#        tags:
-#            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
-#
-#    App\Adapter\Database\ORM\Doctrine\EventSubscriber\UserEventSubscriber:
-#        tags:
-#            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
-
-    App\Domain\Security\PasswordHasherInterface:
-        class: App\Adapter\Framework\Security\SymfonyPasswordHasher
-        public: true
+#    App\Domain\Security\PasswordHasherInterface:
+#        class: App\Adapter\Framework\Security\SymfonyPasswordHasher
+#        public: true

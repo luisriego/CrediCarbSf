@@ -42,23 +42,23 @@ readonly class UserProvider implements UserProviderInterface, PasswordUpgraderIn
     public function loadUserByIdentifier(string $username): UserInterface
     {
         try {
-            return $this->userRepository->findOneByEmailOrFail($username);
+            return $this->userRepository->findOneByEmail($username);
         } catch (UserNotFoundException) {
             throw new UserNotFoundException('User %s not found, $username');
         }
     }
 
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        $user->setPassword($newEncodedPassword);
+        $user->setPassword($newHashedPassword);
 
         $this->userRepository->save($user);
     }
 
-    public function loadUserByUsername(string $username)
+    public function loadUserByUsername(string $username): UserInterface
     {
         try {
-            return $this->userRepository->findOneByEmailOrFail($username);
+            return $this->userRepository->findOneByEmail($username);
         } catch (UserNotFoundException) {
             throw new UserNotFoundException('User %s not found, $username');
         }

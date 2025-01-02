@@ -15,6 +15,6 @@ class AccessDeniedException extends DomainException
 
     public static function UserNotLogged(): AccessDeniedException
     {
-        return new AccessDeniedException('User not logged, please Login and try again', 401);
+        return new AccessDeniedException('User not logged, please LoginService and try again', 401);
     }
 }

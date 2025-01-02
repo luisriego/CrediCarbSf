@@ -30,4 +30,9 @@ class InvalidArgumentException extends NativeInvalidArgumentException
     {
         return new static(sprintf('Value must be min [%d] and max [%d] characters', $min, $max));
     }
+
+    public static function createFromEmailValidation(string $email): self
+    {
+        return new static(sprintf('The email "%s" is not valid.', $email));
+    }
 }

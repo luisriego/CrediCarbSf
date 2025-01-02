@@ -8,20 +8,21 @@ use App\Adapter\Framework\Http\Dto\User\ActivateUserRequestDto;
 use App\Application\UseCase\User\ActivateUser\ActivateUser;
 use App\Application\UseCase\User\ActivateUser\Dto\ActivateUserInputDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ActivateUserController extends AbstractController
+readonly class ActivateUserController
 {
-    public function __construct(private readonly ActivateUser $useCase) {}
+    public function __construct(private ActivateUser $useCase) {}
 
-    #[Route('/activate', name: 'activate_user', methods: ['PUT'])]
+    #[Route('/api/user/activate', name: 'activate_user', methods: ['PUT'])]
     public function __invoke(ActivateUserRequestDto $request): Response
     {
         $inputDto = ActivateUserInputDto::create($request->id, $request->token);
 
         $responseDto = $this->useCase->handle($inputDto);
 
-        return $this->json($responseDto->userData);
+        return new JsonResponse($responseDto->userData);
     }
 }

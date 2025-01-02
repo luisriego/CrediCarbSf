@@ -8,10 +8,10 @@ use App\Domain\Model\User;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class JWTCreatedListener
+readonly class JWTCreatedListener
 {
     public function __construct(
-        private readonly RequestStack $requestStack,
+        private RequestStack $requestStack,
     ) {}
 
     public function onJWTCreated(JWTCreatedEvent $event): void

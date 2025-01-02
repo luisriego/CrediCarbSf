@@ -20,7 +20,7 @@ class DeleteUserController extends AbstractController
         private readonly UserRepositoryInterface $userRepo,
     ) {}
 
-    #[Route('/{id}', name: 'delete_user', methods: ['DELETE'])]
+    #[Route('/api/user/{id}', name: 'delete_user', methods: ['DELETE'])]
     public function __invoke(DeleteUserRequestDto $requestDto): Response
     {
         $userToDelete = $this->userRepo->findOneByIdOrFail($requestDto->id);

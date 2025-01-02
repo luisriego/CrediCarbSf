@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HealthCheckController
 {
-    #[Route('/project/health-check', name: 'project_health_check', methods: ['GET'])]
+    #[Route('/api/project/health-check', name: 'project_health_check', methods: ['GET'])]
     public function healthCheck(): JsonResponse
     {
         return new JsonResponse(['message' => 'Module Project up and running!']);
