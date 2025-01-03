@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\Controller\User;
 
-use App\Adapter\Framework\Http\Dto\User\UpdateUserRequestDto;
+use App\Adapter\Framework\Http\Dto\User\ChangePasswordRequestDto;
 use App\Adapter\Framework\Security\Voter\UserVoter;
-use App\Application\UseCase\User\UpdateUser\Dto\UpdateUserInputDto;
-use App\Application\UseCase\User\UpdateUser\UpdateUser;
+use App\Application\UseCase\User\ChangePasswordService\ChangePasswordService;
+use App\Application\UseCase\User\ChangePasswordService\Dto\ChangePasswordInputDto;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UpdateUserController extends AbstractController
+class ChangePasswordController extends AbstractController
 {
     public function __construct(
-        private readonly UpdateUser $useCase,
+        private readonly ChangePasswordService $useCase,
         private readonly UserRepositoryInterface $userRepo,
     ) {}
 
-    #[Route('/api/user/{id}', name: 'update_user', methods: ['PATCH'])]
-    public function __invoke(UpdateUserRequestDto $request, string $id, ): Response
+    #[Route('/api/user/change-password/{id}', name: 'change_user_password', methods: ['PATCH'])]
+    public function __invoke(ChangePasswordRequestDto $request, string $id): Response
     {
-        $inputDto = UpdateUserInputDto::create(
+        $inputDto = ChangePasswordInputDto::create(
             $id,
-            $request->name,
-            $request->age,
-            $request->company,
-            $request->keys);
+            $request->oldPassword,
+            $request->newPassword
+        );
 
         /** @var User $userToUpdate */
         $userToUpdate = $this->userRepo->findOneByIdOrFail($id);

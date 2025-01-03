@@ -17,7 +17,6 @@ readonly class UpdateUserOutputDto
             'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
-            'password' => $user->getPassword(),
             'age' => $user->getAge(),
             'company' => $company ? [
                 'id' => $company->getId(),

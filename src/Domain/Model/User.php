@@ -27,6 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const MIN_AGE = 18;
     public const NAME_MIN_LENGTH = 2;
     public const NAME_MAX_LENGTH = 80;
+    public const MIN_PASSWORD_LENGTH = 6;
+    public const MAX_PASSWORD_LENGTH = 55;
     public const ID_LENGTH = 36;
 
     #[ORM\Column(type: 'string', length: 80)]
