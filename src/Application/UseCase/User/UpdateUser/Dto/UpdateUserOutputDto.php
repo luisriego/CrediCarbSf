@@ -6,7 +6,7 @@ namespace App\Application\UseCase\User\UpdateUser\Dto;
 
 use App\Domain\Model\User;
 
-readonly class UpdateUserOutputDto
+class UpdateUserOutputDto
 {
     private function __construct(public array $userData) {}
 

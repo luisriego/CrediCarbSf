@@ -16,14 +16,14 @@ class DeleteUserControllerTest extends ControllerTestBase
     public function setUp(): void
     {
         parent::setUp();
-        $adminUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
+//        $adminUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
     }
 
     public function testDeleteUserSuccessfully(): void
     {
         self::$admin->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT_USER, $this->userId),
+            sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
         );
 
         $response = self::$admin->getResponse();
@@ -34,7 +34,7 @@ class DeleteUserControllerTest extends ControllerTestBase
     {
         self::$admin->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT_USER, self::NON_EXISTING_USER_ID),
+            sprintf('%s/%s', self::ENDPOINT_USER, self::NON_EXISTING_USER_ID),
         );
 
         $response = self::$admin->getResponse();
@@ -52,7 +52,7 @@ class DeleteUserControllerTest extends ControllerTestBase
 
         self::$admin->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT_USER, $this->userId),
+            sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
         );
 
         $response = self::$admin->getResponse();
@@ -63,7 +63,7 @@ class DeleteUserControllerTest extends ControllerTestBase
     {
         self::$admin->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT_USER, 'invalid-id'),
+            sprintf('%s/%s', self::ENDPOINT_USER, 'invalid-id'),
         );
 
         $response = self::$admin->getResponse();

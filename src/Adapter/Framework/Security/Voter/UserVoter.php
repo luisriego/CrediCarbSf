@@ -14,6 +14,8 @@ use function in_array;
 
 final class UserVoter extends Voter
 {
+    public const GET_ALL_USERS = 'GET_ALL_USERS';
+    public const GET_USER_BY_ID = 'GET_USER_BY_ID';
     public const GET_USERS_COMPANY = 'GET_USERS_COMPANY';
     public const UPDATE_USER = 'UPDATE_USER';
     public const ADD_NEW_USER = 'ADD_NEW_USER ';
@@ -43,6 +45,21 @@ final class UserVoter extends Voter
         }
         //        $tokenUser = $token->getUser();
 
+        if (self::GET_ALL_USERS === $attribute) {
+            return $this->security->isGranted('ROLE_SUPER_ADMIN');
+        }
+
+        if (self::GET_USER_BY_ID === $attribute) {
+            if ($this->security->isGranted('ROLE_USER')) {
+                return true;
+            }
+
+            // Allow access if the user has the ROLE_USER and belongs to the same company
+            if ($this->security->isGranted('ROLE_USER')) {
+                return $tokenUser->getCompany()->getId() === $subject->getCompany()->getId();
+            }
+        }
+
         if (self::GET_USERS_COMPANY === $attribute) {
             foreach ($subject as $user) {
                 if ($tokenUser->getId() === $user->getId()) {
@@ -56,7 +73,7 @@ final class UserVoter extends Voter
                 return true;
             }
 
-            if ($this->security->isGranted('ROLE_SYNDIC')) {
+            if ($this->security->isGranted('ROLE_OPERATOR')) {
                 return $tokenUser->getCompany()->getId() === $subject;
             }
 
@@ -86,6 +103,8 @@ final class UserVoter extends Voter
             self::UPDATE_USER,
             self::ADD_NEW_USER,
             self::DELETE_USER,
+            self::GET_ALL_USERS,
+            self::GET_USER_BY_ID,
         ];
     }
 }

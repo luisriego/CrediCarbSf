@@ -30,10 +30,7 @@ class UpdateUserControllerTest extends ControllerTestBase
         self::$admin->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s',self::ENDPOINT_UPDATE_USER, $this->userId),
-            [],
-            [],
-            [],
-            json_encode($payload)
+            [], [], [], json_encode($payload)
         );
 
         $response = self::$admin->getResponse();
@@ -51,7 +48,7 @@ class UpdateUserControllerTest extends ControllerTestBase
 
         self::$admin->request(
             Request::METHOD_PATCH,
-            sprintf(self::ENDPOINT_USER, $this->userId),
+            sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
             [],
             [],
@@ -73,7 +70,7 @@ class UpdateUserControllerTest extends ControllerTestBase
 
         self::$admin->request(
             Request::METHOD_PATCH,
-            sprintf(self::ENDPOINT_USER, $this->userId),
+            sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
             [],
             [],
@@ -97,7 +94,7 @@ class UpdateUserControllerTest extends ControllerTestBase
 
         self::$admin->request(
             Request::METHOD_PATCH,
-            sprintf(self::ENDPOINT_USER, self::NON_EXISTING_USER_ID),
+            sprintf('%s/%s', self::ENDPOINT_USER, self::NON_EXISTING_USER_ID),
             [],
             [],
             [],
@@ -119,7 +116,7 @@ class UpdateUserControllerTest extends ControllerTestBase
 
         self::$admin->request(
             Request::METHOD_PATCH,
-            sprintf(self::ENDPOINT_USER, $this->userId),
+            sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
             [],
             [],
