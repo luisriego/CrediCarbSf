@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\User;
 
-use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetUserControllerTest extends ControllerTestBase
+class GetUserControllerTest extends FunctionalTestBase
 {
     /**
      * @throws \Exception
      */
     public function testGetAllUsers()
     {
-        self::$admin->request('GET', '/api/user/all', [], [], [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . self::ADMIN_TOKEN,
-        ]);
+        self::$superAdminClient->request('GET', '/api/user/all', [], [], ['CONTENT_TYPE' => 'application/json']);
 
-        $response = self::$admin->getResponse();
+        $response = self::$superAdminClient->getResponse();
         $responseData = $this->getResponseData($response);
 
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertArrayHasKey('users', $responseData);
     }
 }

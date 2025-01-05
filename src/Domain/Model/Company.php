@@ -42,7 +42,7 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    private function __construct(
+    public function __construct(
         ?string $taxpayer,
         ?string $fantasyName,
     ) {

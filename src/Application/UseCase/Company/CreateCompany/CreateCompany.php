@@ -11,7 +11,7 @@ use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
 
-readonly class CreateCompany
+class CreateCompany
 {
     public function __construct(private CompanyRepositoryInterface $companyRepository) {}
 

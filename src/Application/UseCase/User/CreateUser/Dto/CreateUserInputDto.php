@@ -10,7 +10,7 @@ use App\Domain\Validation\Traits\AssertMinimumAgeTrait;
 use App\Domain\Validation\Traits\AssertNotNullTrait;
 use App\Domain\Validation\Traits\AssertValidEmailTrait;
 
-class CreateUserInputDto
+class   CreateUserInputDto
 {
     use AssertNotNullTrait;
     use AssertMinimumAgeTrait;

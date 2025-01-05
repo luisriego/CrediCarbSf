@@ -8,6 +8,7 @@ use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
+use App\Domain\ValueObjects\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -49,43 +50,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password;
 
     #[ORM\Column(type: 'smallint')]
-    private int $age;
+    private ?int $age;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
-    private ?Company $Company = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company = null;
 
-    private function __construct(
-        string $id,
-        ?string $name,
-        ?string $email,
-        ?string $password,
-        ?string $token,
-        int $age,
-        bool $isActive,
-        DateTimeImmutable $createdOn,
+    public function __construct(
+        string $name,
+        string $email,
+        string $password,
+
     ) {
-        $this->id = $id;
+        $this->id = Uuid::random()->value();
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->token = $token;
-        $this->age = $age;
-        $this->isActive = $isActive;
-        $this->createdOn = $createdOn;
+        $this->token = sha1(uniqid());
+        $this->age = 18;
+        $this->isActive = false;
+        $this->createdOn = new DateTimeImmutable();
         $this->markAsUpdated();
     }
 
-    public static function create($id, $name, $email, $password, $age): self
+    public static function create($name, $email, $password): self
     {
         return new static(
-            $id,
             $name,
             $email,
             $password,
-            sha1(uniqid()),
-            $age,
-            false,
-            new DateTimeImmutable(),
         );
     }
 
@@ -126,12 +119,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCompany(): ?Company
     {
-        return $this->Company;
+        return $this->company;
     }
 
-    public function setCompany(?Company $Company): void
+    public function setCompany(?Company $company): void
     {
-        $this->Company = $Company;
+        $this->company = $company;
     }
 
     public function getEmail(): ?string

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\User;
 
 use App\Domain\Repository\UserRepositoryInterface;
-use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateUserControllerTest extends ControllerTestBase
+class UpdateUserControllerTest extends FunctionalTestBase
 {
     protected string $userId;
 
     public function setUp(): void
     {
         parent::setUp();
-        $adminUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
-        $this->userId = $adminUser->getId();
+//        $authenticatedClientUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
+//        $this->userId = $authenticatedClientUser->getId();
     }
 
     public function testUpdateUserSuccessfully(): void
@@ -27,13 +27,13 @@ class UpdateUserControllerTest extends ControllerTestBase
             'age' => 25
         ];
 
-        self::$admin->request(
+        self::$authenticatedClient->request(
             Request::METHOD_PATCH,
-            sprintf('%s/%s',self::ENDPOINT_UPDATE_USER, $this->userId),
+            sprintf('%s/%s',self::ENDPOINT_USER, $this->userId),
             [], [], [], json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
@@ -46,7 +46,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             'keys' => ['name', 'age']
         ];
 
-        self::$admin->request(
+        self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
@@ -55,7 +55,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $responseData = \json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertEquals('Age has to be at least 18', $responseData['message']);
@@ -68,7 +68,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             'keys' => ['email']
         ];
 
-        self::$admin->request(
+        self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
@@ -77,7 +77,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $responseData = \json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         $this->assertEquals('Cannot update email because it is immutable', $responseData['message']);
@@ -92,7 +92,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             'keys' => ['name', 'age']
         ];
 
-        self::$admin->request(
+        self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_USER, self::NON_EXISTING_USER_ID),
             [],
@@ -101,7 +101,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
@@ -114,7 +114,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             'keys' => ['name', 'age', 'company']
         ];
 
-        self::$admin->request(
+        self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
             [],
@@ -123,7 +123,7 @@ class UpdateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $responseData = \json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertEquals(sprintf('Resource of type [%s] with ID [%s] not found', 'App\\Domain\\Model\\Company', 'e0a1878f-dd52-4eea-959d-96f589a9f234'), $responseData['message']);

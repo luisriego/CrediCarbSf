@@ -6,10 +6,11 @@ namespace App\Tests\Functional\Controller\User;
 
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ActivateUserControllerTest extends ControllerTestBase
+class ActivateUserControllerTest extends FunctionalTestBase
 {
     protected string $userId;
     protected string $token;
@@ -29,7 +30,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             'token' => $this->token,
         ];
 
-        self::$admin->request(
+        self::$baseClient->request(
             Request::METHOD_PUT,
             self::ACTIVATE_USER_ENDPOINT,
             [],
@@ -38,7 +39,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$baseClient->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
@@ -49,7 +50,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             'token' => 'invalid_token',
         ];
 
-        self::$admin->request(
+        self::$baseClient->request(
             Request::METHOD_PUT,
             self::ACTIVATE_USER_ENDPOINT,
             [],
@@ -58,7 +59,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$baseClient->getResponse();
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
@@ -69,7 +70,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             'token' => $this->token,
         ];
 
-        self::$admin->request(
+        self::$baseClient->request(
             Request::METHOD_PUT,
             self::ACTIVATE_USER_ENDPOINT,
             [],
@@ -78,7 +79,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$baseClient->getResponse();
         $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
@@ -88,7 +89,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             'id' => $this->userId,
         ];
 
-        self::$admin->request(
+        self::$baseClient->request(
             Request::METHOD_PUT,
             self::ACTIVATE_USER_ENDPOINT,
             [],
@@ -97,7 +98,7 @@ class ActivateUserControllerTest extends ControllerTestBase
             json_encode($payload)
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$baseClient->getResponse();
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 }

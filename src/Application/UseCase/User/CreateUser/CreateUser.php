@@ -12,11 +12,11 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\ValueObjects\Uuid;
 
-readonly class CreateUser
+class CreateUser
 {
     public function __construct(
-        private UserRepositoryInterface $repository,
-        private PasswordHasherInterface $passwordHasher,
+        private readonly UserRepositoryInterface $repository,
+        private readonly PasswordHasherInterface $passwordHasher,
     ) {}
 
     public function handle(CreateUserInputDto $inputDto): CreateUserOutputDto
