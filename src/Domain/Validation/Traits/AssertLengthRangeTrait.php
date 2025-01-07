@@ -6,6 +6,8 @@ namespace App\Domain\Validation\Traits;
 
 use App\Domain\Exception\InvalidArgumentException;
 
+use function mb_strlen;
+
 trait AssertLengthRangeTrait
 {
     public function assertValueRangeLength(string $value, int $min, int $max): void

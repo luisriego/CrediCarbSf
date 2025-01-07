@@ -15,7 +15,7 @@ class UserFactory
             $name,
             $email,
             $password,
-            $age
+            $age,
         );
     }
 }

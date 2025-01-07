@@ -27,7 +27,7 @@ class ChangePasswordController extends AbstractController
         $inputDto = ChangePasswordInputDto::create(
             $id,
             $request->oldPassword,
-            $request->newPassword
+            $request->newPassword,
         );
 
         /** @var User $userToUpdate */

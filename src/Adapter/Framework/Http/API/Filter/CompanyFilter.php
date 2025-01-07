@@ -7,6 +7,7 @@ namespace App\Adapter\Framework\Http\API\Filter;
 use App\Domain\Model\Company;
 use InvalidArgumentException;
 
+use function mb_strlen;
 use function sprintf;
 
 class CompanyFilter extends EntityFilter

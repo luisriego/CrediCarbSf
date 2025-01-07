@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\UseCase\User\GetAllUsersService;
 
 use App\Domain\Repository\UserRepositoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+
+use function array_map;
 
 readonly class GetAllUsersService
 {

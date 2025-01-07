@@ -17,22 +17,22 @@ use Symfony\Component\Routing\Attribute\Route;
 class GetUsersByCompanyController extends AbstractController
 {
     // TODO: Implement the GetUsersByCompanyController
-//    public function __construct(
-//        private readonly GetUserByIdService $useCase,
-//        private readonly UserRepositoryInterface $userRepository,
-//    ) {}
-//
-//    #[Route('/api/users/company/{id}', name: 'get_user_by_company', methods: ['GET'])]
-//    public function __invoke(string $id): Response
-//    {
-//        $inputDto = GetUserByIdInputDto::create($id);
-//        /** @var User $userToReturn */
-//        $userToReturn = $this->userRepository->findOneByIdOrFail($id);
-//
-//        $this->denyAccessUnlessGranted(UserVoter::GET_USER_BY_ID, $userToReturn);
-//
-//        $userReturned = $this->useCase->handle($inputDto);
-//
-//        return new JsonResponse(['user' => $userReturned->data], Response::HTTP_OK);
-//    }
+    //    public function __construct(
+    //        private readonly GetUserByIdService $useCase,
+    //        private readonly UserRepositoryInterface $userRepository,
+    //    ) {}
+    //
+    //    #[Route('/api/users/company/{id}', name: 'get_user_by_company', methods: ['GET'])]
+    //    public function __invoke(string $id): Response
+    //    {
+    //        $inputDto = GetUserByIdInputDto::create($id);
+    //        /** @var User $userToReturn */
+    //        $userToReturn = $this->userRepository->findOneByIdOrFail($id);
+    //
+    //        $this->denyAccessUnlessGranted(UserVoter::GET_USER_BY_ID, $userToReturn);
+    //
+    //        $userReturned = $this->useCase->handle($inputDto);
+    //
+    //        return new JsonResponse(['user' => $userReturned->data], Response::HTTP_OK);
+    //    }
 }

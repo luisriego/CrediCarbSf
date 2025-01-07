@@ -7,8 +7,6 @@ namespace App\Adapter\Framework\Http\Dto\User;
 use App\Adapter\Framework\Http\Dto\RequestDto;
 use Symfony\Component\HttpFoundation\Request;
 
-use function array_keys;
-
 readonly class ChangePasswordRequestDto implements RequestDto
 {
     public ?string $oldPassword;

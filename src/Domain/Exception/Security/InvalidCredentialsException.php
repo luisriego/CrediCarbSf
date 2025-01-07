@@ -10,6 +10,6 @@ class InvalidCredentialsException extends DomainException
 {
     public static function FromLogin(): self
     {
-        return new InvalidCredentialsException(sprintf('Invalid email or password'));
+        return new InvalidCredentialsException('Invalid email or password');
     }
 }

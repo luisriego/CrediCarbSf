@@ -7,7 +7,6 @@ namespace App\Adapter\Framework\Http\Controller\User;
 use App\Adapter\Framework\Http\Dto\User\ActivateUserRequestDto;
 use App\Application\UseCase\User\ActivateUser\ActivateUser;
 use App\Application\UseCase\User\ActivateUser\Dto\ActivateUserInputDto;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

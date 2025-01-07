@@ -6,13 +6,8 @@ namespace App\Application\UseCase\User\ChangePasswordService;
 
 use App\Application\UseCase\User\ChangePasswordService\Dto\ChangePasswordInputDto;
 use App\Application\UseCase\User\ChangePasswordService\Dto\ChangePasswordOutputDto;
-use App\Domain\Exception\Security\InvalidPasswordException;
 use App\Domain\Repository\UserRepositoryInterface;
-
 use App\Domain\Security\PasswordHasherInterface;
-use function in_array;
-use function sprintf;
-use function ucfirst;
 
 class ChangePasswordService
 {

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\CreateCompany\Dto;
 
-use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
-use App\Domain\Validation\Traits\AssertLengthRangeTrait;
 use App\Domain\Validation\Traits\AssertNotNullTrait;
+use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
 
 class CreateCompanyInputDto
 {

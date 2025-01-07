@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class AddUserToCompanyController
 {
     public function __construct(
-        private readonly AddUserToCompanyService $addUserToCompany
+        private readonly AddUserToCompanyService $addUserToCompany,
     ) {}
 
     #[Route('/api/company/adduser/{id}', name: 'company_add_user', methods: ['POST'])]

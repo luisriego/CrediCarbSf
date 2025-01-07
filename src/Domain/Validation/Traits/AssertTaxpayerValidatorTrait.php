@@ -6,6 +6,9 @@ namespace App\Domain\Validation\Traits;
 
 use App\Domain\Exception\InvalidArgumentException;
 
+use function preg_match;
+use function preg_replace;
+
 trait AssertTaxpayerValidatorTrait
 {
     public function cleanTaxpayer(string $taxpayer): string
@@ -17,9 +20,9 @@ trait AssertTaxpayerValidatorTrait
     {
         $taxpayer = $this->cleanTaxpayer($taxpayer);
 
-        if (strlen($taxpayer) === 11) {
+        if (mb_strlen($taxpayer) === 11) {
             $this->assertValidCpf($taxpayer);
-        } elseif (strlen($taxpayer) === 14) {
+        } elseif (mb_strlen($taxpayer) === 14) {
             $this->assertValidCnpj($taxpayer);
         } else {
             throw new InvalidArgumentException('Invalid Taxpayer length');
@@ -37,7 +40,8 @@ trait AssertTaxpayerValidatorTrait
                 $d += $cpf[$c] * (($t + 1) - $c);
             }
             $d = ((10 * $d) % 11) % 10;
-            if ($cpf[$c] != $d) {
+
+            if ($cpf[$c] !== $d) {
                 throw new InvalidArgumentException('Invalid CPF digits');
             }
         }
@@ -66,7 +70,7 @@ trait AssertTaxpayerValidatorTrait
         $remainder2 = $sum2 % 11;
         $digit2 = $remainder2 < 2 ? 0 : 11 - $remainder2;
 
-        if ($cnpj[12] != $digit1 || $cnpj[13] != $digit2) {
+        if ($cnpj[12] !== $digit1 || $cnpj[13] !== $digit2) {
             throw new InvalidArgumentException('Invalid CNPJ digits');
         }
     }

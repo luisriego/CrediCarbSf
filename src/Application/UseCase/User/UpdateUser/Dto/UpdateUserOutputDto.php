@@ -13,6 +13,7 @@ class UpdateUserOutputDto
     public static function createFromModel(User $user): self
     {
         $company = $user->getCompany();
+
         return new static([
             'id' => $user->getId(),
             'name' => $user->getName(),

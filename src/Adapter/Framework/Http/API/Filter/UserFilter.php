@@ -9,6 +9,7 @@ use InvalidArgumentException;
 
 use function filter_var;
 use function is_numeric;
+use function mb_strlen;
 use function sprintf;
 
 use const FILTER_VALIDATE_EMAIL;

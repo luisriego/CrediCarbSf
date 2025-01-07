@@ -60,7 +60,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         string $name,
         string $email,
         string $password,
-
     ) {
         $this->id = Uuid::random()->value();
         $this->name = $name;

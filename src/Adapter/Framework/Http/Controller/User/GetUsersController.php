@@ -21,7 +21,6 @@ class GetUsersController extends AbstractController
     #[Route('/api/user/all', name: 'get_users', methods: ['GET'])]
     public function __invoke(GetAllRequestDto $request): Response
     {
-
         $this->denyAccessUnlessGranted(UserVoter::GET_ALL_USERS);
 
         $responseDto = $this->useCase->handle();

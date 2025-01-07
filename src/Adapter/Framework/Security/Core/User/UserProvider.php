@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Security\Core\User;
 
-use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

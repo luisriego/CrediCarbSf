@@ -8,7 +8,6 @@ use App\Adapter\Framework\Http\Dto\Company\CreateCompanyRequestDto;
 use App\Application\UseCase\Company\CreateCompany\CreateCompany;
 use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyInputDto;
 use App\Domain\Exception\AccessDeniedException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

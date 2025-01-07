@@ -28,7 +28,8 @@ class ChangePasswordInputDto
             $this->assertValueRangeLength(
                 $this->newPassword,
                 User::MIN_PASSWORD_LENGTH,
-                User::MAX_PASSWORD_LENGTH);
+                User::MAX_PASSWORD_LENGTH,
+            );
         }
     }
 

@@ -17,10 +17,10 @@ class CreateUserRequestDto implements RequestDto
 
     public function __construct(Request $request)
     {
-        if (empty($request->request->get('name')) ||
-            empty($request->request->get('email')) ||
-            empty($request->request->get('password')) ||
-            empty($request->request->get('age'))
+        if (empty($request->request->get('name'))
+            || empty($request->request->get('email'))
+            || empty($request->request->get('password'))
+            || empty($request->request->get('age'))
         ) {
             throw InvalidArgumentException::createFromMessage('All fields are required');
         }

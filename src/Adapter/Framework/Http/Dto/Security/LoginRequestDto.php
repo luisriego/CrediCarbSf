@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapter\Framework\Http\Dto\Security;
 
 use App\Adapter\Framework\Http\Dto\RequestDto;
@@ -10,10 +12,11 @@ readonly class LoginRequestDto implements RequestDto
 {
     public string $email;
     public string $password;
+
     public function __construct(Request $request)
     {
-        if (empty($request->request->get('email')) ||
-            empty($request->request->get('password'))
+        if (empty($request->request->get('email'))
+            || empty($request->request->get('password'))
         ) {
             throw InvalidArgumentException::createFromMessage('All fields are required');
         }

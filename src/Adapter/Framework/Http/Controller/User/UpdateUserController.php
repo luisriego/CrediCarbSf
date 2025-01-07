@@ -22,14 +22,15 @@ class UpdateUserController extends AbstractController
     ) {}
 
     #[Route('/api/user/{id}', name: 'update_user', methods: ['PATCH'])]
-    public function __invoke(UpdateUserRequestDto $request, string $id, ): Response
+    public function __invoke(UpdateUserRequestDto $request, string $id): Response
     {
         $inputDto = UpdateUserInputDto::create(
             $id,
             $request->name,
             $request->age,
             $request->company,
-            $request->keys);
+            $request->keys,
+        );
 
         /** @var User $userToUpdate */
         $userToUpdate = $this->userRepo->findOneByIdOrFail($id);

@@ -13,7 +13,9 @@ class GetUserByIdOutputDto
     public static function create(User $user): self
     {
         $company = $user->getCompany();
-        return new self([
+
+        return new self(
+            [
                 'id' => $user->getId(),
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
@@ -24,7 +26,7 @@ class GetUserByIdOutputDto
                     'taxpayer' => $company->getTaxpayer(),
                 ] : null,
                 'isActive' => $user->isActive(),
-            ]
+            ],
         );
     }
 }
