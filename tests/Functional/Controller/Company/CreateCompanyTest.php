@@ -12,12 +12,11 @@ use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class CreateCompanyTest extends ControllerTestBase
+class CreateCompanyTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/company/create';
-
     private CreateCompany $createCompany;
     private readonly CompanyRepositoryInterface|MockObject $companyRepository;
 
@@ -32,13 +31,13 @@ class CreateCompanyTest extends ControllerTestBase
     {
         $inputDto = new CreateCompanyInputDto(
             'Test Company',
-            '12345678901234',
+            '33.592.510/0025-21',
         );
 
         $this->companyRepository
             ->expects($this->once())
             ->method('existByTaxpayer')
-            ->with('12345678901234')
+            ->with('33592510002521')
             ->willReturn(null);
 
         $this->companyRepository
@@ -59,14 +58,14 @@ class CreateCompanyTest extends ControllerTestBase
 
         $inputDto = new CreateCompanyInputDto(
             'Test Company',
-            '12345678901234'
+            '33.592.510/0025-21'
         );
 
         $this->companyRepository
             ->expects($this->once())
             ->method('existByTaxpayer')
-            ->with('12345678901234')
-            ->willReturn(Company::create('12345678901234', 'Test Company'));
+            ->with('33592510002521')
+            ->willReturn(Company::create('33592510002521', 'Test Company'));
 
         $this->createCompany->handle($inputDto);
     }
@@ -90,7 +89,7 @@ class CreateCompanyTest extends ControllerTestBase
 
     $inputDto = new CreateCompanyInputDto(
         '',
-        '12345678901234'
+        '33.592.510/0025-21'
     );
 
     $this->createCompany->handle($inputDto);
@@ -113,5 +112,20 @@ class CreateCompanyTest extends ControllerTestBase
         $this->expectException(\TypeError::class);
 
         $this->createCompany->handle(null);
+    }
+
+    public function testCreateCompanyFailedBecauseSequentialCnpj(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid CNPJ digits');
+
+        $inputDto = new CreateCompanyInputDto(
+            'Test Company',
+            '12345678901234',
+        );
+
+        $responseDTO = $this->createCompany->handle($inputDto);
+
+        self::assertInstanceOf(CreateCompanyOutputDto::class, $responseDTO);
     }
 }

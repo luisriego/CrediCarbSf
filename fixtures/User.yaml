@@ -1,0 +1,14 @@
+App\Domain\Model\User:
+  user_1:
+    __construct: ['Test User', 'user@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi'] # password: 'password!'
+  user_2:
+    __construct: ['Test Admin', 'admin@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi']
+    roles: ['ROLE_ADMIN']
+    isActive: true
+  user_3:
+    __construct: ['Luis', 'luis@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi']
+    roles: ['ROLE_USER']
+    isActive: true
+  user_4:
+    __construct: [ 'Test Super Admin', 'superadmin@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi' ]
+    roles: [ 'ROLE_SUPER_ADMIN' ]

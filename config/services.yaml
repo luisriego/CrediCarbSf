@@ -26,7 +26,10 @@ services:
 
     # Company controllers
     App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:      # CreateCompanyController
-            public: true
+        public: true
+    App\Adapter\Framework\Http\Controller\Company\AddUserToCompanyController:
+        public: true
+
 
     # Event Listeners used to transform the exception into a JSON response
     App\Adapter\Framework\Listener\JsonTransformerExceptionListener:
@@ -43,6 +46,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
 
-#    App\Domain\Security\PasswordHasherInterface:
-#        class: App\Adapter\Framework\Security\SymfonyPasswordHasher
-#        public: true
+    App\Domain\Security\PasswordHasherInterface:
+        class: App\Adapter\Framework\Security\SymfonyPasswordHasher
+        public: true

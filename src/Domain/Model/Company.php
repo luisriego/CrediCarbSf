@@ -42,7 +42,7 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    private function __construct(
+    public function __construct(
         ?string $taxpayer,
         ?string $fantasyName,
     ) {
@@ -52,7 +52,7 @@ class Company
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
         $this->boughtProjects = new ArrayCollection();
-        $this->isActive = false;
+        $this->isActive = true;
         $this->createdOn = new DateTimeImmutable();
     }
 

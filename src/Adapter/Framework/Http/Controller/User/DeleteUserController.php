@@ -10,6 +10,7 @@ use App\Application\UseCase\User\DeleteUser\DeleteUser;
 use App\Application\UseCase\User\DeleteUser\Dto\DeleteUserInputDto;
 use App\Domain\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,6 +29,6 @@ class DeleteUserController extends AbstractController
 
         $this->useCase->handle(DeleteUserInputDto::create($requestDto->id));
 
-        return $this->json([], Response::HTTP_NO_CONTENT);
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }
 }

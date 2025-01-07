@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\User;
 
 use App\Domain\Repository\UserRepositoryInterface;
-use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetUserByIdControllerTest extends ControllerTestBase
+class GetUserByIdControllerTest extends FunctionalTestBase
 {
     protected string $userId;
 
     public function setUp(): void
     {
         parent::setUp();
-        $adminUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
-        $this->userId = $adminUser->getId();
     }
 
     /**
@@ -26,12 +24,12 @@ class GetUserByIdControllerTest extends ControllerTestBase
      */
     public function testGetUserById(): void
     {
-        self::$admin->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(Request::METHOD_GET,
             sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
-            [], [], ['HTTP_AUTHORIZATION' => 'Bearer ' . self::ADMIN_TOKEN,]
+            [], [], ['CONTENT_TYPE' => 'application/json']
         );
 
-        $response = self::$admin->getResponse();
+        $response = self::$authenticatedClient->getResponse();
         $responseData = $this->getResponseData($response);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());

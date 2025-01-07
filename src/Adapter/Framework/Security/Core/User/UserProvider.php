@@ -6,6 +6,7 @@ namespace App\Adapter\Framework\Security\Core\User;
 
 use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
 use App\Domain\Model\User;
+use App\Domain\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,9 +16,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 use function sprintf;
 
-readonly class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
+class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    public function __construct(private DoctrineUserRepository $userRepository) {}
+    public function __construct(private readonly UserRepositoryInterface $userRepository) {}
 
     public function __call(string $name, array $arguments): void
     {
@@ -39,13 +40,16 @@ readonly class UserProvider implements UserProviderInterface, PasswordUpgraderIn
         return User::class === $class;
     }
 
-    public function loadUserByIdentifier(string $username): UserInterface
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        try {
-            return $this->userRepository->findOneByEmail($username);
-        } catch (UserNotFoundException) {
-            throw new UserNotFoundException('User %s not found, $username');
+        /** @var UserInterface $user */
+        $user = $this->userRepository->findOneByEmail($identifier);
+
+        if (null === $user) {
+            throw new UserNotFoundException(sprintf('User with email "%s" not found.', $identifier));
         }
+
+        return $user;
     }
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void

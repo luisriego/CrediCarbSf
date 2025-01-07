@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Company;
 
 use App\Tests\Functional\Controller\ControllerTestBase;
+use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CompanyHealthCheckControllerTest extends ControllerTestBase
+class CompanyHealthCheckControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/company/health-check';
 
     public function testCompanyHealthCheck(): void
     {
-        self::$admin->request(Request::METHOD_GET, self::ENDPOINT);
+        self::$baseClient->request(Request::METHOD_GET, self::ENDPOINT);
 
-        $response = self::$admin->getResponse();
+        $response = self::$baseClient->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
