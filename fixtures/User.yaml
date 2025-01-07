@@ -4,6 +4,7 @@ App\Domain\Model\User:
   user_2:
     __construct: ['Test Admin', 'admin@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi']
     roles: ['ROLE_ADMIN']
+    isActive: true
   user_3:
     __construct: ['Luis', 'luis@api.com', '\$2y\$13\$mZjTw8ZLur6NkXCAiFgFLusucmUTMPYTfDrt3XsnArMCNSfd0Xrdi']
     roles: ['ROLE_USER']

@@ -43,7 +43,11 @@ final class UserVoter extends Voter
         if (null === $tokenUser = $token->getUser()) {
             throw AccessDeniedException::UserNotLogged();
         }
-        //        $tokenUser = $token->getUser();
+
+        // Check if the user is active
+        if (!$tokenUser->isActive()) {
+            return false;
+        }
 
         if (self::GET_ALL_USERS === $attribute) {
             return $this->security->isGranted('ROLE_SUPER_ADMIN');

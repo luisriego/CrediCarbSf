@@ -52,7 +52,7 @@ class Company
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
         $this->boughtProjects = new ArrayCollection();
-        $this->isActive = false;
+        $this->isActive = true;
         $this->createdOn = new DateTimeImmutable();
     }
 
