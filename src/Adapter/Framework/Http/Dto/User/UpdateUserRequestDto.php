@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use function array_keys;
 
-readonly class UpdateUserRequestDto implements RequestDto
+class UpdateUserRequestDto implements RequestDto
 {
     public ?string $id;
     public ?string $name;

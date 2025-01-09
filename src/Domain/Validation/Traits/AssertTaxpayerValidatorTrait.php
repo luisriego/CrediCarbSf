@@ -6,6 +6,7 @@ namespace App\Domain\Validation\Traits;
 
 use App\Domain\Exception\InvalidArgumentException;
 
+use function mb_strlen;
 use function preg_match;
 use function preg_replace;
 
@@ -59,8 +60,8 @@ trait AssertTaxpayerValidatorTrait
         $weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
         for ($i = 0; $i < 12; $i++) {
-            $sum1 += $cnpj[$i] * $weights1[$i];
-            $sum2 += $cnpj[$i] * $weights2[$i];
+            $sum1 += (int) $cnpj[$i] * $weights1[$i];
+            $sum2 += (int) $cnpj[$i] * $weights2[$i];
         }
 
         $remainder1 = $sum1 % 11;
@@ -70,7 +71,7 @@ trait AssertTaxpayerValidatorTrait
         $remainder2 = $sum2 % 11;
         $digit2 = $remainder2 < 2 ? 0 : 11 - $remainder2;
 
-        if ($cnpj[12] !== $digit1 || $cnpj[13] !== $digit2) {
+        if ((int) $cnpj[12] !== $digit1 || (int) $cnpj[13] !== $digit2) {
             throw new InvalidArgumentException('Invalid CNPJ digits');
         }
     }
