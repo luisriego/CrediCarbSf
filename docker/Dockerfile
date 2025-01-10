@@ -10,6 +10,8 @@ RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
 RUN echo "alias sf=bin/console" >> /home/appuser/.bashrc
 RUN echo "alias test='bin/phpunit --colors=always'" >> /home/appuser/.bashrc
 RUN echo "alias tf='bin/phpunit --colors=always --filter'" >> /home/appuser/.bashrc
+RUN echo "alias fix='composer fix\:standards'" >> /home/appuser/.bashrc
+RUN echo "alias analyze='composer analyze\:standards'" >> /home/appuser/.bashrc
 
 # Install packages and PHP extensions
 RUN apt update \
