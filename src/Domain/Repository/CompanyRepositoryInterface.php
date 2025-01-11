@@ -20,6 +20,8 @@ interface CompanyRepositoryInterface
 
     public function findOneByFantasyNameOrFail(string $fantasyName): Company;
 
+    public function findByFantasyNameOrFail(string $fantasyName): array;
+
     public function findOneByTaxpayerOrFail(string $taxpayer): Company;
 
     public function existByTaxpayer(string $taxpayer): ?Company;

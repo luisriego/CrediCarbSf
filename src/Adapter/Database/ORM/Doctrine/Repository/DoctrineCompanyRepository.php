@@ -77,6 +77,21 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
         return $company;
     }
 
+    public function findByFantasyNameOrFail(string $fantasyName): array
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.fantasyName LIKE :fantasyName')
+            ->setParameter('fantasyName', '%' . $fantasyName . '%');
+
+        $company = $qb->getQuery()->getResult();
+
+        if (empty($company)) {
+            throw ResourceNotFoundException::createFromClassAndName(Company::class, $fantasyName);
+        }
+
+        return $company;
+    }
+
     public function findOneByTaxpayerOrFail(string $taxpayer): Company
     {
         if (null === $company = $this->findOneBy(['taxpayer' => $taxpayer])) {
