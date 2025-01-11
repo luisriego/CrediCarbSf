@@ -26,13 +26,17 @@ final class CompanyVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+        /** @var User $tokenUser */
+        $tokenUser = $token->getUser();
+
+        if (!$tokenUser instanceof User) {
+            return false;
+        }
+
         // ROLE_SUPER_ADMIN can do anything! The power!
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
             return true;
         }
-
-        /** @var User $tokenUser */
-        $tokenUser = $token->getUser();
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;

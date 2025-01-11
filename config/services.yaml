@@ -25,13 +25,15 @@ services:
         public: true
 
     # Company controllers
-    App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:      # CreateCompanyController
+    App\Adapter\Framework\Http\Controller\Company\CreateCompanyController:
         public: true
     App\Adapter\Framework\Http\Controller\Company\AddUserToCompanyController:
         public: true
     App\Adapter\Framework\Http\Controller\Company\UpdateCompanyController:
         public: true
     App\Adapter\Framework\Http\Controller\Company\DeleteCompanyController:
+        public: true
+    App\Adapter\Framework\Http\Controller\Company\GetCompanyByTaxpayerController:
         public: true
 
 

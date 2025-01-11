@@ -17,14 +17,10 @@ class UpdateCompanyInputDto
         'fantasyName',
     ];
 
-    public string $fantasyName;
-    public Company $company;
-
-    public function __construct(string $fantasyName, Company $company)
-    {
-        $this->fantasyName = $fantasyName;
-        $this->company = $company;
-
+    public function __construct(
+        public readonly string $fantasyName,
+        public readonly Company $company,
+    ) {
         $this->assertNotNull(self::ARGS, [$this->fantasyName]);
         $this->assertNotEmpty(self::ARGS, [$this->fantasyName]);
     }
