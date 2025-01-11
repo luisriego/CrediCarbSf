@@ -9,22 +9,20 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
+class GetCompanyByIdControllerTest extends FunctionalTestBase
 {
-    protected string $companyTaxpayer;
+    protected string $companyId;
 
     public function setUp(): void
     {
         parent::setUp();
-        $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneByTaxpayer('33592510015500');
-        $this->companyTaxpayer = $company->getTaxpayer();
     }
 
-    public function testGetCompanyByTaxpayerSuccessfully(): void
+    public function testGetCompanyByIdSuccessfully(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyTaxpayer),
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -32,34 +30,45 @@ class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
         $this->assertJson($response->getContent());
     }
 
-    public function testGetCompanyByNonExistingTaxpayer(): void
+    public function testGetCompanyByNonExistingId(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, '33592510000133'),
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, '3f46050a-bd15-419a-a37d-0867ec8c504b'),
         );
 
         $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    public function testGetCompanyByTaxpayerWithoutPermission(): void
+    public function testGetCompanyByIdWithoutPermission(): void
     {
         // Simulate an unauthorized user
         self::$baseClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyTaxpayer),
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
         );
 
         $response = self::$baseClient->getResponse();
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
-    public function testGetCompanyByInvalidTaxpayer(): void
+    public function testGetCompanyByInvalidId(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, '1234567890123456789'),
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, '3f46050a-bd15-419a-a37d-0867ec8c5@#$'),
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+    }
+
+    public function testGetCompanyByEmptyId(): void
+    {
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, ''),
         );
 
         $response = self::$authenticatedClient->getResponse();

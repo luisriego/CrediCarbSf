@@ -35,6 +35,8 @@ services:
         public: true
     App\Adapter\Framework\Http\Controller\Company\GetCompanyByTaxpayerController:
         public: true
+    App\Adapter\Framework\Http\Controller\Company\GetCompanyByIdController:
+        public: true
 
 
     # Event Listeners used to transform the exception into a JSON response
