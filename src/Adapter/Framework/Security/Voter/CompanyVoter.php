@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 use function in_array;
-use function is_string;
 
 final class CompanyVoter extends Voter
 {
@@ -22,7 +21,7 @@ final class CompanyVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return in_array($attribute, $this->allowedAttributes(), true) && is_string($subject);
+        return in_array($attribute, $this->allowedAttributes(), true);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool

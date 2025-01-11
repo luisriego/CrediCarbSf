@@ -6,12 +6,9 @@ namespace App\Application\UseCase\Company\AddUserToCompanyService\Dto;
 
 class AddUserToCompanyOutputDto
 {
-    public string $userId;
-
-    private function __construct(string $userId)
-    {
-        $this->userId = $userId;
-    }
+    public function __construct(
+        public readonly string $userId,
+    ) {}
 
     public static function create(string $userId): self
     {

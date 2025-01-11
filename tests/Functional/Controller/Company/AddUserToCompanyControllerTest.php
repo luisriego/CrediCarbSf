@@ -23,12 +23,6 @@ class AddUserToCompanyControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-//        $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
-//        $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
-//        $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
-//        $this->adminId = $admin->getId();
-//        $this->userId = $user->getId();
-//        $this->companyId = $company->getId();
     }
 
     public function testAddUserToCompanySuccessfully(): void

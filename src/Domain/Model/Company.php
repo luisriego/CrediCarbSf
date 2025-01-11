@@ -14,6 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use function preg_replace;
+
 #[ORM\Entity(repositoryClass: CompanyRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
 class Company
@@ -163,5 +165,31 @@ class Company
         }
 
         return $this;
+    }
+
+    public function getFormattedTaxpayer(): string
+    {
+        if (mb_strlen($this->taxpayer) === 11) {
+            // Format as CPF: 000.000.000-00
+            return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $this->taxpayer);
+        }
+
+        if (mb_strlen($this->taxpayer) === 14) {
+            // Format as CNPJ: 00.000.000/0000-00
+            return preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', '$1.$2.$3/$4-$5', $this->taxpayer);
+        }
+
+        return $this->taxpayer;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'taxpayer' => $this->getFormattedTaxpayer(),
+            'fantasyName' => $this->fantasyName,
+            'createdOn' => $this->createdOn->format('Y-m-d H:i:s'),
+            'updatedOn' => $this->updatedOn?->format('Y-m-d H:i:s'),
+        ];
     }
 }
