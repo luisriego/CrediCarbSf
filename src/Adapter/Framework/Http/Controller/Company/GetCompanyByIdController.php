@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Adapter\Framework\Http\Controller\Company;
 
 use App\Adapter\Framework\Security\Voter\CompanyVoter;
-use App\Application\UseCase\Company\GetCompanyByTaxpayerService\Dto\GetCompanyByTaxpayerInputDto;
-use App\Application\UseCase\Company\GetCompanyByTaxpayerService\GetCompanyByTaxpayerService;
+use App\Application\UseCase\Company\GetCompanyByIdService\Dto\GetCompanyByIdInputDto;
+use App\Application\UseCase\Company\GetCompanyByIdService\GetCompanyByIdService;
 use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,25 +14,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class GetCompanyByTaxpayerController
+class GetCompanyByIdController
 {
     public function __construct(
-        private readonly GetCompanyByTaxpayerService $useCase,
+        private readonly GetCompanyByIdService $useCase,
         private readonly CompanyRepositoryInterface $companyRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(
-        '/api/company/{taxpayer}',
-        name: 'get_company_by_taxpayer',
-        requirements: ['taxpayer' => '^(?!health-check$)(\d{11}|\d{14})$'],
+        '/api/company/{id}',
+        name: 'get_company_by_id',
+        requirements: ['id' => '^.{36}$'],
         methods: ['GET'],
     )]
-    public function index(string $taxpayer): Response
+    public function index(string $id): Response
     {
-        $company = $this->companyRepository->findOneByTaxpayerOrFail($taxpayer);
+        $company = $this->companyRepository->findOneByIdOrFail($id);
 
-        $inputDto = GetCompanyByTaxpayerInputDto::create($company);
+        $inputDto = GetCompanyByIdInputDto::create($company);
 
         if (!$this->authorizationChecker->isGranted(CompanyVoter::DELETE_COMPANY, $company)) {
             throw AccessDeniedException::VoterFail();
