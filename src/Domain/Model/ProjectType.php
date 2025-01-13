@@ -6,7 +6,7 @@ namespace App\Domain\Model;
 
 enum ProjectType: string
 {
-    case Reforestation = 'Reflorestamento: Plantação de árvores em áreas que foram desmatadas para aumentar a absorção de CO2.';
+    case Reforestation = 'Reflorestamento';
     case Afforestation = 'Aflorestamento: Plantação de árvores em áreas que não eram anteriormente florestadas.';
     case Agroforestry = 'Agroflorestamento: Integração de árvores e arbustos em sistemas agrícolas para aumentar a absorção de carbono e a biodiversidade.';
     case ForestConservation = 'ConservacaoFlorestal: Proteção de florestas existentes para prevenir desmatamento e degradação.';
