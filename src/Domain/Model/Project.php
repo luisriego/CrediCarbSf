@@ -13,6 +13,7 @@ use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+use Domain\Common\ProjectStatus;
 
 #[ORM\Entity(repositoryClass: ProjectRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -45,6 +46,9 @@ class Project
     #[Column(type: 'string', nullable: true)]
     private ?string $projectType;
 
+    #[Column(type: 'string', enumType: ProjectStatus::class, length: 20, nullable: true)]
+    private ProjectStatus $status;
+
     private ?DateTime $startDate;
 
     private ?DateTime $endDate;
@@ -70,6 +74,7 @@ class Project
         $this->quantity = $quantity;
         $this->price = $price;
         $this->projectType = $projectType;
+        $this->status = ProjectStatus::PLANNED;
         $this->isActive = true;
         $this->createdOn = new DateTimeImmutable();
     }
@@ -88,7 +93,7 @@ class Project
             $areaHa,
             $quantity,
             $price,
-            $projectType
+            $projectType,
         );
     }
 
@@ -190,5 +195,33 @@ class Project
     public function setProjectType(string $projectType): void
     {
         $this->projectType = $projectType;
+    }
+
+    public function getStatus(): ProjectStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(ProjectStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'areaHa' => $this->areaHa,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+            'startDate' => $this->startDate?->format('Y-m-d H:i:s'),
+            'endDate' => $this->endDate?->format('Y-m-d H:i:s'),
+            'projectType' => $this->projectType,
+            'status' => $this->status->value,
+            'isActive' => $this->isActive,
+            'createdOn' => $this->createdOn->format('Y-m-d H:i:s'),
+        ];
     }
 }
