@@ -10,6 +10,8 @@ use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\Project;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -59,6 +61,35 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return $project;
     }
 
+    public function isDuplicate(
+        string $name,
+        ?string $areaHa,
+        ?string $quantity,
+        ?string $price,
+        ?string $projectType
+    ): bool {
+        $parameters = new ArrayCollection([
+            'name' => $name,
+            'areaHa' => $areaHa,
+            'quantity' => $quantity,
+            'price' => $price,
+            'projectType' => $projectType,
+        ]);
+    
+        $result = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.name = :name')
+            ->andWhere('p.areaHa = :areaHa')
+            ->andWhere('p.quantity = :quantity')
+            ->andWhere('p.price = :price')
+            ->andWhere('p.projectType = :projectType')
+            ->setParameters($parameters)
+            ->getQuery()
+            ->getSingleScalarResult();
+    
+        return $result > 0;
+    }
+
     /**
      * @throws Exception
      */
@@ -91,6 +122,6 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
             ->setFirstResult($limit * ($page - 1))
             ->setMaxResults($limit);
 
-        return PaginatedResponse::create($paginator->getIterator()->getArrayCopy(), $paginator->count(), $page, $limit);
+        return PaginatedResponse::create($paginator->getIterator(), $paginator->count(), $page, $limit);
     }
 }

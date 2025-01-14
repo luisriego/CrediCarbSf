@@ -1,0 +1,39 @@
+App\Domain\Model\Project:
+    project_1:
+        __construct:
+            - 'Project 1'                       
+            - 'Description for project 1'       
+            - '100.00'                         
+            - '50.00'                          
+            - '10.00'                          
+            - 'Reforestation'                  
+            - '<(new DateTime())>'             
+            - '<(new DateTime("+1 year"))>'   
+            - '@company_1'                     
+            - null                    
+
+    project_2:
+        __construct:
+            - 'Project 2'
+            - 'Description for project 2'
+            - '70.00'
+            - '1550.00'
+            - '10.00'
+            - 'Reforestation'
+            - '<(new DateTime())>'
+            - '<(new DateTime("+1 year"))>'
+            - '@company_2'
+            - null
+
+    project_3:
+        __construct:
+            - 'Project 3'
+            - 'Description for project 3'
+            - '1000.00'
+            - '500.00'
+            - '12.50'
+            - 'Reforestation'
+            - '<(new DateTime())>'
+            - '<(new DateTime("+1 year"))>'
+            - '@company_3'
+            - null

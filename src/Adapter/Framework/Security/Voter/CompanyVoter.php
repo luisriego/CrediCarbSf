@@ -16,6 +16,8 @@ final class CompanyVoter extends Voter
     public const ACTIVATE_COMPANY = 'ACTIVATE_COMPANY';
     public const UPDATE_COMPANY = 'UPDATE_COMPANY';
     public const DELETE_COMPANY = 'DELETE_COMPANY';
+    public const GET_COMPANY = 'GET_COMPANY';
+    public const GET_COMPANIES = 'GET_COMPANIES';
 
     public function __construct(private readonly Security $security) {}
 
@@ -46,6 +48,10 @@ final class CompanyVoter extends Voter
             return $tokenUser->getCompany()->getId() === $subject;
         }
 
+        if (self::GET_COMPANIES === $attribute) {
+            return in_array('ROLE_USER', $tokenUser->getRoles(), true);
+        }
+
         if (self::DELETE_COMPANY === $attribute) {
             return $tokenUser->getCompany() === $subject;
         }
@@ -59,6 +65,8 @@ final class CompanyVoter extends Voter
             self::ACTIVATE_COMPANY,
             self::UPDATE_COMPANY,
             self::DELETE_COMPANY,
+            self::GET_COMPANY,
+            self::GET_COMPANIES,
         ];
     }
 }
