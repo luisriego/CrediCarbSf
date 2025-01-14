@@ -17,7 +17,7 @@ final class CreateProjectController
 {
     public function __construct(
         private readonly CreateProjectService $createProject,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly AuthorizationCheckerInterface $authorizationChecker, // transfer to the service
     ) {}
 
     #[Route('/api/project/create', name: 'project_create', methods: ['POST'])]

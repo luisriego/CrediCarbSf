@@ -14,6 +14,19 @@ enum ProjectStatus: string
     case CANCELED = 'Cancelado';
     case SUSPENDED = 'Suspenso';
 
+    public function getCompletionPercentage(): int
+    {
+        return match($this) {
+            self::PLANNED => 0,
+            self::IN_DEVELOPMENT => 25,
+            self::APPROVED => 50,
+            self::IN_EXECUTION => 75,
+            self::COMPLETED => 100,
+            self::CANCELED => 0,
+            self::SUSPENDED => 0
+        };
+    }
+
     public static function getValues(): array 
     {
         return array_column(self::cases(), 'value');
