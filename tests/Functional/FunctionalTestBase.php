@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -36,6 +37,7 @@ class FunctionalTestBase extends WebTestCase
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
 
     protected string $companyId;
+    protected string $projectId;
     protected string $userId;
     protected string $adminId;
 
@@ -99,11 +101,13 @@ class FunctionalTestBase extends WebTestCase
         }
 
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
+        $project = static::getContainer()->get(ProjectRepositoryInterface::class)->findOneBy(['name' => 'Project 2']);
         $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
         $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
         $this->companyId = $company->getId();
+        $this->projectId = $project->getId();
     }
 
     /**

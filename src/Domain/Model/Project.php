@@ -224,4 +224,20 @@ class Project
             'createdOn' => $this->createdOn->format('Y-m-d H:i:s'),
         ];
     }
+
+    public function trackProgress(): array
+    {
+        return [
+            'currentStatus' => $this->status->getValue(),
+            'milestones' => [
+                'planning' => $this->status === ProjectStatus::PLANNED,
+                'development' => $this->status === ProjectStatus::IN_DEVELOPMENT,
+                'execution' => $this->status === ProjectStatus::IN_EXECUTION,
+                'completed' => $this->status === ProjectStatus::COMPLETED
+            ],
+            'startDate' => $this->startDate?->format('Y-m-d'),
+            'endDate' => $this->endDate?->format('Y-m-d'),
+            'completionPercentage' => $this->status->getCompletionPercentage()
+        ];
+    }
 }
