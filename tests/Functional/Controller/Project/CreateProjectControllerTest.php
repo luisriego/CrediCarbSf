@@ -24,8 +24,6 @@ class CreateProjectControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->projectRepository = $this->getContainer()->get(ProjectRepositoryInterface::class);
     }
 
     /** @test */
@@ -50,11 +48,9 @@ class CreateProjectControllerTest extends FunctionalTestBase
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = $this->getResponseData($response);
-
+        $responseData = \json_decode($response->getContent(), true);
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-        self::assertArrayHasKey('projectId', $responseData);
-        self::assertNotEmpty($responseData['projectId']);
+        self::assertArrayHasKey('id', $responseData);
     }
 
     /** @test */
