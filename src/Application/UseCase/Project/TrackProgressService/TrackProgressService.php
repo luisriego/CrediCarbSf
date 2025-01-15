@@ -20,9 +20,9 @@ class TrackProgressService
 
     public function handle(TrackProgressInputDto $inputDto): TrackProgressOutputDto
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
+//        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
+//            throw AccessDeniedException::UnauthorizedUser();
+//        }
 
         $project = $this->projectRepository->findOneByIdOrFail($inputDto->projectId);
 
