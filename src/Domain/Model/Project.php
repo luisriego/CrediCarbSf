@@ -49,8 +49,10 @@ class Project
     #[Column(type: 'string', enumType: ProjectStatus::class, length: 20, nullable: true)]
     private ProjectStatus $status;
 
+    #[Column(type: 'datetime', nullable: true)]
     private ?DateTime $startDate;
 
+    #[Column(type: 'datetime', nullable: true)]
     private ?DateTime $endDate;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'ownedProjects')]
@@ -76,6 +78,8 @@ class Project
         $this->projectType = $projectType;
         $this->status = ProjectStatus::PLANNED;
         $this->isActive = true;
+        $this->startDate = new DateTime();
+        $this->endDate = new DateTime();
         $this->createdOn = new DateTimeImmutable();
     }
 
