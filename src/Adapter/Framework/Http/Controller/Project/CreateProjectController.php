@@ -16,17 +16,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 final class CreateProjectController
 {
     public function __construct(
-        private readonly CreateProjectService $createProject,
-        private readonly AuthorizationCheckerInterface $authorizationChecker, // transfer to the service
+        private readonly CreateProjectService $createProject, 
     ) {}
 
     #[Route('/api/project/create', name: 'project_create', methods: ['POST'])]
     public function __invoke(CreateProjectRequestDto $requestDto): Response
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
-
         $responseDto = $this->createProject->handle(
             CreateProjectInputDto::create(
                 $requestDto->name,
@@ -38,6 +33,8 @@ final class CreateProjectController
             ),
         );
 
-        return new JsonResponse(['projectId' => $responseDto->projectId], Response::HTTP_CREATED);
+        return new JsonResponse(
+            ['projectId' => $responseDto->projectId], 
+            Response::HTTP_CREATED);
     }
 }

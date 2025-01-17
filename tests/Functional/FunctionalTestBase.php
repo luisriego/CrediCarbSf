@@ -20,6 +20,12 @@ class FunctionalTestBase extends WebTestCase
 {
     use ReloadDatabaseTrait;
 
+    protected function loadFixtures(array $fixtureFiles): void
+    {
+        $loader = static::getContainer()->get('hautelook_alice.loader');
+        $loader->load($fixtureFiles, static::getContainer()->get('doctrine')->getManager());
+    }
+
     private static ?KernelBrowser $client = null;
     protected static ?KernelBrowser $baseClient = null;
     protected static ?KernelBrowser $authenticatedClient = null;

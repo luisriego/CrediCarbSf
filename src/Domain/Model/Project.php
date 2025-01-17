@@ -13,7 +13,7 @@ use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
-use Domain\Common\ProjectStatus;
+use App\Domain\Common\ProjectStatus;
 
 #[ORM\Entity(repositoryClass: ProjectRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class GetAllProjectsController 
 {
     public function __construct(
-        private readonly GetAllProjectsService $useCase,
+        private readonly GetAllProjectsService $useCase
     ) {}
 
     #[Route('/api/project/all', name: 'get_projects', methods: ['GET'])]

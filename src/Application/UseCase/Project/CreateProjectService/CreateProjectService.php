@@ -25,17 +25,17 @@ class CreateProjectService
             throw AccessDeniedException::UnauthorizedUser();
         }
 
-//        $isDuplicate = $this->projectReporitory->isDuplicate(
-//            $inputDto->name,
-//            $inputDto->areaHa,
-//            $inputDto->quantity,
-//            $inputDto->price,
-//            $inputDto->projectType
-//        );
-//
-//        if ($isDuplicate) {
-//            throw ProjectAlreadyExistsException::repeatedProject();
-//        }
+        // $isDuplicate = $this->projectReporitory->isDuplicate(
+        //     $inputDto->name,
+        //     $inputDto->areaHa,
+        //     $inputDto->quantity,
+        //     $inputDto->price,
+        //     $inputDto->projectType
+        // );
+
+        // if ($isDuplicate) {
+        //     throw ProjectAlreadyExistsException::repeatedProject();
+        // }
 
         $project = Project::create(
             $inputDto->name,

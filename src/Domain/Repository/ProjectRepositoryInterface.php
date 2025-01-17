@@ -6,6 +6,7 @@ namespace App\Domain\Repository;
 
 use App\Adapter\Framework\Http\API\Filter\ProjectFilter;
 use App\Adapter\Framework\Http\API\Response\PaginatedResponse;
+use App\Domain\Exception\Project\ProjectAlreadyExistsException;
 use App\Domain\Model\Project;
 
 interface ProjectRepositoryInterface
@@ -21,6 +22,7 @@ interface ProjectRepositoryInterface
     /** @return array<int, Project> */
     public function findAll(): array;
 
+    /** @throws ProjectAlreadyExistsException */
     public function isDuplicate(
         string $name,
         ?string $areaHa,

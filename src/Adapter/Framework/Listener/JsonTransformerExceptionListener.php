@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Listener;
 
+use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Exception\Project\ProjectAlreadyExistsException;
 use App\Domain\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,9 +32,13 @@ class JsonTransformerExceptionListener
             $data['code'] = Response::HTTP_BAD_REQUEST;
         }
 
-        //        if ($e instanceof AccessDeniedException) {
-        //            $data['code'] = Response::HTTP_FORBIDDEN;
-        //        }
+        if ($e instanceof AccessDeniedException) {
+            $data['code'] = Response::HTTP_FORBIDDEN;
+        }
+
+        if ($e instanceof ProjectAlreadyExistsException) {
+            $data['code'] = Response::HTTP_CONFLICT;
+        }
 
         $response = new JsonResponse($data, $data['code']);
 
