@@ -18,6 +18,9 @@ interface ProjectRepositoryInterface
 
     public function findOneByIdOrFail(string $id): Project;
 
+    /** @return array<int, Project> */
+    public function findAll(): array;
+
     public function isDuplicate(
         string $name,
         ?string $areaHa,

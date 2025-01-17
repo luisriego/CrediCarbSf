@@ -61,6 +61,14 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return $project;
     }
 
+    /** @return array<int, Project> */
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function isDuplicate(
         string $name,
         ?string $areaHa,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Common;
+namespace App\Domain\Common;
 
 enum CertificationType: string
 {
