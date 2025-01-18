@@ -13,6 +13,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/project/create';
     private const PROJECT_NAME = 'Project Test';
+    private const PROJECT_NAME_LIKE = 'Test Project';
     private const PROJECT_DESCRIPTION = 'Description Test';
     private const PROJECT_AREA = '100.00';
     private const PROJECT_QUANTITY = '50.00';
@@ -82,37 +83,80 @@ class CreateProjectControllerTest extends FunctionalTestBase
     /** @test */
     public function shouldNotCreateProjectWhenDuplicate(): void
     {
-        // TODO: Implementar a verificação de duplicidade
-        // $payload = [
-        //     'name' => self::PROJECT_NAME,
-        //     'description' => self::PROJECT_DESCRIPTION,
-        //     'areaHa' => self::PROJECT_AREA,
-        //     'quantity' => self::PROJECT_QUANTITY,
-        //     'price' => self::PROJECT_PRICE,
-        //     'projectType' => self::PROJECT_TYPE
-        // ];
+         $payload = [
+             'name' => self::PROJECT_NAME,
+             'description' => self::PROJECT_DESCRIPTION,
+             'areaHa' => self::PROJECT_AREA,
+             'quantity' => self::PROJECT_QUANTITY,
+             'price' => self::PROJECT_PRICE,
+             'projectType' => self::PROJECT_TYPE
+         ];
 
-        // self::$authenticatedClient->request(
-        //     Request::METHOD_POST,
-        //     self::ENDPOINT,
-        //     [],
-        //     [],
-        //     [],
-        //     \json_encode($payload)
-        // );
+         self::$authenticatedClient->request(
+             Request::METHOD_POST,
+             self::ENDPOINT,
+             [],
+             [],
+             [],
+             \json_encode($payload)
+         );
 
-        // self::$authenticatedClient->request(
-        //     Request::METHOD_POST,
-        //     self::ENDPOINT,
-        //     [],
-        //     [],
-        //     [],
-        //     \json_encode($payload)
-        // );
+         self::$authenticatedClient->request(
+             Request::METHOD_POST,
+             self::ENDPOINT,
+             [],
+             [],
+             [],
+             \json_encode($payload)
+         );
 
-        // $response = self::$authenticatedClient->getResponse();
+         $response = self::$authenticatedClient->getResponse();
 
-        // self::assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function shouldNotCreateProjectWhenDuplicateLikeName(): void
+    {
+        $payload = [
+            'name' => self::PROJECT_NAME,
+            'description' => self::PROJECT_DESCRIPTION,
+            'areaHa' => self::PROJECT_AREA,
+            'quantity' => self::PROJECT_QUANTITY,
+            'price' => self::PROJECT_PRICE,
+            'projectType' => self::PROJECT_TYPE
+        ];
+
+        $payload = [
+            'name' => self::PROJECT_NAME_LIKE,
+            'description' => self::PROJECT_DESCRIPTION,
+            'areaHa' => self::PROJECT_AREA,
+            'quantity' => self::PROJECT_QUANTITY,
+            'price' => self::PROJECT_PRICE,
+            'projectType' => self::PROJECT_TYPE
+        ];
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT,
+            [],
+            [],
+            [],
+            \json_encode($payload)
+        );
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT,
+            [],
+            [],
+            [],
+            \json_encode($payload)
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+
+        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     /** @test */

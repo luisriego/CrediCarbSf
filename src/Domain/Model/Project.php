@@ -89,7 +89,7 @@ class Project
         $areaHa,
         $quantity,
         $price,
-        $projectType
+        $projectType,
     ): self {
         return new static(
             $name,
@@ -237,11 +237,11 @@ class Project
                 'planning' => $this->status === ProjectStatus::PLANNED,
                 'development' => $this->status === ProjectStatus::IN_DEVELOPMENT,
                 'execution' => $this->status === ProjectStatus::IN_EXECUTION,
-                'completed' => $this->status === ProjectStatus::COMPLETED
+                'completed' => $this->status === ProjectStatus::COMPLETED,
             ],
             'startDate' => $this->startDate?->format('Y-m-d'),
             'endDate' => $this->endDate?->format('Y-m-d'),
-            'completionPercentage' => $this->status->getCompletionPercentage()
+            'completionPercentage' => $this->status->getCompletionPercentage(),
         ];
     }
 }

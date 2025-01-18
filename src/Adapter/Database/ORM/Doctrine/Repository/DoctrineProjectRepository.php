@@ -10,8 +10,6 @@ use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\Project;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -61,33 +59,23 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return $project;
     }
 
-    public function isDuplicate(
-        string $name,
-        ?string $areaHa,
-        ?string $quantity,
-        ?string $price,
-        ?string $projectType
-    ): bool {
-        $parameters = new ArrayCollection([
-            'name' => $name,
-            'areaHa' => $areaHa,
-            'quantity' => $quantity,
-            'price' => $price,
-            'projectType' => $projectType,
-        ]);
-    
-        $result = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+    public function exists(Project $project): bool
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('1')
             ->where('p.name = :name')
             ->andWhere('p.areaHa = :areaHa')
             ->andWhere('p.quantity = :quantity')
             ->andWhere('p.price = :price')
             ->andWhere('p.projectType = :projectType')
-            ->setParameters($parameters)
-            ->getQuery()
-            ->getSingleScalarResult();
-    
-        return $result > 0;
+            ->setParameter('name', $project->getName())
+            ->setParameter('areaHa', $project->getAreaHa())
+            ->setParameter('quantity', $project->getQuantity())
+            ->setParameter('price', $project->getPrice())
+            ->setParameter('projectType', $project->getProjectType())
+        ;
+
+        return (bool) $qb->getQuery()->getOneOrNullResult();
     }
 
     /**

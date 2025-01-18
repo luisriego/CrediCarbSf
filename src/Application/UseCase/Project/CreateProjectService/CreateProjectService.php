@@ -17,6 +17,7 @@ class CreateProjectService
     public function __construct(
         private ProjectRepositoryInterface $projectReporitory,
         private AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ProjectRepositoryInterface $projectRepository,
     ) {}
 
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
@@ -24,18 +25,6 @@ class CreateProjectService
         if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
             throw AccessDeniedException::UnauthorizedUser();
         }
-
-//        $isDuplicate = $this->projectReporitory->isDuplicate(
-//            $inputDto->name,
-//            $inputDto->areaHa,
-//            $inputDto->quantity,
-//            $inputDto->price,
-//            $inputDto->projectType
-//        );
-//
-//        if ($isDuplicate) {
-//            throw ProjectAlreadyExistsException::repeatedProject();
-//        }
 
         $project = Project::create(
             $inputDto->name,
@@ -45,6 +34,10 @@ class CreateProjectService
             $inputDto->price,
             $inputDto->projectType,
         );
+
+        if ($this->projectRepository->exists($project)) {
+            throw ProjectAlreadyExistsException::repeatedProject();
+        }
 
         $this->projectReporitory->add($project, true);
 

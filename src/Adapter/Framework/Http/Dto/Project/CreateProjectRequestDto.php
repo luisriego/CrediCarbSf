@@ -16,7 +16,8 @@ final class CreateProjectRequestDto implements RequestDto
     public string $price;
     public string $projectType;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->name = $request->get('name');
         $this->description = $request->get('description');
         $this->areaHa = $request->get('areaHa');

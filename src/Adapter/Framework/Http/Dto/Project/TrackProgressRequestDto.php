@@ -10,8 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 final class TrackProgressRequestDto implements RequestDto
 {
     public string $projectId;
-    
-    public function __construct(Request $request) {
+
+    public function __construct(Request $request)
+    {
         $this->projectId = $request->get('projectId');
     }
 }
