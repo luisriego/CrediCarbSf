@@ -18,6 +18,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_AREA = '100.00';
     private const PROJECT_QUANTITY = '50.00';
     private const PROJECT_PRICE = '10.00';
+    private const PROJECT_PRICE_LIKE = '20.00';
     private const PROJECT_TYPE = 'Reforestation';
 
     private ProjectRepositoryInterface $projectRepository;
@@ -62,7 +63,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'description' => self::PROJECT_DESCRIPTION,
             'areaHa' => self::PROJECT_AREA,
             'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
+            'price' => self::PROJECT_PRICE_LIKE,
             'projectType' => self::PROJECT_TYPE
         ];
 
@@ -127,7 +128,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'projectType' => self::PROJECT_TYPE
         ];
 
-        $payload = [
+        $payloadLike = [
             'name' => self::PROJECT_NAME_LIKE,
             'description' => self::PROJECT_DESCRIPTION,
             'areaHa' => self::PROJECT_AREA,
@@ -151,7 +152,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            \json_encode($payloadLike)
         );
 
         $response = self::$authenticatedClient->getResponse();

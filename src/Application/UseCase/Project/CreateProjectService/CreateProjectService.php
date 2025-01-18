@@ -15,8 +15,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class CreateProjectService
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectReporitory,
-        private AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ProjectRepositoryInterface $projectReporitory,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly ProjectRepositoryInterface $projectRepository,
     ) {}
 
@@ -36,6 +36,10 @@ class CreateProjectService
         );
 
         if ($this->projectRepository->exists($project)) {
+            throw ProjectAlreadyExistsException::repeatedProject();
+        }
+
+        if ($this->projectRepository->existsWithSimilarWords($project)) {
             throw ProjectAlreadyExistsException::repeatedProject();
         }
 

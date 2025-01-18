@@ -14,6 +14,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
+use function explode;
+use function sort;
 use function sprintf;
 
 class DoctrineProjectRepository extends ServiceEntityRepository implements ProjectRepositoryInterface
@@ -78,6 +80,26 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return (bool) $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function existsWithSimilarWords(Project $project): bool
+    {
+        $projects = $this->createQueryBuilder('p')
+            ->select('p')
+            ->getQuery()
+            ->getResult();
+
+        $projectWords = $this->tokenize($project->getName());
+
+        foreach ($projects as $existingProject) {
+            $existingProjectWords = $this->tokenize($existingProject->getName());
+
+            if ($projectWords === $existingProjectWords) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @throws Exception
      */
@@ -111,5 +133,13 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
             ->setMaxResults($limit);
 
         return PaginatedResponse::create($paginator->getIterator(), $paginator->count(), $page, $limit);
+    }
+
+    private function tokenize(string $name): array
+    {
+        $words = explode(' ', mb_strtolower($name));
+        sort($words);
+
+        return $words;
     }
 }
