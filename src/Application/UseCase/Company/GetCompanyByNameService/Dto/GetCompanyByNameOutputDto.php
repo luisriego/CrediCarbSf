@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\GetCompanyByNameService\Dto;
 
-use App\Domain\Model\Company;
+use function array_map;
 
 class GetCompanyByNameOutputDto
 {
-
     private function __construct(public array $data) {}
 
     public static function create(array $arrayCompanies): self

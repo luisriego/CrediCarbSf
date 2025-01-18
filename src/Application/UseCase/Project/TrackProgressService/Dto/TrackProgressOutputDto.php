@@ -11,6 +11,6 @@ class TrackProgressOutputDto
         public readonly array $milestones,
         public readonly ?string $startDate,
         public readonly ?string $endDate,
-        public readonly int $completionPercentage
+        public readonly int $completionPercentage,
     ) {}
 }

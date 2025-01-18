@@ -18,13 +18,7 @@ interface ProjectRepositoryInterface
 
     public function findOneByIdOrFail(string $id): Project;
 
-    public function isDuplicate(
-        string $name,
-        ?string $areaHa,
-        ?string $quantity,
-        ?string $price,
-        ?string $projectType
-    ): bool;
+    public function exists(Project $project): bool;
 
     public function search(ProjectFilter $filter): PaginatedResponse;
 }

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\GetCompanyByNameService\Dto;
 
-use App\Domain\Model\Company;
 use App\Domain\Validation\Traits\AssertLengthRangeTrait;
 use App\Domain\Validation\Traits\AssertNotNullTrait;
-use App\Domain\Validation\Traits\AssertValidUidTrait;
 
 class GetCompanyByNameInputDto
 {

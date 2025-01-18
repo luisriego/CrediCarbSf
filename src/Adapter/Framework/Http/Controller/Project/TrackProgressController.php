@@ -14,14 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TrackProgressController
 {
     public function __construct(
-        private readonly TrackProgressService $trackProgressService
+        private readonly TrackProgressService $trackProgressService,
     ) {}
 
     #[Route('/api/project/{projectId}/progress', name: 'project_track_progress', methods: ['GET'])]
     public function __invoke(TrackProgressRequestDto $requestDto): Response
     {
         $responseDto = $this->trackProgressService->handle(
-            TrackProgressInputDto::create($requestDto->projectId)
+            TrackProgressInputDto::create($requestDto->projectId),
         );
 
         return new JsonResponse([
@@ -29,7 +29,7 @@ final class TrackProgressController
             'milestones' => $responseDto->milestones,
             'startDate' => $responseDto->startDate,
             'endDate' => $responseDto->endDate,
-            'completionPercentage' => $responseDto->completionPercentage
+            'completionPercentage' => $responseDto->completionPercentage,
         ], Response::HTTP_OK);
     }
 }

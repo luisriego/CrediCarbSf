@@ -7,7 +7,6 @@ namespace App\Application\UseCase\Project\TrackProgressService;
 use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressInputDto;
 use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressOutputDto;
 use App\Domain\Exception\AccessDeniedException;
-use App\Domain\Exception\Project\ProjectNotFoundException;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -20,9 +19,9 @@ class TrackProgressService
 
     public function handle(TrackProgressInputDto $inputDto): TrackProgressOutputDto
     {
-//        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-//            throw AccessDeniedException::UnauthorizedUser();
-//        }
+        //        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
+        //            throw AccessDeniedException::UnauthorizedUser();
+        //        }
 
         $project = $this->projectRepository->findOneByIdOrFail($inputDto->projectId);
 
@@ -33,7 +32,7 @@ class TrackProgressService
             $progress['milestones'],
             $progress['startDate'],
             $progress['endDate'],
-            $progress['completionPercentage']
+            $progress['completionPercentage'],
         );
     }
 }
