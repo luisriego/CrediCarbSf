@@ -125,9 +125,6 @@ class FunctionalTestBase extends WebTestCase
         self::$client->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
     }
 
-    /**
-     * @throws Exception
-     */
     protected function createNewCompany(string $fantasyName, string $taxpayer): void
     {
         $payload = [

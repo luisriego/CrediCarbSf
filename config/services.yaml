@@ -43,7 +43,8 @@ services:
         public: true
     App\Adapter\Framework\Http\Controller\Project\TrackProgressController:
         public: true
-    
+    App\Adapter\Framework\Http\Controller\Project\GetAllProjectsController:
+        public: true
 
     # Event Listeners used to transform the exception into a JSON response
     App\Adapter\Framework\Listener\JsonTransformerExceptionListener:
