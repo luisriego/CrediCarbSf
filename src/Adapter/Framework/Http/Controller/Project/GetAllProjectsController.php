@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GetAllProjectsController
+readonly class GetAllProjectsController
 {
     public function __construct(
-        private readonly GetAllProjectsService $useCase,
+        private GetAllProjectsService $useCase,
     ) {}
 
     #[Route('/api/project/all', name: 'get_projects', methods: ['GET'])]
