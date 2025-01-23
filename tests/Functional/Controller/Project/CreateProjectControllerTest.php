@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Project;
 
-use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +18,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_QUANTITY = '50.00';
     private const PROJECT_PRICE = '10.00';
     private const PROJECT_PRICE_LIKE = '20.00';
-    private const PROJECT_TYPE = 'Reforestation';
-
-    private ProjectRepositoryInterface $projectRepository;
+    private const PROJECT_TYPE = 'REFORESTATION';
 
     public function setUp(): void
     {

@@ -7,26 +7,21 @@ namespace App\Adapter\Framework\Http\Controller\Project;
 use App\Adapter\Framework\Http\Dto\Project\CreateProjectRequestDto;
 use App\Application\UseCase\Project\CreateProjectService\CreateProjectService;
 use App\Application\UseCase\Project\CreateProjectService\Dto\CreateProjectInputDto;
-use App\Domain\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final class CreateProjectController
+final readonly class CreateProjectController
 {
     public function __construct(
-        private readonly CreateProjectService $createProject,
-        private readonly AuthorizationCheckerInterface $authorizationChecker, // transfer to the service
+        private CreateProjectService $createProject,
     ) {}
 
     #[Route('/api/project/create', name: 'project_create', methods: ['POST'])]
+    #[IsGranted('ROLE_OPERATOR')]
     public function __invoke(CreateProjectRequestDto $requestDto): Response
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
-
         $responseDto = $this->createProject->handle(
             CreateProjectInputDto::create(
                 $requestDto->name,

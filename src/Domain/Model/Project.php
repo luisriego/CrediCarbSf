@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Common\ProjectStatus;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
@@ -13,7 +14,6 @@ use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
-use Domain\Common\ProjectStatus;
 
 #[ORM\Entity(repositoryClass: ProjectRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -46,7 +46,7 @@ class Project
     #[Column(type: 'string', nullable: true)]
     private ?string $projectType;
 
-    #[Column(type: 'string', enumType: ProjectStatus::class, length: 20, nullable: true)]
+    #[Column(type: 'string', length: 20, nullable: true, enumType: ProjectStatus::class)]
     private ProjectStatus $status;
 
     #[Column(type: 'datetime', nullable: true)]

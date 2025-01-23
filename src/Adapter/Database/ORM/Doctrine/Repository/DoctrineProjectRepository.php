@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 
 use function explode;
+use function mb_strtolower;
 use function sort;
 use function sprintf;
 
@@ -98,6 +99,11 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         }
 
         return false;
+    }
+
+    public function findByStatus(string $status): array
+    {
+        return $this->findBy(['status' => $status]);
     }
 
     /**

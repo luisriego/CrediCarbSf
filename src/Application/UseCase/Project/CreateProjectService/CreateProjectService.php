@@ -6,26 +6,18 @@ namespace App\Application\UseCase\Project\CreateProjectService;
 
 use App\Application\UseCase\Project\CreateProjectService\Dto\CreateProjectInputDto;
 use App\Application\UseCase\Project\CreateProjectService\Dto\CreateProjectOutputDto;
-use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Exception\Project\ProjectAlreadyExistsException;
 use App\Domain\Model\Project;
 use App\Domain\Repository\ProjectRepositoryInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class CreateProjectService
+readonly class CreateProjectService
 {
     public function __construct(
-        private readonly ProjectRepositoryInterface $projectReporitory,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly ProjectRepositoryInterface $projectRepository,
+        private ProjectRepositoryInterface $projectRepository,
     ) {}
 
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
-
         $project = Project::create(
             $inputDto->name,
             $inputDto->description,
@@ -43,7 +35,7 @@ class CreateProjectService
             throw ProjectAlreadyExistsException::repeatedProject();
         }
 
-        $this->projectReporitory->add($project, true);
+        $this->projectRepository->add($project, true);
 
         return new CreateProjectOutputDto($project->getId());
     }

@@ -38,6 +38,7 @@ services:
     App\Adapter\Framework\Http\Controller\Company\GetCompanyByIdController:
         public: true
 
+
     # Project controllers
     App\Adapter\Framework\Http\Controller\Project\CreateProjectController:
         public: true
@@ -46,6 +47,8 @@ services:
     App\Adapter\Framework\Http\Controller\Project\GetAllProjectsController:
         public: true
     App\Adapter\Framework\Http\Controller\Project\GetProjectByIdController:
+        public: true
+    App\Adapter\Framework\Http\Controller\Project\GetProjectsByStatusController:
         public: true
 
 
@@ -67,3 +70,4 @@ services:
     App\Domain\Security\PasswordHasherInterface:
         class: App\Adapter\Framework\Security\SymfonyPasswordHasher
         public: true
+

@@ -22,5 +22,7 @@ interface ProjectRepositoryInterface
 
     public function existsWithSimilarWords(Project $project): bool;
 
+    public function findByStatus(string $status): array;
+
     public function search(ProjectFilter $filter): PaginatedResponse;
 }
