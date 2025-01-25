@@ -9,9 +9,9 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/project/{{projectId}} -----------------------------------------------------------
 Authorization: Bearer {{token}} -----------------------------------------------------------------
 
-### Get Projects by Status
-GET {{baseUrl}}/project/status/{{status}}
-Authorization: Bearer {{token}}
+### Get Projects by Status ----------------------------------------------------------------------
+GET {{baseUrl}}/project/status/{{status}} -------------------------------------------------------
+Authorization: Bearer {{token}} -----------------------------------------------------------------
 
 ### Get Projects by Type
 GET {{baseUrl}}/project/type/{{projectType}}

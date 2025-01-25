@@ -106,6 +106,11 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return $this->findBy(['status' => $status]);
     }
 
+    public function findByType(string $type): array
+    {
+        return $this->findBy(['projectType' => $type]);
+    }
+
     /**
      * @throws Exception
      */

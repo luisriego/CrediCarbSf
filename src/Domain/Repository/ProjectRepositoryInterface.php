@@ -24,5 +24,7 @@ interface ProjectRepositoryInterface
 
     public function findByStatus(string $status): array;
 
+    public function findByType(string $type): array;
+
     public function search(ProjectFilter $filter): PaginatedResponse;
 }
