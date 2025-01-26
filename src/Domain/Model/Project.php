@@ -68,6 +68,7 @@ class Project
         ?string $quantity,
         ?string $price,
         ?string $projectType,
+        ?Company $owner,
     ) {
         $this->id = Uuid::random()->value();
         $this->name = $name;
@@ -77,6 +78,7 @@ class Project
         $this->price = $price;
         $this->projectType = $projectType;
         $this->status = ProjectStatus::PLANNED;
+        $this->owner = $owner;
         $this->isActive = true;
         $this->startDate = new DateTime();
         $this->endDate = new DateTime();
@@ -90,6 +92,7 @@ class Project
         $quantity,
         $price,
         $projectType,
+        $owner,
     ): self {
         return new static(
             $name,
@@ -98,6 +101,7 @@ class Project
             $quantity,
             $price,
             $projectType,
+            $owner,
         );
     }
 
