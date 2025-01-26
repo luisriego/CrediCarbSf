@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Project\CreateProjectService\Dto;
 
-final class CreateProjectOutputDto
+final readonly class CreateProjectOutputDto
 {
-    public function __construct(public readonly string $projectId) {}
+    public function __construct(public string $projectId) {}
 
     public function getProjectId(): string
     {

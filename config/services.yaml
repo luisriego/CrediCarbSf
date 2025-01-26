@@ -53,6 +53,10 @@ services:
     App\Adapter\Framework\Http\Controller\Project\GetProjectsByTypeController:
         public: true
 
+    # Certification Authority Controllers
+    App\Adapter\Framework\Http\Controller\CertificationAuthority\CreateCertificationAuthorityController:
+        public: true
+
     # Event Listeners used to transform the exception into a JSON response
     App\Adapter\Framework\Listener\JsonTransformerExceptionListener:
         tags:

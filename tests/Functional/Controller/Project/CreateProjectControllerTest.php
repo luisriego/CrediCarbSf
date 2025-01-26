@@ -34,7 +34,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'areaHa' => self::PROJECT_AREA,
             'quantity' => self::PROJECT_QUANTITY,
             'price' => self::PROJECT_PRICE,
-            'projectType' => self::PROJECT_TYPE
+            'projectType' => self::PROJECT_TYPE,
+            'owner' => $this->companyId
         ];
 
         self::$authenticatedClient->request(

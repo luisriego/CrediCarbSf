@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
@@ -11,7 +12,7 @@ use App\Domain\ValueObjects\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CertificationAuthorityRepository::class)]
+#[ORM\Entity(repositoryClass: CertificationAuthorityRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
 class CertificationAuthority
 {
@@ -19,13 +20,15 @@ class CertificationAuthority
     use TimestampableTrait;
     use IsActiveTrait;
 
-    private string $name;
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
+    private ?string $name;
 
-    private string $website;
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
+    private ?string $website;
 
     public function __construct(
         string $name,
-        string $website
+        string $website,
     ) {
         $this->id = Uuid::random()->value();
         $this->name = $name;
@@ -36,11 +39,11 @@ class CertificationAuthority
 
     public static function create(
         string $name,
-        string $website
+        string $website,
     ): self {
         return new static(
             $name,
-            $website
+            $website,
         );
     }
 

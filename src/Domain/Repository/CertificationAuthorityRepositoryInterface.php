@@ -20,6 +20,8 @@ interface CertificationAuthorityRepositoryInterface
 
     public function findOneByWebsiteOrFail(string $website): CertificationAuthority;
 
+    public function exists(CertificationAuthority $authority): bool;
+
     public function findByCountry(string $country): array;
 
     public function findByCertification(string $certification): array;

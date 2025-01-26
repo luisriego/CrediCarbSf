@@ -10,9 +10,7 @@ use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineCertificationAuthorityRepository
-    extends ServiceEntityRepository
-    implements CertificationAuthorityRepositoryInterface
+class DoctrineCertificationAuthorityRepository extends ServiceEntityRepository implements CertificationAuthorityRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -71,6 +69,19 @@ class DoctrineCertificationAuthorityRepository
         }
 
         return $authority;
+    }
+
+    public function exists(CertificationAuthority $authority): bool
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('1')
+            ->where('c.name = :name')
+            ->andWhere('c.website = :website')
+            ->setParameter('name', $authority->getName())
+            ->setParameter('website', $authority->getWebsite())
+        ;
+
+        return (bool) $qb->getQuery()->getOneOrNullResult();
     }
 
     public function findByCountry(string $country): array
