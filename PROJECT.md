@@ -33,9 +33,9 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/project/range?startDate={{startDate}}&endDate={{endDate}}
 Authorization: Bearer {{token}}
 
-### Get Projects by Company
-GET {{baseUrl}}/project/company/{{companyId}}
-Authorization: Bearer {{token}}
+### Get Projects by Company ---- Do yet ---------------------------------------------------------
+GET {{baseUrl}}/project/company/{{companyId}} ---------------------------------------------------
+Authorization: Bearer {{token}} -----------------------------------------------------------------
 
 ### Get Project Cost Analysis
 GET {{baseUrl}}/project/{{projectId}}/cost-analysis
