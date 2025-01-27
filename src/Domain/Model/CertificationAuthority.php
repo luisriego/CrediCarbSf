@@ -20,6 +20,9 @@ class CertificationAuthority
     use TimestampableTrait;
     use IsActiveTrait;
 
+    #[ORM\Column(type: 'string', length: 14, options: ['fixed' => true])]
+    private ?string $taxpayer = '';
+
     #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private ?string $name;
 
@@ -27,10 +30,12 @@ class CertificationAuthority
     private ?string $website;
 
     public function __construct(
+        string $taxpayer,
         string $name,
         string $website,
     ) {
         $this->id = Uuid::random()->value();
+        $this->taxpayer = $taxpayer;
         $this->name = $name;
         $this->website = $website;
         $this->isActive = true;
@@ -38,13 +43,25 @@ class CertificationAuthority
     }
 
     public static function create(
+        string $taxpayer,
         string $name,
         string $website,
     ): self {
         return new static(
+            $taxpayer,
             $name,
             $website,
         );
+    }
+
+    public function getTaxpayer(): ?string
+    {
+        return $this->taxpayer;
+    }
+
+    public function setTaxpayer(?string $taxpayer): void
+    {
+        $this->taxpayer = $taxpayer;
     }
 
     public function getName(): string

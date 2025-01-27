@@ -19,6 +19,7 @@ readonly class CreateCertificationAuthorityService
     public function handle(CreateCertificationAuthorityInputDto $inputDto): CreateCertificationAuthorityOutputDto
     {
         $certificationAuthority = CertificationAuthority::create(
+            $inputDto->taxpayer,
             $inputDto->name,
             $inputDto->website,
         );

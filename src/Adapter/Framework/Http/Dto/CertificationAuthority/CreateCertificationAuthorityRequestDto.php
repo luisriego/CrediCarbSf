@@ -9,11 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateCertificationAuthorityRequestDto implements RequestDto
 {
+    public string $taxpayer;
+
     public string $name;
     public string $website;
 
     public function __construct(Request $request)
     {
+        $this->taxpayer = $request->get('taxpayer');
         $this->name = $request->get('name');
         $this->website = $request->get('website');
     }

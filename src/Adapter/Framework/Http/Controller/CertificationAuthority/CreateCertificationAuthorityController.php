@@ -24,6 +24,7 @@ readonly class CreateCertificationAuthorityController
     {
         $responseDto = $this->createCertificationAuthority->handle(
             CreateCertificationAuthorityInputDto::create(
+                $requestDto->taxpayer,
                 $requestDto->name,
                 $requestDto->website,
             ),
