@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\CertificationAuthority\Dto;
+namespace App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority\Dto;
 
 use App\Domain\Validation\Traits\AssertNotEmptyTrait;
 use App\Domain\Validation\Traits\AssertNotNullTrait;

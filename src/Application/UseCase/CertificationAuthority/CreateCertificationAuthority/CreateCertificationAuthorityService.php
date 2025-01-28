@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\CertificationAuthority;
+namespace App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority;
 
-use App\Application\UseCase\CertificationAuthority\Dto\CreateCertificationAuthorityInputDto;
-use App\Application\UseCase\CertificationAuthority\Dto\CreateCertificationAuthorityOutputDto;
+use App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority\Dto\CreateCertificationAuthorityInputDto;
+use App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority\Dto\CreateCertificationAuthorityOutputDto;
 use App\Domain\Exception\CertificationAuthority\CertificationAuthorityAlreadyExistsException;
 use App\Domain\Model\CertificationAuthority;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
@@ -102,12 +103,14 @@ class FunctionalTestBase extends WebTestCase
 
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
         $project = static::getContainer()->get(ProjectRepositoryInterface::class)->findOneBy(['name' => 'Project 2']);
+        $authority = static::getContainer()->get(CertificationAuthorityRepositoryInterface::class)->findOneBy(['taxpayer' => '48846500000175']);
         $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
         $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
         $this->companyId = $company->getId();
         $this->projectId = $project->getId();
+        $this->certificationAuthorityId = $authority->getId();
     }
 
     /**

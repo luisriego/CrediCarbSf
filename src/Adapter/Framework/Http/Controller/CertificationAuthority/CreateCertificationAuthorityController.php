@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Adapter\Framework\Http\Controller\CertificationAuthority;
 
 use App\Adapter\Framework\Http\Dto\CertificationAuthority\CreateCertificationAuthorityRequestDto;
-use App\Application\UseCase\CertificationAuthority\CreateCertificationAuthorityService;
-use App\Application\UseCase\CertificationAuthority\Dto\CreateCertificationAuthorityInputDto;
+use App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority\CreateCertificationAuthorityService;
+use App\Application\UseCase\CertificationAuthority\CreateCertificationAuthority\Dto\CreateCertificationAuthorityInputDto;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

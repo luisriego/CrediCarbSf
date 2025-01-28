@@ -8,7 +8,7 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CertificationAuthorityControllerTest extends FunctionalTestBase
+class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/certification-authority/create';
     private array $payload = [

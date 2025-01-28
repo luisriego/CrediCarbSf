@@ -88,10 +88,11 @@ class CertificationAuthority
     {
         return [
             'id' => $this->id,
+            'taxpayer' => $this->taxpayer,
             'name' => $this->name,
             'website' => $this->website,
-            'isActive' => $this->isActive,
             'createdOn' => $this->createdOn->format('Y-m-d H:i:s'),
+            'updatedOn' => $this->updatedOn?->format('Y-m-d H:i:s'),
         ];
     }
 }
