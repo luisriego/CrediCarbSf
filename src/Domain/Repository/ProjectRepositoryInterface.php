@@ -26,5 +26,7 @@ interface ProjectRepositoryInterface
 
     public function findByType(string $type): array;
 
+    public function findByCompany(string $companyId): array;
+
     public function search(ProjectFilter $filter): PaginatedResponse;
 }

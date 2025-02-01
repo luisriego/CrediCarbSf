@@ -111,6 +111,11 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
         return $this->findBy(['projectType' => $type]);
     }
 
+    public function findByCompany(string $companyId): array
+    {
+        return $this->findBy(['owner' => $companyId]);
+    }
+
     /**
      * @throws Exception
      */
