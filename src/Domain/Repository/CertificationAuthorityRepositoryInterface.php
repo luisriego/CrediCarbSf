@@ -14,6 +14,8 @@ interface CertificationAuthorityRepositoryInterface
 
     public function remove(CertificationAuthority $authority, bool $flush): void;
 
+    public function findAll(): array;
+
     public function findOneByIdOrFail(string $id): CertificationAuthority;
 
     public function findOneByNameOrFail(string $fantasyName): CertificationAuthority;
