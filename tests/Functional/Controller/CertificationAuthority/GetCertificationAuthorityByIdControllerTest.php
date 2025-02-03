@@ -37,7 +37,13 @@ class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
     /** @test */
     public function shouldReturnNotFoundWhenCertificationAuthorityDoesNotExist(): void
     {
-        $nonExistentId = '9999'; // Assume this ID does not exist in the database
+        $currentId = $this->certificationAuthorityId;
+        $lastFourDigits = substr($currentId, -4);
+        $shuffledDigits = str_shuffle($lastFourDigits);
+        $modifiedId = substr($currentId, 0, -4) . $shuffledDigits;
+        $this->certificationAuthorityId = $modifiedId;
+
+        $nonExistentId = $modifiedId; // Assume this ID does not exist in the database
 
         self::$authenticatedClient->request(
             Request::METHOD_GET,

@@ -62,7 +62,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'areaHa' => self::PROJECT_AREA,
             'quantity' => self::PROJECT_QUANTITY,
             'price' => self::PROJECT_PRICE_LIKE,
-            'projectType' => self::PROJECT_TYPE
+            'projectType' => self::PROJECT_TYPE,
+            'owner' => $this->companyId
         ];
 
         self::$baseClient->request(
@@ -76,7 +77,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
 
         $response = self::$baseClient->getResponse();
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */
@@ -88,7 +89,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
              'areaHa' => self::PROJECT_AREA,
              'quantity' => self::PROJECT_QUANTITY,
              'price' => self::PROJECT_PRICE,
-             'projectType' => self::PROJECT_TYPE
+             'projectType' => self::PROJECT_TYPE,
+             'owner' => $this->companyId
          ];
 
          self::$authenticatedClient->request(
@@ -111,7 +113,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
 
          $response = self::$authenticatedClient->getResponse();
 
-         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     /** @test */

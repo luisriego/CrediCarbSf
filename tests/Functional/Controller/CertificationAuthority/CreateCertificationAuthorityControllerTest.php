@@ -54,7 +54,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
 
         $response = self::$baseClient->getResponse();
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */

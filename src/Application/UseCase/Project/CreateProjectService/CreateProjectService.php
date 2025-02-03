@@ -20,7 +20,11 @@ readonly class CreateProjectService
 
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
-        $owner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
+        if ($this->companyRepository->existById($inputDto->owner) === false) {
+            throw ProjectAlreadyExistsException::ownerNotFound();
+        }
+
+        $companyOwner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
 
         $project = Project::create(
             $inputDto->name,
@@ -29,7 +33,7 @@ readonly class CreateProjectService
             $inputDto->quantity,
             $inputDto->price,
             $inputDto->projectType,
-            $owner,
+            $companyOwner,
         );
 
         if ($this->projectRepository->exists($project)) {
