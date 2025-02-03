@@ -1,0 +1,7 @@
+App\Domain\Model\CertificationAuthority:
+  authority_1:
+    __construct: ['48846500000175', 'Luxcs Lux Carbon Standard LTDA', 'https://www.luxcs.org/']
+  authority_2:
+    __construct: ['48544026000127', 'CONSORCIO PSA E CREDITOS DE CARBONO', 'https://verra.org/']
+  authority_3:
+    __construct: ['09465233000134', 'Eccaplan', 'https://www.carbonfair.com.br/pt-br']

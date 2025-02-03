@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use function mb_strlen;
 use function preg_replace;
 
 #[ORM\Entity(repositoryClass: CompanyRepositoryInterface::class)]

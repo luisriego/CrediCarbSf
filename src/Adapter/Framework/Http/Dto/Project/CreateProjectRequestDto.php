@@ -15,6 +15,7 @@ final class CreateProjectRequestDto implements RequestDto
     public string $quantity;
     public string $price;
     public string $projectType;
+    public ?string $owner;
 
     public function __construct(Request $request)
     {
@@ -24,5 +25,6 @@ final class CreateProjectRequestDto implements RequestDto
         $this->quantity = $request->get('quantity');
         $this->price = $request->get('price');
         $this->projectType = $request->get('projectType');
+        $this->owner = $request->get('owner');
     }
 }

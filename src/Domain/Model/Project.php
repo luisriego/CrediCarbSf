@@ -56,9 +56,11 @@ class Project
     private ?DateTime $endDate;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'ownedProjects')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Company $owner = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'boughtProjects')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Company $buyer = null;
 
     public function __construct(

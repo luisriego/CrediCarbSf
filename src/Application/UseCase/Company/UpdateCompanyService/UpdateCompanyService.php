@@ -9,10 +9,10 @@ use App\Application\UseCase\Company\UpdateCompanyService\Dto\UpdateCompanyOutput
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Repository\CompanyRepositoryInterface;
 
-class UpdateCompanyService
+readonly class UpdateCompanyService
 {
     public function __construct(
-        private readonly CompanyRepositoryInterface $companyRepository,
+        private CompanyRepositoryInterface $companyRepository,
     ) {}
 
     public function handle(UpdateCompanyInputDto $inputDto): UpdateCompanyOutputDto

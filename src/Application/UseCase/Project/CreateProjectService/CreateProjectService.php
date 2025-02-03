@@ -8,16 +8,24 @@ use App\Application\UseCase\Project\CreateProjectService\Dto\CreateProjectInputD
 use App\Application\UseCase\Project\CreateProjectService\Dto\CreateProjectOutputDto;
 use App\Domain\Exception\Project\ProjectAlreadyExistsException;
 use App\Domain\Model\Project;
+use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
 readonly class CreateProjectService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
+        private CompanyRepositoryInterface $companyRepository,
     ) {}
 
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
+        if ($this->companyRepository->existById($inputDto->owner) === false) {
+            throw ProjectAlreadyExistsException::ownerNotFound();
+        }
+
+        $companyOwner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
+
         $project = Project::create(
             $inputDto->name,
             $inputDto->description,
@@ -25,6 +33,7 @@ readonly class CreateProjectService
             $inputDto->quantity,
             $inputDto->price,
             $inputDto->projectType,
+            $companyOwner,
         );
 
         if ($this->projectRepository->exists($project)) {

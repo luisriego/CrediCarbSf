@@ -45,7 +45,7 @@ class GetAllProjectsControllerTest extends FunctionalTestBase
 
         $response = self::$baseClient->getResponse();
 
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /**

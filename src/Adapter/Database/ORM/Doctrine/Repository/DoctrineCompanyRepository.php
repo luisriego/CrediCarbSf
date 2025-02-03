@@ -106,6 +106,11 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
         return $this->findOneBy(['taxpayer' => $taxpayer]);
     }
 
+    public function existById(string $id): bool
+    {
+        return (bool) $this->findOneBy(['id' => $id]);
+    }
+
     /**
      * @throws Exception
      */

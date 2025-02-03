@@ -7,10 +7,10 @@ namespace App\Application\UseCase\User\DeleteUser;
 use App\Application\UseCase\User\DeleteUser\Dto\DeleteUserInputDto;
 use App\Domain\Repository\UserRepositoryInterface;
 
-class DeleteUser
+readonly class DeleteUser
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private UserRepositoryInterface $userRepository,
     ) {}
 
     public function handle(DeleteUserInputDto $dto): void

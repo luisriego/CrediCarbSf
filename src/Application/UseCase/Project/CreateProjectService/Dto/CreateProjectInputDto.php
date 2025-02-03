@@ -19,28 +19,15 @@ class CreateProjectInputDto
         'projectType',
     ];
 
-    public string $name;
-    public string $description;
-    public string $areaHa;
-    public string $quantity;
-    public string $price;
-    public string $projectType;
-
     public function __construct(
-        string $name,
-        string $description,
-        string $areaHa,
-        string $quantity,
-        string $price,
-        string $projectType,
+        public string $name,
+        public string $description,
+        public string $areaHa,
+        public string $quantity,
+        public string $price,
+        public string $projectType,
+        public ?string $owner,
     ) {
-        $this->name = $name;
-        $this->description = $description;
-        $this->areaHa = $areaHa;
-        $this->quantity = $quantity;
-        $this->price = $price;
-        $this->projectType = $projectType;
-
         $this->assertNotNull(self::ARGS, [
             $this->name,
             $this->description,
@@ -58,7 +45,8 @@ class CreateProjectInputDto
         ?string $quantity,
         ?string $price,
         ?string $projectType,
+        ?string $owner,
     ): self {
-        return new static($name, $description, $areaHa, $quantity, $price, $projectType);
+        return new static($name, $description, $areaHa, $quantity, $price, $projectType, $owner);
     }
 }

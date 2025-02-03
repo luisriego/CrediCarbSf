@@ -26,5 +26,7 @@ interface CompanyRepositoryInterface
 
     public function existByTaxpayer(string $taxpayer): ?Company;
 
+    public function existById(string $id): bool;
+
     public function search(CompanyFilter $filter): PaginatedResponse;
 }

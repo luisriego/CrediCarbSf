@@ -30,6 +30,7 @@ final readonly class CreateProjectController
                 $requestDto->quantity,
                 $requestDto->price,
                 $requestDto->projectType,
+                $requestDto->owner,
             ),
         );
 

@@ -24,4 +24,9 @@ final class ProjectAlreadyExistsException extends HttpException
     {
         return new self(400, 'Project already exists');
     }
+
+    public static function ownerNotFound(): self
+    {
+        return new self(404, 'Owner not found');
+    }
 }

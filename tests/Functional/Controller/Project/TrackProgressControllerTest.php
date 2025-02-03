@@ -106,7 +106,7 @@ final class TrackProgressControllerTest extends FunctionalTestBase
         $response = self::$baseClient->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         self::assertArrayHasKey('message', $responseData);
         self::assertEquals('Access Denied.', $responseData['message']);
     }

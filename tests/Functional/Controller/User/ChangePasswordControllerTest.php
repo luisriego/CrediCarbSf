@@ -17,8 +17,6 @@ class ChangePasswordControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-//        $baseClientUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
-//        $this->userId = $baseClientUser->getId();
     }
 
     public function testChangePasswordSuccessfully(): void
@@ -75,6 +73,6 @@ class ChangePasswordControllerTest extends FunctionalTestBase
 
         $response = self::$baseClient->getResponse();
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 }
