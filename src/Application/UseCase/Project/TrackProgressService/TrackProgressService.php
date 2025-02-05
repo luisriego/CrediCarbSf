@@ -6,23 +6,16 @@ namespace App\Application\UseCase\Project\TrackProgressService;
 
 use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressInputDto;
 use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressOutputDto;
-use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Repository\ProjectRepositoryInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class TrackProgressService
+readonly class TrackProgressService
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository,
-        private AuthorizationCheckerInterface $authorizationChecker,
+        private ProjectRepositoryInterface $projectRepository
     ) {}
 
     public function handle(TrackProgressInputDto $inputDto): TrackProgressOutputDto
     {
-        //        if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {
-        //            throw AccessDeniedException::UnauthorizedUser();
-        //        }
-
         $project = $this->projectRepository->findOneByIdOrFail($inputDto->projectId);
 
         $progress = $project->trackProgress();

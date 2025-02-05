@@ -72,7 +72,7 @@ class Project
         ?string $projectType,
         ?Company $owner,
     ) {
-        $this->id = Uuid::random()->value();
+        $this->initializeId();
         $this->name = $name;
         $this->description = $description;
         $this->areaHa = $areaHa;

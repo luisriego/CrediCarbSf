@@ -10,10 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 trait CreatedOnTrait
 {
     #[ORM\Column(type: 'datetime_immutable')]
-    protected readonly DateTimeImmutable $createdOn;
+    protected DateTimeImmutable $createdOn;
 
     public function getCreatedOn(): DateTimeImmutable
     {
         return $this->createdOn;
+    }
+
+    protected function initializeCreatedOn(): void
+    {
+        $this->createdOn = new \DateTimeImmutable();
     }
 }
