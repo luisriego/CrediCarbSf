@@ -21,6 +21,8 @@ RUN apt update \
     && docker-php-ext-install intl pdo zip \
     # for MySQL
     && docker-php-ext-install pdo_mysql \
+    # for BCMath
+    && docker-php-ext-install bcmath \
     # XDEBUG and APCu
     && pecl install xdebug apcu \
     # enable Docker extensions

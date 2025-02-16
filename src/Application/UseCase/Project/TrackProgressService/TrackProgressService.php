@@ -11,7 +11,7 @@ use App\Domain\Repository\ProjectRepositoryInterface;
 readonly class TrackProgressService
 {
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository
+        private ProjectRepositoryInterface $projectRepository,
     ) {}
 
     public function handle(TrackProgressInputDto $inputDto): TrackProgressOutputDto

@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace App\Application\Handler;
 
-use App\Application\Command\CreateCertificationCommand;
-use App\Domain\Model\Certification;
-use App\Domain\Repository\CertificationRepositoryInterface;
+use App\Domain\Common\CertificationType;
+use App\Domain\Model\CertificationTypeEntity;
+use App\Domain\Repository\CertificationTypeRepositoryInterface;
 
-class CreateCertificationHandler
+final class CreateCertificationHandler
 {
     public function __construct(
-        private CertificationRepositoryInterface $certificationRepository
+        private readonly CertificationTypeRepositoryInterface $certificationRepository,
     ) {}
 
-    public function handle(CreateCertificationCommand $command): void
+    public function handle(): void
     {
-        $certification = new Certification(
-            $command->getName(),
-            $command->getDescription(),
-            $command->getType()
-        );
+        foreach (CertificationType::cases() as $certificationType) {
+            $certificationEntity = new CertificationTypeEntity(
+                $certificationType->name,
+                $certificationType->value,
+            );
 
-        $this->certificationRepository->save($certification, true);
+            $this->certificationRepository->save($certificationEntity, true);
+        }
     }
 }

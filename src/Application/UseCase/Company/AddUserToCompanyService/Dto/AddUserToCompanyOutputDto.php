@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\AddUserToCompanyService\Dto;
 
-class AddUserToCompanyOutputDto
+readonly class AddUserToCompanyOutputDto
 {
     public function __construct(
-        public readonly string $userId,
+        public string $userId,
     ) {}
 
     public static function create(string $userId): self

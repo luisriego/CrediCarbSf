@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\CertificationAuthority\GetCertificationAuthorityById\Dto;
+namespace App\Application\UseCase\CertificationAuthority\DeleteCertificationAuthority\Dto;
 
 use App\Domain\Validation\Traits\AssertValidUidTrait;
 

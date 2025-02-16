@@ -3,25 +3,25 @@ App\Domain\Model\Certification:
         __construct:
             - 'Certificação Luxcs Project 1'
             - 'Certificação de créditos de carbono para o Projeto 1'
-            - 'VCS'
-            - '<dateTimeBetween("+1 year", "+2 years")>'
+            - '@certification_type_1'
             - '@authority_1'
+            - '<dateTimeBetween("+1 year", "+2 years")>'
             - '@project_1'
 
     certification_2:
         __construct:
             - 'Certificação PSA Project 2'
             - 'Certificação de créditos de carbono para o Projeto 2'
-            - 'CCB'
-            - '<dateTimeBetween("+1 year", "+2 years")>'
+            - '@certification_type_2'
             - '@authority_2'
+            - '<dateTimeBetween("+1 year", "+2 years")>'
             - '@project_2'
 
     certification_3:
         __construct:
             - 'Certificação Eccaplan Project 3'
             - 'Certificação de créditos de carbono para o Projeto 3'
-            - 'SOCIALCARBON'
-            - '<dateTimeBetween("+1 year", "+2 years")>'
+            - '@certification_type_1'
             - '@authority_3'
+            - '<dateTimeBetween("+1 year", "+2 years")>'
             - '@project_3'

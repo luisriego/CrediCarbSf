@@ -10,6 +10,8 @@ use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
+use function bcmul;
+
 #[ORM\Entity(repositoryClass: ShoppingCartItemRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
 class ShoppingCartItem
@@ -27,8 +29,8 @@ class ShoppingCartItem
     #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'shoppingCartItems')]
     private Project $project;
 
-    // #[ORM\ManyToOne(targetEntity: ShoppingCart::class, inversedBy: 'items')]
-    // private ShoppingCart $shoppingCart;
+    #[ORM\ManyToOne(targetEntity: ShoppingCart::class, cascade: ['persist'], inversedBy: 'items')]
+    private ?ShoppingCart $shoppingCart = null;
 
     public function __construct(Project $project, int $quantity, string $price)
     {
@@ -60,10 +62,10 @@ class ShoppingCartItem
         return $this->project;
     }
 
-    // public function getShoppingCart(): ShoppingCart
-    // {
-    //     return $this->shoppingCart;
-    // }
+    public function getShoppingCart(): ?ShoppingCart
+    {
+        return $this->shoppingCart;
+    }
 
     public function setQuantity(int $quantity): void
     {
@@ -80,7 +82,10 @@ class ShoppingCartItem
         $this->project = $project;
     }
 
-    // public function setShoppingCart(ShoppingCart $shoppingCart): void{}
+    public function setShoppingCart(?ShoppingCart $shoppingCart): void
+    {
+        $this->shoppingCart = $shoppingCart;
+    }
 
     public function getTotalPrice(): string
     {

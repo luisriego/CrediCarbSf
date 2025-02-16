@@ -13,15 +13,15 @@ trait IdentifierTrait
     #[ORM\Column(type: 'string', length: 36, options: ['fixed' => true])]
     protected readonly string $id;
 
-    private function initializeId(): void 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    private function initializeId(): void
     {
         if (!isset($this->id)) {
             $this->id = Uuid::random()->value();
         }
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 }

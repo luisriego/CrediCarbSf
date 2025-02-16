@@ -19,6 +19,6 @@ trait CreatedOnTrait
 
     protected function initializeCreatedOn(): void
     {
-        $this->createdOn = new \DateTimeImmutable();
+        $this->createdOn = new DateTimeImmutable();
     }
 }

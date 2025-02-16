@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\CertificationAuthority;
 
 use App\Tests\Functional\FunctionalTestBase;
+use Random\RandomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,12 +35,22 @@ class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
         $this->assertEquals($this->certificationAuthorityId, $responseData['CertificationAuthority']['id']);
     }
 
-    /** @test */
+    /** @test
+     * @throws RandomException
+     */
     public function shouldReturnNotFoundWhenCertificationAuthorityDoesNotExist(): void
     {
         $currentId = $this->certificationAuthorityId;
         $lastFourDigits = substr($currentId, -4);
-        $shuffledDigits = str_shuffle($lastFourDigits);
+        $shuffledDigits = '';
+
+        $digitsArray = str_split($lastFourDigits);
+        while (count($digitsArray) > 0) {
+            $index = random_int(0, count($digitsArray) - 1);
+            $shuffledDigits .= $digitsArray[$index];
+            array_splice($digitsArray, $index, 1);
+        }
+
         $modifiedId = substr($currentId, 0, -4) . $shuffledDigits;
         $this->certificationAuthorityId = $modifiedId;
 

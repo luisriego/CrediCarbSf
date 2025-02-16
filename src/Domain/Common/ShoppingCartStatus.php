@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Common;
 
+use function array_column;
+
 enum ShoppingCartStatus: string
 {
     case ACTIVE = 'active';
@@ -19,4 +21,5 @@ enum ShoppingCartStatus: string
     public function getValue(): string
     {
         return $this->value;
+    }
 }

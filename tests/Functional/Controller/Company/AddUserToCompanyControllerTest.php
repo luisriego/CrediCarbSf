@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Company;
 
-use App\Domain\Repository\CompanyRepositoryInterface;
-use App\Domain\Repository\UserRepositoryInterface;
-use App\Tests\Functional\Controller\ControllerTestBase;
 use App\Tests\Functional\FunctionalTestBase;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
