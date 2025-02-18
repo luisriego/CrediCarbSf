@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\CertificationAuthority\DeleteCertificationAuthority;
 
-use App\Application\UseCase\CertificationAuthority\GetCertificationAuthorityById\Dto\DeleteCertificationAuthorityByIdInputDto;
+use App\Application\UseCase\CertificationAuthority\DeleteCertificationAuthority\Dto\DeleteCertificationAuthorityByIdInputDto;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 
 readonly class DeleteCertificationAuthorityService

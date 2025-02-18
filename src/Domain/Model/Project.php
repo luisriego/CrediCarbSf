@@ -9,7 +9,6 @@ use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
-use App\Domain\ValueObjects\Uuid;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -72,7 +71,7 @@ class Project
         ?string $projectType,
         ?Company $owner,
     ) {
-        $this->id = Uuid::random()->value();
+        $this->initializeId();
         $this->name = $name;
         $this->description = $description;
         $this->areaHa = $areaHa;

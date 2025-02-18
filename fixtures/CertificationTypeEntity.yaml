@@ -1,0 +1,13 @@
+App\Domain\Model\CertificationTypeEntity:
+    certification_type_1:
+        __construct:
+            - 'VCS'
+            - 'Verified Carbon Standard'
+    certification_type_2:
+        __construct:
+            - 'CCB'
+            - 'Climate, Community & Biodiversity Standard'
+    certification_type_3:
+        __construct:
+            - 'SOCIALCARBON'
+            - 'Social Carbon Standard'

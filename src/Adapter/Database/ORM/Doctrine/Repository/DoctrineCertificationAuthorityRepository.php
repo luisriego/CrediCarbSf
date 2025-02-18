@@ -7,12 +7,13 @@ namespace App\Adapter\Database\ORM\Doctrine\Repository;
 use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\CertificationAuthority;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
+use App\Domain\Repository\CertificationRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineCertificationAuthorityRepository extends ServiceEntityRepository implements CertificationAuthorityRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly CertificationRepositoryInterface $certificationRepository)
     {
         parent::__construct($registry, CertificationAuthority::class);
     }
@@ -38,6 +39,13 @@ class DoctrineCertificationAuthorityRepository extends ServiceEntityRepository i
     public function remove(CertificationAuthority $authority, bool $flush): void
     {
         $this->getEntityManager()->remove($authority);
+
+        $certifications = $this->certificationRepository->findBy(['authority' => $authority]);
+
+        foreach ($certifications as $certification) {
+            $certification->setAuthority(null);
+            $this->certificationRepository->save($certification, true);
+        }
 
         if ($flush) {
             $this->getEntityManager()->flush();

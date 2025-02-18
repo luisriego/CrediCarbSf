@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Domain\Model\Company;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
@@ -38,6 +39,7 @@ class FunctionalTestBase extends WebTestCase
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
 
     protected string $companyId;
+    protected Company $company;
     protected string $projectId;
     protected string $userId;
     protected string $adminId;
@@ -109,13 +111,11 @@ class FunctionalTestBase extends WebTestCase
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
         $this->companyId = $company->getId();
+        $this->company = $company;
         $this->projectId = $project->getId();
         $this->certificationAuthorityId = $authority->getId();
     }
 
-    /**
-     * @throws Exception
-     */
     protected function createUser(string $name, string $email): void
     {
         $payload = [
