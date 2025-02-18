@@ -47,7 +47,7 @@ readonly class AddItemToShoppingCartService
         $this->shoppingCartRepository->save($shoppingCart, true);
 
         return AddItemToShoppingCartOutputDto::create(
-            $shoppingCartItem->getId(),
+            $shoppingCartItem->getShoppingCart()->getId(),
             $shoppingCart->getItems()->map(fn ($item) => $item->toArray())->toArray(),
         );
     }

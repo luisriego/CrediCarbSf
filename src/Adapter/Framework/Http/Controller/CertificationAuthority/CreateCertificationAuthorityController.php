@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-readonly class CreateCertificationAuthorityController
+class CreateCertificationAuthorityController
 {
     public function __construct(
-        private CreateCertificationAuthorityService $createCertificationAuthority,
+        private readonly CreateCertificationAuthorityService $createCertificationAuthority,
     ) {}
 
     #[Route('/api/certification-authority/create', name: 'certification_authority_create', methods: ['POST'])]

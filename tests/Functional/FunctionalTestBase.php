@@ -116,9 +116,6 @@ class FunctionalTestBase extends WebTestCase
         $this->certificationAuthorityId = $authority->getId();
     }
 
-    /**
-     * @throws Exception
-     */
     protected function createUser(string $name, string $email): void
     {
         $payload = [

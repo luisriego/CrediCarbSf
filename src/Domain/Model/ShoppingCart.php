@@ -26,7 +26,7 @@ class ShoppingCart
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'shoppingCarts')]
     private Company $owner;
 
-    #[ORM\OneToMany(targetEntity: ShoppingCartItem::class, mappedBy: 'shoppingCart', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: ShoppingCartItem::class, mappedBy: 'shoppingCart', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $items;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
@@ -111,6 +111,12 @@ class ShoppingCart
     {
         $this->items->removeElement($item);
         $item->setShoppingCart(null);
+        $this->calculateTotal();
+    }
+
+    public function removeAllItems(): void
+    {
+        $this->items->clear();
         $this->calculateTotal();
     }
 

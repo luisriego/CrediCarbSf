@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-final readonly class RemoveItemFromShoppingCartController
+final class RemoveItemFromShoppingCartController
 {
     public function __construct(
-        private RemoveItemFromShoppingCartService $removeItemFromShoppingCartService,
+        private readonly RemoveItemFromShoppingCartService $removeItemFromShoppingCartService,
     ) {}
 
     #[Route('/api/shopping-cart/remove-item/{shoppingCartItemId}', name: 'shopping_cart_remove_item', methods: ['DELETE'])]

@@ -70,6 +70,9 @@ services:
         public: true
     App\Adapter\Framework\Http\Controller\ShoppingCart\RemoveItemFromShoppingCartController:
         public: true
+    App\Adapter\Framework\Http\Controller\ShoppingCart\RemoveAllItemsFromShoppingCartController:
+        public: true
+
 
     # Event Listeners used to transform the exception into a JSON response
     App\Adapter\Framework\Listener\JsonTransformerExceptionListener:
