@@ -13,37 +13,21 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/remove-item/';
     private const ENDPOINT_ADD_ITEM = '/api/shopping-cart/add-item';
-    private string $shoppingCartItemId;
-//    private string $shoppingCartId;
-    private ShoppingCartRepositoryInterface $shoppingCartRepository;
 
     public function setUp(): void
     {
         parent::setUp();
+        $this->addItemToShoppingCart();
 
         $this->shoppingCartRepository = self::getContainer()->get(ShoppingCartRepositoryInterface::class);
-
-        // Define the payload for adding an item
+//
+//        // Define the payload for adding an item
         $this->payload = [
             'ownerId' => $this->companyId,
             'projectId' => $this->projectId,
             'quantity' => 1,
             'price' => '10.00',
         ];
-
-        self::$authenticatedClient->request(
-            Request::METHOD_POST,
-            self::ENDPOINT_ADD_ITEM,
-            [],
-            [],
-            [],
-            \json_encode($this->payload)
-        );
-
-        $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
-        $this->shoppingCartId = $responseData['shoppingCartId'];
-        $this->shoppingCartItemId = $responseData['itemIds'][0]['id'];
     }
 
     /** @test */

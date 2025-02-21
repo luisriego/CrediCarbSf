@@ -52,6 +52,26 @@ class ShoppingCartItem
         return $this->quantity;
     }
 
+    public function incrementQuantity(): void
+    {
+        $this->quantity++;
+    }
+
+    public function incrementQuantityIn(int $quantityToIncrement): void
+    {
+        $this->quantity += $quantityToIncrement;
+    }
+
+    public function decrementQuantity(): void
+    {
+        $this->quantity--;
+    }
+
+    public function decrementQuantityIn(int $quantityToDecrement): void
+    {
+        $this->quantity -= $quantityToDecrement;
+    }
+
     public function getPrice(): string
     {
         return $this->price;
