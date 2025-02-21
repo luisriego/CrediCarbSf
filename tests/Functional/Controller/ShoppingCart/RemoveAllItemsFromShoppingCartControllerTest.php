@@ -12,10 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/%s/remove-all-items';
-    private const ENDPOINT_ADD_ITEM = '/api/shopping-cart/add-item';
-    private ShoppingCartRepositoryInterface $shoppingCartRepository;
-    private string $shoppingCartId;
-    private array $payload;
 
     public function setUp(): void
     {
@@ -23,46 +19,15 @@ class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
 
         $this->shoppingCartRepository = self::getContainer()->get(ShoppingCartRepositoryInterface::class);
 
-        // Define the payload for adding an item
-        $this->payload = [
-            'ownerId' => $this->companyId,
-            'projectId' => $this->projectId,
-            'quantity' => 1,
-            'price' => '10.00',
-        ];
-
         // Add first item
         $this->addItemToShoppingCart();
 
-        // Add second item with a different project ID
-//        $this->payload['projectId'] = $this->createProject();
+        // Add second item
         $this->addItemToShoppingCart();
-
-        // Wait for the database to be updated
-        usleep(100000); // 100ms delay
-    }
-
-    private function addItemToShoppingCart(): void
-    {
-        self::$authenticatedClient->request(
-            Request::METHOD_POST,
-            self::ENDPOINT_ADD_ITEM,
-            [],
-            [],
-            [],
-            \json_encode($this->payload)
-        );
-
-        $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
-
-        if (!isset($this->shoppingCartId)) {
-            $this->shoppingCartId = $responseData['shoppingCartId'];
-        }
     }
 
     /** @test */
-    public function shouldRemoveAllItemsFromShoppingCartSuccessfully(): void
+    public function removeAllItemsFromCartSuccessfully(): void
     {
         // Verify the cart currently has items
         $shoppingCart = $this->shoppingCartRepository->findOneByIdOrFail($this->shoppingCartId);

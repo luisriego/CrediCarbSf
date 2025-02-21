@@ -10,6 +10,10 @@ services:
         resource: '../src/Adapter/Framework/Http/Controller/'
         tags: [ 'controller.service_arguments' ]
 
+    App\Adapter\Framework\Security\Voter\ShoppingCartVoter:
+        tags:
+            - { name: security.voter }
+
     App\:
         resource: '../src/'
         exclude:
@@ -71,6 +75,8 @@ services:
     App\Adapter\Framework\Http\Controller\ShoppingCart\RemoveItemFromShoppingCartController:
         public: true
     App\Adapter\Framework\Http\Controller\ShoppingCart\RemoveAllItemsFromShoppingCartController:
+        public: true
+    App\Adapter\Framework\Http\Controller\ShoppingCart\UpdateItemQuantityInShoppingCartController:
         public: true
 
 

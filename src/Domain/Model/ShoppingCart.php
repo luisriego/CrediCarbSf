@@ -60,6 +60,11 @@ class ShoppingCart
         $this->owner = $Owner;
     }
 
+    public function isOwner(string $ownerId): bool
+    {
+        return $this->owner->getId() === $ownerId;
+    }
+
     public function getItems(): Collection
     {
         return $this->items;

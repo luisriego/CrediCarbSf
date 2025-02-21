@@ -43,6 +43,8 @@ class FunctionalTestBase extends WebTestCase
     protected string $projectId;
     protected string $userId;
     protected string $adminId;
+    protected string $shoppingCartId;
+    protected string $shoppingCartItemId;
 
     /**
      * @throws Exception
@@ -139,6 +141,30 @@ class FunctionalTestBase extends WebTestCase
             Request::METHOD_POST,
             self::CREATE_COMPANY_ENDPOINT,
             [], [], [], \json_encode($payload));
+    }
+
+    protected function addItemToShoppingCart(): void
+    {
+        $payload = [
+            'ownerId' => $this->companyId,
+            'projectId' => $this->projectId,
+            'quantity' => 1,
+            'price' => '10.00',
+        ];
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            '/api/shopping-cart/add-item',
+            [],
+            [],
+            [],
+            \json_encode($payload)
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+        $responseData = \json_decode($response->getContent(), true);
+        $this->shoppingCartId = $responseData['shoppingCartId'];
+        $this->shoppingCartItemId = $responseData['itemIds'][0]['id'];
     }
 
     protected static function initDBConnection(): Connection
