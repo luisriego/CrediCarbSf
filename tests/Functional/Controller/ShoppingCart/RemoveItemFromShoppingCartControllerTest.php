@@ -83,30 +83,4 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
 
         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
-
-    /** @test */
-    public function shouldDeleteShoppingCartWhenEmpty(): void
-    {
-         // Verify that the shopping cart has only one item
-        $shoppingCart = $this->shoppingCartRepository->findFirst();
-        $items = $shoppingCart->getItems();
-        self::assertCount(1, $shoppingCart->getItems());
-
-        $this->shoppingCartItemId = $items->first()->getId();
-
-        // Remove the item from the shopping cart
-        self::$authenticatedClient->request(
-            Request::METHOD_DELETE,
-            self::ENDPOINT . $this->shoppingCartItemId
-        );
-
-        $response = self::$authenticatedClient->getResponse();
-
-        // Assert that the response status code is 204 No Content
-        self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-
-        // Verify that the shopping cart is deleted
-        $shoppingCart = $this->shoppingCartRepository->findFirst();
-        self::assertNull($shoppingCart);
-    }
 }

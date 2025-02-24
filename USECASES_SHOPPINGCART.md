@@ -1,4 +1,4 @@
-### Use Case 1: Add Item to Cart
+### Use Case 1: Add Item to Cart ✅
 
 **Description:** As a user, I want to add an item to my shopping cart so that I can purchase it later.
 
@@ -18,7 +18,7 @@
 - Item is added to the cart
 - Cart total is updated
 
-### Use Case 2: Remove Item from Cart
+### Use Case 2: Remove Item from Cart ✅
 
 **Description:** As a user, I want to remove an item from my shopping cart.
 
@@ -37,7 +37,7 @@
 - Item is removed from cart
 - Cart total is updated
 
-### Use Case 3: Update Item Quantity
+### Use Case 3: Update Item Quantity ✅
 
 **Description:** As a user, I want to update the quantity of an item in my cart.
 
@@ -58,7 +58,7 @@
 - Item quantity is updated
 - Cart total is updated
 
-### Use Case 4: Clear Shopping Cart
+### Use Case 4: Clear Shopping Cart ✅
 
 **Description:** As a user, I want to remove all items from my shopping cart.
 

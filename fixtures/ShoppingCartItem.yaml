@@ -1,0 +1,8 @@
+App\Domain\Model\ShoppingCartItem:
+  shopping_cart_item_1:
+    __construct: ['@project_1', 2, '100.00']
+    shoppingCart: '@shopping_cart_1'
+
+  shopping_cart_item_2:
+    __construct: ['@project_2', 1, '70.00']
+    shoppingCart: '@shopping_cart_1'

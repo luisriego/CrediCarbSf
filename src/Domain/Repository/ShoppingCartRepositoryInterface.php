@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Repository;
 
+use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\ShoppingCart;
 
 interface ShoppingCartRepositoryInterface
@@ -17,6 +18,8 @@ interface ShoppingCartRepositoryInterface
     public function findOneByIdOrFail(string $id): ShoppingCart;
 
     public function findOwnerById(string $ownerId): ?ShoppingCart;
+
+    public function findOneByOwnerIdOrFail(string $ownerId): ShoppingCart|ResourceNotFoundException;
 
     public function findFirst(): ?ShoppingCart;
 }
