@@ -8,10 +8,10 @@ use App\Domain\Model\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-readonly class UserFinder
+class UserFinder
 {
     public function __construct(
-        private Security $security
+        private readonly Security $security
     ) {
     }
 

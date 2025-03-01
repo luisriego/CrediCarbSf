@@ -37,9 +37,9 @@ readonly class AddItemToShoppingCartService
             $shoppingCart = new ShoppingCart($owner);
         }
 
-        //        if (!$this->authorizationChecker->isGranted('modify', $shoppingCart)) {
-        //            throw new \DomainException('You are not the owner of this shopping cart.');
-        //        }
+        if (!$this->authorizationChecker->isGranted('modify', $shoppingCart)) {
+            throw new \DomainException('You are not the owner of this shopping cart.');
+        }
 
         $shoppingCartItem = new ShoppingCartItem(
             $project,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCase\ShoppingCart\CheckoutShoppingCart;
 
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutputDto;
+use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
@@ -36,7 +37,7 @@ final readonly class CheckoutShoppingCartService
     private function validateStock($shoppingCart): void
     {
         foreach ($shoppingCart->getItems() as $item) {
-            if ($item->getQuantity() > $item->getProject()->getStock()) {
+            if ($item->getQuantity() > $item->getProject()->getQuantity()) {
                 throw new InsufficientStockException($item->getProject()->getName());
             }
         }
