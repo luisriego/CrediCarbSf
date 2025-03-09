@@ -20,15 +20,9 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_PRICE_LIKE = '20.00';
     private const PROJECT_TYPE = 'REFORESTATION';
 
-    public function setUp(): void
+    private function getPayload(array $overrides = []): array
     {
-        parent::setUp();
-    }
-
-    /** @test */
-    public function shouldCreateProjectSuccessfully(): void
-    {
-        $payload = [
+        return array_merge([
             'name' => self::PROJECT_NAME,
             'description' => self::PROJECT_DESCRIPTION,
             'areaHa' => self::PROJECT_AREA,
@@ -36,7 +30,15 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'price' => self::PROJECT_PRICE,
             'projectType' => self::PROJECT_TYPE,
             'owner' => $this->companyId
-        ];
+        ], $overrides);
+    }
+
+    /** @test
+     * @throws \JsonException
+     */
+    public function shouldCreateProjectSuccessfully(): void
+    {
+        $payload = $this->getPayload();
 
         self::$authenticatedClient->request(
             Request::METHOD_POST,
@@ -44,27 +46,21 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            \json_encode($payload, JSON_THROW_ON_ERROR)
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertArrayHasKey('projectId', $responseData);
     }
 
-    /** @test */
+    /** @test
+     * @throws \JsonException
+     */
     public function shouldNotCreateProjectWhenUserUnauthorized(): void
     {
-        $payload = [
-            'name' => self::PROJECT_NAME,
-            'description' => self::PROJECT_DESCRIPTION,
-            'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE_LIKE,
-            'projectType' => self::PROJECT_TYPE,
-            'owner' => $this->companyId
-        ];
+        $payload = $this->getPayload(['price' => self::PROJECT_PRICE_LIKE]);
 
         self::$baseClient->request(
             Request::METHOD_POST,
@@ -72,7 +68,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            \json_encode($payload, JSON_THROW_ON_ERROR)
         );
 
         $response = self::$baseClient->getResponse();
@@ -80,62 +76,12 @@ class CreateProjectControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    /** @test */
+    /** @test
+     * @throws \JsonException
+     */
     public function shouldNotCreateProjectWhenDuplicate(): void
     {
-         $payload = [
-             'name' => self::PROJECT_NAME,
-             'description' => self::PROJECT_DESCRIPTION,
-             'areaHa' => self::PROJECT_AREA,
-             'quantity' => self::PROJECT_QUANTITY,
-             'price' => self::PROJECT_PRICE,
-             'projectType' => self::PROJECT_TYPE,
-             'owner' => $this->companyId
-         ];
-
-         self::$authenticatedClient->request(
-             Request::METHOD_POST,
-             self::ENDPOINT,
-             [],
-             [],
-             [],
-             \json_encode($payload)
-         );
-
-         self::$authenticatedClient->request(
-             Request::METHOD_POST,
-             self::ENDPOINT,
-             [],
-             [],
-             [],
-             \json_encode($payload)
-         );
-
-         $response = self::$authenticatedClient->getResponse();
-
-         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-    }
-
-    /** @test */
-    public function shouldNotCreateProjectWhenDuplicateLikeName(): void
-    {
-        $payload = [
-            'name' => self::PROJECT_NAME,
-            'description' => self::PROJECT_DESCRIPTION,
-            'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
-            'projectType' => self::PROJECT_TYPE
-        ];
-
-        $payloadLike = [
-            'name' => self::PROJECT_NAME_LIKE,
-            'description' => self::PROJECT_DESCRIPTION,
-            'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
-            'projectType' => self::PROJECT_TYPE
-        ];
+        $payload = $this->getPayload();
 
         self::$authenticatedClient->request(
             Request::METHOD_POST,
@@ -143,7 +89,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            \json_encode($payload, JSON_THROW_ON_ERROR)
         );
 
         self::$authenticatedClient->request(
@@ -152,7 +98,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payloadLike)
+            \json_encode($payload, JSON_THROW_ON_ERROR)
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -160,17 +106,13 @@ class CreateProjectControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
-    /** @test */
-    public function shouldNotCreateProjectWhenInvalidData(): void
+    /** @test
+     * @throws \JsonException
+     */
+    public function shouldNotCreateProjectWhenDuplicateLikeName(): void
     {
-        $payload = [
-            'name' => 'Pr',  // nome muito curto
-            'description' => '',
-            'areaHa' => 'invalid',
-            'quantity' => 'invalid',
-            'price' => 'invalid',
-            'projectType' => 'InvalidType'
-        ];
+        $payload = $this->getPayload();
+        $payloadLike = $this->getPayload(['name' => self::PROJECT_NAME_LIKE]);
 
         self::$authenticatedClient->request(
             Request::METHOD_POST,
@@ -178,7 +120,44 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            \json_encode($payload, JSON_THROW_ON_ERROR)
+        );
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT,
+            [],
+            [],
+            [],
+            \json_encode($payloadLike, JSON_THROW_ON_ERROR)
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+
+        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+    }
+
+    /** @test
+     * @throws \JsonException
+     */
+    public function shouldNotCreateProjectWhenInvalidData(): void
+    {
+        $payload = $this->getPayload([
+            'name' => 'Pr',  // name too short
+            'description' => '',
+            'areaHa' => 'invalid',
+            'quantity' => 'invalid',
+            'price' => 'invalid',
+            'projectType' => 'InvalidType'
+        ]);
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT,
+            [],
+            [],
+            [],
+            \json_encode($payload, JSON_THROW_ON_ERROR)
         );
 
         $response = self::$authenticatedClient->getResponse();

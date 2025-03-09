@@ -8,10 +8,10 @@ use App\Domain\Common\CertificationType;
 use App\Domain\Model\CertificationTypeEntity;
 use App\Domain\Repository\CertificationTypeRepositoryInterface;
 
-final class CreateCertificationHandler
+final readonly class CreateCertificationHandler
 {
     public function __construct(
-        private readonly CertificationTypeRepositoryInterface $certificationRepository,
+        private CertificationTypeRepositoryInterface $certificationRepository,
     ) {}
 
     public function handle(): void

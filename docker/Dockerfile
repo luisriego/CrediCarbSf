@@ -28,6 +28,13 @@ RUN apt update \
     # enable Docker extensions
     && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug apcu
 
+RUN apt update \
+    && apt install -y libcurl4-openssl-dev pkg-config libssl-dev libnghttp2-dev \
+    && pecl install raphf \
+    && docker-php-ext-enable raphf \
+    && pecl install pecl_http \
+    && docker-php-ext-enable http
+
 # Install and update composer
 RUN curl https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 RUN composer self-update
@@ -51,5 +58,8 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 
 # Modify upload file size
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+# Set memory limit
+RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
 
 WORKDIR /var/www/html

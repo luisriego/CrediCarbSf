@@ -8,6 +8,7 @@ use App\Domain\Model\Company;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
+use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -110,12 +111,14 @@ class FunctionalTestBase extends WebTestCase
         $authority = static::getContainer()->get(CertificationAuthorityRepositoryInterface::class)->findOneBy(['taxpayer' => '48846500000175']);
         $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
         $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
+        $shoppingCart = static::getContainer()->get(ShoppingCartRepositoryInterface::class)->findOneBy(['owner' => $company]);
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
         $this->companyId = $company->getId();
         $this->company = $company;
         $this->projectId = $project->getId();
         $this->certificationAuthorityId = $authority->getId();
+        $this->shoppingCartId = $shoppingCart->getId();
     }
 
     protected function createUser(string $name, string $email): void
@@ -165,6 +168,29 @@ class FunctionalTestBase extends WebTestCase
         $responseData = \json_decode($response->getContent(), true);
         $this->shoppingCartId = $responseData['shoppingCartId'];
         $this->shoppingCartItemId = $responseData['itemIds'][0]['id'];
+    }
+
+    protected function purgeDatabase(): void
+    {
+        $connection = self::$kernel->getContainer()->get('doctrine')->getConnection();
+
+        // Disable foreign key checks
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+
+        $tables = [
+            'shopping_cart_item',
+            'shopping_cart',
+            'project',
+            'company',
+            // Add other tables in correct order
+        ];
+
+        foreach ($tables as $table) {
+            $connection->executeQuery("TRUNCATE TABLE `$table`");
+        }
+
+        // Re-enable foreign key checks
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
     }
 
     protected static function initDBConnection(): Connection

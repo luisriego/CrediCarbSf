@@ -1,0 +1,3 @@
+App\Domain\Model\ShoppingCart:
+    shopping_cart_1:
+        __construct: ['@company_3']

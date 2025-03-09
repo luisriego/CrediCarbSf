@@ -6,14 +6,6 @@ This repository contains the basic configuration to run Symfony applications wit
 - PHP-APACHE container running version 8.2
 - MySQL container running version 8.2.0
 
-## Instructions
-- `make build` to build the containers
-- `make start` to start the containers
-- `make stop` to stop the containers
-- `make restart` to restart the containers
-- `make prepare` to install dependencies with composer (once the project has been created)
-- `make logs` to see application logs
-- `make ssh` to SSH into the application container
 
 ## Create and Run the application
 - [Optional] Replace all the occurrences of symfony-app in the whole project with some name more meaningful for your project
@@ -38,6 +30,31 @@ docker-compose.yml
 ###< symfony/framework-bundle ###
 ```
 - Once you have installed you Symfony application go to http://localhost:1000
+
+## Instructions
+- `make build` to build the containers
+- `make start` to start the containers
+- `make stop` to stop the containers
+- `make restart` to restart the containers
+- `make prepare` to install dependencies with composer (once the project has been created)
+- `make logs` to see application logs
+- `make ssh` to SSH into the application container
+
+In the container:
+- `sf lexik:jwt:generate-keypair` to generate the JWT keys
+
+## Database
+- The database is created automatically when the MySQL container is started
+- If you need to re-create the database, you can do it with the following command
+```
+sf d:d:c
+sf d:d:c --env=test
+```
+- To create the tables in the database, you can run the migrations
+```
+sf d:m:m -n
+sf d:m:m -n --env=test
+```
 
 ## For testing
 Insert phpunit testing with composer '

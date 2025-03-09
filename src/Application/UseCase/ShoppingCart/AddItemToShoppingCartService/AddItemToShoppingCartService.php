@@ -14,6 +14,7 @@ use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
+use DomainException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 readonly class AddItemToShoppingCartService
@@ -37,9 +38,9 @@ readonly class AddItemToShoppingCartService
             $shoppingCart = new ShoppingCart($owner);
         }
 
-        //        if (!$this->authorizationChecker->isGranted('modify', $shoppingCart)) {
-        //            throw new \DomainException('You are not the owner of this shopping cart.');
-        //        }
+        if (!$this->authorizationChecker->isGranted('modify', $shoppingCart)) {
+            throw new DomainException('You are not the owner of this shopping cart.');
+        }
 
         $shoppingCartItem = new ShoppingCartItem(
             $project,
