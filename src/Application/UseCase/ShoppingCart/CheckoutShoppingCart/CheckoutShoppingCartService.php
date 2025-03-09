@@ -8,17 +8,22 @@ use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutput
 use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
+use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
+use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 
 final readonly class CheckoutShoppingCartService
 {
     public function __construct(
         private ShoppingCartRepositoryInterface $repository,
-        private UserFinder                      $userFinder
-    ) {
-    }
+        private DiscountRepositoryInterface $discountRepository,
+        private UserFinder $userFinder,
+    ) {}
 
-    public function handle(): CheckoutOutputDto
+    /**
+     * @throws InvalidDiscountException
+     */
+    public function handle(?string $discountCode = null): CheckoutOutputDto
     {
         $user = $this->userFinder->getCurrentUser();
         $shoppingCart = $this->repository->findOneByOwnerIdOrFail($user->getCompany()->getId());
@@ -27,11 +32,21 @@ final readonly class CheckoutShoppingCartService
             throw new EmptyCartException();
         }
 
+        $discount = null;
+
+        if ($discountCode !== null) {
+            $discount = $this->discountRepository->findOneByCodeOrFail($discountCode);
+
+            if (!$discount->isValid()) {
+                throw InvalidDiscountException::createWithMessage('Invalid discount code');
+            }
+        }
+
         $this->validateStock($shoppingCart);
         $shoppingCart->checkout();
         $this->repository->save($shoppingCart, true);
 
-        return CheckoutOutputDto::fromEntity($shoppingCart);
+        return CheckoutOutputDto::fromEntity($shoppingCart, $discount);
     }
 
     private function validateStock($shoppingCart): void

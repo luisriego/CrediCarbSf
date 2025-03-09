@@ -8,6 +8,6 @@ readonly class ViewCartSummaryOutputDto
 {
     public function __construct(
         public array $items,
-        public string $total
+        public string $total,
     ) {}
 }

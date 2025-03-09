@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->token = sha1(uniqid());
+        $this->token = sha1(uniqid('', true));
         $this->age = 18;
         $this->isActive = false;
         $this->createdOn = new DateTimeImmutable();

@@ -25,6 +25,31 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
         $this->assertJson($response->getContent());
     }
 
+    /**
+     * @throws \JsonException
+     */
+    public function shouldCheckoutShoppingCartSuccessfullyWithDiscount(): void
+    {
+        $discountCode = 'DISCOUNT2023'; // Example discount code
+
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['discountCode' => $discountCode], JSON_THROW_ON_ERROR)
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertArrayHasKey('discountedTotal', $responseData);
+        $this->assertNotNull($responseData['discountedTotal']);
+    }
+
     /** @test */
     public function shouldNotCheckoutShoppingCartWhenUnauthorized(): void
     {

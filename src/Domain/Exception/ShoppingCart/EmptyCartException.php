@@ -6,7 +6,7 @@ namespace App\Domain\Exception\ShoppingCart;
 
 use DomainException;
 
-class EmptyCartException extends  DomainException
+class EmptyCartException extends DomainException
 {
     public function __construct()
     {

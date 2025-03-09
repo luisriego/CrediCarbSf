@@ -2,7 +2,7 @@
 
 **Description:** As a user, I want to add an item to my shopping cart so that I can purchase it later.
 
-**Endpoint:** `POST /cart/items`
+**Endpoint:** `POST /api/shopping-cart/items`
 
 **Steps:**
 1. User sends a POST request with product ID and quantity.
@@ -22,7 +22,7 @@
 
 **Description:** As a user, I want to remove an item from my shopping cart.
 
-**Endpoint:** `DELETE /cart/items/{itemId}`
+**Endpoint:** `DELETE /api/shopping-cart/items/{itemId}`
 
 **Steps:**
 1. User sends DELETE request with item ID.
@@ -41,7 +41,7 @@
 
 **Description:** As a user, I want to update the quantity of an item in my cart.
 
-**Endpoint:** `PUT /cart/items/{itemId}`
+**Endpoint:** `PUT /api/shopping-cart/items/{itemId}`
 
 **Steps:**
 1. User sends PUT request with item ID and new quantity.
@@ -62,7 +62,7 @@
 
 **Description:** As a user, I want to remove all items from my shopping cart.
 
-**Endpoint:** `DELETE /cart`
+**Endpoint:** `DELETE /api/shopping-cart`
 
 **Steps:**
 1. User sends DELETE request to clear cart.
@@ -77,11 +77,11 @@
 - Cart is empty
 - Cart total is zero
 
-### Use Case 5: View Cart Summary
+### Use Case 5: View Cart Summary ✅
 
 **Description:** As a user, I want to view my current shopping cart contents and total.
 
-**Endpoint:** `GET /cart`
+**Endpoint:** `GET /api/shopping-cart`
 
 **Steps:**
 1. User requests cart information.
@@ -94,11 +94,11 @@
 **Postconditions:**
 - User receives cart contents and total
 
-### Use Case 6: Proceed to Checkout
+### Use Case 6: Proceed to Checkout ✅
 
 **Description:** As a user, I want to proceed to checkout with my current cart items.
 
-**Endpoint:** `POST /cart/checkout`
+**Endpoint:** `POST /api/shopping-cart/checkout`
 
 **Steps:**
 1. User initiates checkout process.
@@ -121,7 +121,7 @@
 
 **Description:** As a user, I want to apply a discount code to my cart.
 
-**Endpoint:** `POST /cart/discount`
+**Endpoint:** `POST /api/shopping-cart/discount`
 
 **Steps:**
 1. User submits discount code.
@@ -133,6 +133,7 @@
 - User must be authenticated
 - Cart must not be empty
 - Discount code must be valid
+- Discount code applies to cart items
 
 **Postconditions:**
 - Discount is applied to cart

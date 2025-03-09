@@ -6,7 +6,6 @@ namespace App\Application\UseCase\ShoppingCart\ViewCartSummary;
 
 use App\Application\UseCase\ShoppingCart\ViewCartSummary\Dto\ViewCartSummaryOutputDto;
 use App\Domain\Model\User;
-use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 
 readonly class ViewCartSummaryService
@@ -19,13 +18,13 @@ readonly class ViewCartSummaryService
     {
         $shoppingCart = $this->shoppingCartRepository->findOneByOwnerIdOrFail($actualUser->getCompany()->getId());
 
-//        if (null === $actualUser->getCompany()) {
-//            return new ViewCartSummaryOutputDto([], '0.00');
-//        }
+        //        if (null === $actualUser->getCompany()) {
+        //            return new ViewCartSummaryOutputDto([], '0.00');
+        //        }
 
         return new ViewCartSummaryOutputDto(
             $shoppingCart->toArray(),
-            $shoppingCart->getTotal()
+            $shoppingCart->getTotal(),
         );
     }
 }

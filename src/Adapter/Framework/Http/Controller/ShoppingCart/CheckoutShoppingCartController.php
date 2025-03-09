@@ -7,20 +7,19 @@ namespace App\Adapter\Framework\Http\Controller\ShoppingCart;
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\CheckoutShoppingCartService;
 use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CheckoutShoppingCartController extends AbstractController
 {
     public function __construct(
-        private readonly CheckoutShoppingCartService     $service,
+        private readonly CheckoutShoppingCartService $service,
         private readonly ShoppingCartRepositoryInterface $repository,
         private readonly UserFinder $userFinder,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/shopping-cart/checkout', name: 'checkout_shopping_cart', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]

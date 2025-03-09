@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use function array_reduce;
+use function max;
 use function number_format;
 
 #[ORM\Entity(repositoryClass: ShoppingCartRepositoryInterface::class)]
@@ -125,21 +127,34 @@ class ShoppingCart
         $this->calculateTotal();
     }
 
-    public function calculateTotal(): void
+    public function calculateTotal(?Discount $discount = null): void
     {
-        $total = 0;
-        $tax = 0;
+        $total = array_reduce($this->getItems()->toArray(), static function ($sum, $item) use ($discount) {
+            $itemTotal = (float) $item->getTotalPrice();
 
-        foreach ($this->items as $item) {
-            $total += $item->getPrice() * $item->getQuantity();
-            $tax += $item->getPrice() * $item->getQuantity() * 0.1;
+            if ($discount !== null && $discount->getTargetProject() !== null && $discount->getTargetProject()->getId() === $item->getProject()->getId()) {
+                $itemTotal = $discount->applyToAmount((int) $itemTotal);
+            }
+
+            return $sum + $itemTotal;
+        }, 0.0);
+
+        if ($discount !== null && $discount->getTargetProject() === null) {
+            $total = $discount->applyToAmount((int) $total);
         }
-        $this->total = number_format($total, 2, '.', '');
-        $this->tax = number_format($tax, 2, '.', '');
+
+        $this->total = number_format(max($total, 0), 2, '.', '');
     }
 
-    public function checkout(): void
+    public function calculateTax(float $taxRate): void
     {
+        $total = (float) $this->total;
+        $this->tax = number_format($total * $taxRate, 2, '.', '');
+    }
+
+    public function checkout(?Discount $discount = null): void
+    {
+        $this->calculateTotal($discount);
         $this->status = ShoppingCartStatus::COMPLETED;
     }
 

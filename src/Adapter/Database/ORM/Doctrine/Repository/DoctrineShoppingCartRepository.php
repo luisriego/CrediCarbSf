@@ -58,7 +58,7 @@ class DoctrineShoppingCartRepository extends ServiceEntityRepository implements 
         return $this->findOneBy(['owner' => $ownerId]);
     }
 
-    public function findOneByOwnerIdOrFail(string $ownerId): ShoppingCart|ResourceNotFoundException
+    public function findOneByOwnerIdOrFail(string $ownerId): ResourceNotFoundException|ShoppingCart
     {
         if (null === $shoppingCart = $this->findOneBy(['owner' => $ownerId])) {
             throw ResourceNotFoundException::createFromClassAndId(ShoppingCart::class, $ownerId);

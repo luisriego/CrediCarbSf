@@ -6,6 +6,8 @@ namespace App\Domain\Exception\ShoppingCart;
 
 use DomainException;
 
+use function sprintf;
+
 class InsufficientStockException extends DomainException
 {
     public function __construct(string $productName)

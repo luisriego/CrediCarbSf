@@ -11,9 +11,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UserFinder
 {
     public function __construct(
-        private readonly Security $security
-    ) {
-    }
+        private readonly Security $security,
+    ) {}
 
     public function getCurrentUser(): User
     {

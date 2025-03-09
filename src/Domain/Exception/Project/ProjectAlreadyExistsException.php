@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Exception\Project;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
 use function sprintf;
 
 final class ProjectAlreadyExistsException extends HttpException

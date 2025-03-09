@@ -16,9 +16,8 @@ readonly class ViewCartSummaryController
 {
     public function __construct(
         private ViewCartSummaryService $viewCartSummaryUseCase,
-        private Security $security
-    ) {
-    }
+        private Security $security,
+    ) {}
 
     #[Route('/api/shopping-cart', name: 'shopping_cart_summary', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
