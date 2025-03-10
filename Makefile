@@ -3,6 +3,8 @@
 UID = $(shell id -u)
 DOCKER_BE = cch-app
 
+.PHONY: help start stop restart build prepare run logs composer-install ssh db-create fixtures-load setup-db
+
 help: ## Show this help message
 	@echo 'usage: make [target]'
 	@echo
@@ -27,6 +29,7 @@ build: ## Rebuilds all the containers
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
+	$(MAKE) setup-db
 
 run: ## starts the Symfony development server in detached mode
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony serve -d
@@ -41,3 +44,16 @@ composer-install: ## Installs composer dependencies
 
 ssh: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+
+db-create: ## Create the database
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
+
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
+
+fixtures-load: ## Load fixtures
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console hautelook:fixtures:load --no-interaction
+
+setup-db: ## Create the database and load fixtures
+	$(MAKE) db-create && $(MAKE) fixtures-load
