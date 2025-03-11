@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\ShoppingCart;
 
-use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/%s/quantity';
-    private const ENDPOINT_ADD_ITEM = '/api/shopping-cart/add-item';
+
+    private array $payload;
 
     public function setUp(): void
     {
