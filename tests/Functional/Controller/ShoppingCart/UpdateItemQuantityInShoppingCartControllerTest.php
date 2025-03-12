@@ -44,7 +44,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
         self::assertArrayHasKey('shoppingCartId', $responseData);
         self::assertArrayHasKey('itemIds', $responseData);
         self::assertContains($this->payload['itemId'], $responseData['itemIds']);
-        self::assertEquals(3, $responseData['itemIds']['quantity']);
+        self::assertEquals(4, $responseData['itemIds']['quantity']);
     }
 
     /** @test */

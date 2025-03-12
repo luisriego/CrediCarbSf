@@ -44,7 +44,7 @@ class CreateCompanyTest extends FunctionalTestBase
             ->expects($this->once())
             ->method('add')
             ->with($this->callback(function (Company $company): bool {
-                return $company->getFantasyName() === 'Test Company';
+                return $company->fantasyName() === 'Test Company';
             }));
 
         $responseDTO = $this->createCompany->handle($inputDto);

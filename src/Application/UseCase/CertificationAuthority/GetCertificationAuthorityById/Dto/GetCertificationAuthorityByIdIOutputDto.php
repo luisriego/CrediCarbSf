@@ -15,7 +15,7 @@ readonly class GetCertificationAuthorityByIdIOutputDto
         return new self(
             [
                 'id' => $certificationAuthority->getId(),
-                'taxpayer' => $certificationAuthority->getTaxPayer(),
+                'taxpayer' => $certificationAuthority->taxPayer(),
                 'name' => $certificationAuthority->getName(),
                 'website' => $certificationAuthority->getWebsite(),
                 'createdOn' => $certificationAuthority->getCreatedOn(),

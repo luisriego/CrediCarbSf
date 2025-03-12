@@ -54,7 +54,7 @@ class CertificationAuthority
         );
     }
 
-    public function getTaxpayer(): ?string
+    public function taxPayer(): ?string
     {
         return $this->taxpayer;
     }

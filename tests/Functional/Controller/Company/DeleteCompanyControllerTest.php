@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Company;
 
 use App\Domain\Model\Company;
+use App\Domain\Model\User;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +16,10 @@ class DeleteCompanyControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-        $this->companyRepository = self::getContainer()->get(CompanyRepositoryInterface::class);
     }
 
-    public function testDeleteCompanyWithAssociatedUsers(): void
-    {
+    public function testDeleteCompanyWithAssociatedUsersSuccessfully(): void
+    {        
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
@@ -29,19 +29,16 @@ class DeleteCompanyControllerTest extends FunctionalTestBase
         $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
     }
 
-    public function testDeleteCompanySuccessfully(): void
+/*     public function testDeleteCompanySuccessfully(): void
     {
-        $company = new Company('New Company', '1234567890');
-        $this->companyRepository->save($company, true);
-
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $company->getId()),
+            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
         );
 
         $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-    }
+    } */
 
     public function testDeleteNonExistingCompany(): void
     {

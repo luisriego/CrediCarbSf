@@ -8,13 +8,16 @@ use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
+use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 use InvalidArgumentException;
 
 use function mb_strlen;
 use function preg_replace;
+use function sprintf;
 
 #[ORM\Entity(repositoryClass: CompanyRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -23,6 +26,7 @@ class Company
     use IdentifierTrait;
     use TimestampableTrait;
     use IsActiveTrait;
+    use AssertTaxpayerValidatorTrait;
 
     public const TAXPAYER_MIN_LENGTH = 14;
     public const TAXPAYER_MAX_LENGTH = 14;
@@ -47,13 +51,14 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    private function __construct(string $taxpayer, ?string $fantasyName)
+    public function __construct(string $taxpayer, ?string $fantasyName)
     {
-        $this->validateTaxpayer($taxpayer);
+        $this->assertValidTaxpayer($taxpayer);
+        $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
         $this->validateFantasyName($fantasyName);
 
         $this->initializeId();
-        $this->taxpayer = $this->sanitizeTaxpayer($taxpayer);
+        $this->taxpayer = $cleanTaxpayer;
         $this->fantasyName = $fantasyName;
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
@@ -67,7 +72,17 @@ class Company
         return new self($taxpayer, $fantasyName);
     }
 
-    public function updateDetails(string $fantasyName): void
+    public function fantasyName(): ?string
+    {
+        return $this->fantasyName;
+    }
+
+    public function taxpayer(): string
+    {
+        return $this->taxpayer;
+    }
+
+    public function updateFantasyName(string $fantasyName): void
     {
         $this->validateFantasyName($fantasyName);
         $this->fantasyName = $fantasyName;
@@ -77,8 +92,8 @@ class Company
     public function activate(): self
     {
         if ($this->isActive === self::STATUS_ACTIVE) {
-            throw new \DomainException(
-                sprintf('Company %s is already active', $this->id)
+            throw new DomainException(
+                sprintf('Company %s is already active', $this->id),
             );
         }
 
@@ -91,8 +106,8 @@ class Company
     public function deactivate(): self
     {
         if ($this->isActive === self::STATUS_INACTIVE) {
-            throw new \DomainException(
-                sprintf('Company %s is already inactive', $this->id)
+            throw new DomainException(
+                sprintf('Company %s is already inactive', $this->id),
             );
         }
 
@@ -115,13 +130,13 @@ class Company
     public function assignUserToCompany(User $user): void
     {
         if (!$this->isActive) {
-            throw new \DomainException('Cannot assign user to inactive company');
+            throw new DomainException('Cannot assign user to inactive company');
         }
 
         if (!$this->users->contains($user)) {
             $this->users->add($user);
             $user->setCompany($this);
-//            $user->assignToCompany($this);
+            //            $user->assignToCompany($this);
         }
     }
 
@@ -129,44 +144,34 @@ class Company
     {
         if ($this->users->removeElement($user)) {
             $user->setCompany(null);
-//            $user->removeFromCompany($this); // more semantic sentence
+            //            $user->removeFromCompany($this); // more semantic sentence
         }
     }
 
     public function registerOwnedProject(Project $project): void
     {
         if (!$this->isActive) {
-            throw new \DomainException('Cannot register project for inactive company');
+            throw new DomainException('Cannot register project for inactive company');
         }
 
         if (!$this->ownedProjects->contains($project)) {
             $this->ownedProjects->add($project);
             $project->setOwner($this);
-//            $project->assignOwner($this); // more semantic sentence
+            //            $project->assignOwner($this); // more semantic sentence
         }
     }
 
     public function purchaseProject(Project $project): void
     {
         if (!$this->isActive) {
-            throw new \DomainException('Cannot purchase project with inactive company');
+            throw new DomainException('Cannot purchase project with inactive company');
         }
 
         if (!$this->boughtProjects->contains($project)) {
             $this->boughtProjects->add($project);
             $project->setBuyer($this);
-//            $project->assignBuyer($this); // more semantic sentence
+            //            $project->assignBuyer($this); // more semantic sentence
         }
-    }
-
-    public function taxpayerId(): string
-    {
-        return $this->taxpayer;
-    }
-
-    public function displayName(): ?string
-    {
-        return $this->fantasyName;
     }
 
     public function formattedTaxpayer(): string
@@ -184,33 +189,6 @@ class Company
         return $this->ownedProjects->contains($project) || $this->boughtProjects->contains($project);
     }
 
-    private function validateTaxpayer(string $taxpayer): void
-    {
-        $cleanTaxpayer = $this->sanitizeTaxpayer($taxpayer);
-        
-        if (mb_strlen($cleanTaxpayer) !== self::TAXPAYER_MAX_LENGTH) {
-            throw new InvalidArgumentException(
-                sprintf('Taxpayer must be exactly %d digits', self::TAXPAYER_MAX_LENGTH)
-            );
-        }
-    }
-
-    private function validateFantasyName(?string $fantasyName): void
-    {
-        if ($fantasyName !== null && 
-            (mb_strlen($fantasyName) < self::NAME_MIN_LENGTH || mb_strlen($fantasyName) > self::NAME_MAX_LENGTH)
-        ) {
-            throw new InvalidArgumentException(
-                sprintf('Fantasy name must be between %d and %d characters', self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH)
-            );
-        }
-    }
-
-    private function sanitizeTaxpayer(string $taxpayer): string
-    {
-        return preg_replace('/[^0-9]/', '', $taxpayer);
-    }
-
     public function toArray(): array
     {
         return [
@@ -221,5 +199,16 @@ class Company
             'createdOn' => $this->createdOn->format('Y-m-d H:i:s'),
             'updatedOn' => $this->updatedOn?->format('Y-m-d H:i:s'),
         ];
+    }
+
+    private function validateFantasyName(?string $fantasyName): void
+    {
+        if ($fantasyName !== null
+            && (mb_strlen($fantasyName) < self::NAME_MIN_LENGTH || mb_strlen($fantasyName) > self::NAME_MAX_LENGTH)
+        ) {
+            throw new InvalidArgumentException(
+                sprintf('Fantasy name must be between %d and %d characters', self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH),
+            );
+        }
     }
 }
