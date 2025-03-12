@@ -22,8 +22,8 @@ class GetUserByIdOutputDto
                 'age' => $user->getAge(),
                 'company' => $company ? [
                     'id' => $company->getId(),
-                    'fantasyName' => $company->getFantasyName(),
-                    'taxpayer' => $company->getTaxpayer(),
+                    'fantasyName' => $company->fantasyName(),
+                    'taxpayer' => $company->taxPayer(),
                 ] : null,
                 'isActive' => $user->isActive(),
             ],

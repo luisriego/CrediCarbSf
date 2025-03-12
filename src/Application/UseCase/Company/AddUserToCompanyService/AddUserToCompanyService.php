@@ -25,7 +25,7 @@ class AddUserToCompanyService
 
         $user->setCompany($company);
 
-        $company->addUser($user);
+        $company->assignUserToCompany($user);
 
         $this->companyRepository->save($company, true);
 

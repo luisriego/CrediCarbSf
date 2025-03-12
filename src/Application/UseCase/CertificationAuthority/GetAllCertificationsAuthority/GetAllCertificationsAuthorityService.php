@@ -24,7 +24,7 @@ readonly class GetAllCertificationsAuthorityService
             return [
                 $certificationAuthority->toArray(),
                 //                'id' => $certificationAuthority->getId(),
-                //                'taxpayer' => $certificationAuthority->getTaxPayer(),
+                //                'taxpayer' => $certificationAuthority->taxPayer(),
                 //                'name' => $certificationAuthority->getName()
             ];
         }, $certificationAuthorities);

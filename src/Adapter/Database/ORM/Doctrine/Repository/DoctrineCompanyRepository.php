@@ -26,11 +26,11 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
 
     public function add(Company $company, bool $flush): void
     {
-        if (empty($company->getFantasyName())) {
+        if (empty($company->fantasyName())) {
             throw new InvalidArgumentException('The company name cannot be empty.');
         }
 
-        if (empty($company->getTaxpayer())) {
+        if (empty($company->taxPayer())) {
             throw new InvalidArgumentException('The company taxpayer cannot be empty.');
         }
 
