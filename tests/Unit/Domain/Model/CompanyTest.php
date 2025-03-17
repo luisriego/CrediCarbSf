@@ -2,23 +2,26 @@
 
 declare(strict_types=1);
 
-// filepath: /workspaces/CrediCarbSf/tests/Unit/Domain/Model/CompanyTest.php
 namespace App\Tests\Unit\Domain\Model;
 
 use App\Domain\Model\Company;
-use PHPUnit\Framework\TestCase;
-use InvalidArgumentException;
 use DomainException;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+
+use function str_repeat;
 
 class CompanyTest extends TestCase
 {
     public function testCreateValidCompany(): void
     {
         $company = Company::create('33592510002521', 'Test Company');
-        
+
         $this->assertEquals('33592510002521', $company->taxpayer());
         $this->assertEquals('Test Company', $company->fantasyName());
         $this->assertTrue($company->isActive());
+        $this->assertNotNull($company->getId());
+        $this->assertNotNull($company->getCreatedOn());
     }
 
     public function testCreateCompanyWithInvalidTaxpayerThrowsException(): void
@@ -151,7 +154,7 @@ class CompanyTest extends TestCase
     public function testCreateCompanyWithInvalidBrazilianTaxpayerCode(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid CNPJ digits'); 
+        $this->expectExceptionMessage('Invalid CNPJ digits');
         // or whatever exception message you use
 
         // This CNPJ either has the wrong check digits or fails your domain’s validation

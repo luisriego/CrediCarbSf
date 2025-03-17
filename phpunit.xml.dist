@@ -17,6 +17,7 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+        <env name="XDEBUG_MODE" value="coverage"/>
     </php>
 
     <testsuites>
@@ -29,6 +30,10 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">src/Adapter/Framework/Http/Dto</directory>
+            <directory suffix=".php">src/Domain/Exception/Project</directory>
+        </exclude>
     </coverage>
 
     <listeners>

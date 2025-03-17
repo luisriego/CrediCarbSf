@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /var/www/html/src/Domain/Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../../_css/bootstrap.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/nv.d3.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/style.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../../index.html">/var/www/html/src</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">Domain</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Model</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="CertificationAuthority.php.html#15">App\Domain\Model\CertificationAuthority</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#10">App\Domain\Model\CertificationTypeEntity</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#17">App\Domain\Model\Project</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#15">App\Domain\Model\ShoppingCartItem</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#21">App\Domain\Model\User</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#20">App\Domain\Model\ShoppingCart</a></td><td class="text-right">56%</td></tr>
+       <tr><td><a href="Company.php.html#22">App\Domain\Model\Company</a></td><td class="text-right">56%</td></tr>
+       <tr><td><a href="Discount.php.html#24">App\Domain\Model\Discount</a></td><td class="text-right">72%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Company.php.html#22">App\Domain\Model\Company</a></td><td class="text-right">112</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#20">App\Domain\Model\ShoppingCart</a></td><td class="text-right">73</td></tr>
+       <tr><td><a href="Discount.php.html#24">App\Domain\Model\Discount</a></td><td class="text-right">42</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="CertificationAuthority.php.html#32"><abbr title="App\Domain\Model\CertificationAuthority::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#45"><abbr title="App\Domain\Model\CertificationAuthority::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#57"><abbr title="App\Domain\Model\CertificationAuthority::taxPayer">taxPayer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#62"><abbr title="App\Domain\Model\CertificationAuthority::setTaxpayer">setTaxpayer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#67"><abbr title="App\Domain\Model\CertificationAuthority::getName">getName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#72"><abbr title="App\Domain\Model\CertificationAuthority::setName">setName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#77"><abbr title="App\Domain\Model\CertificationAuthority::getWebsite">getWebsite</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#82"><abbr title="App\Domain\Model\CertificationAuthority::setWebsite">setWebsite</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationAuthority.php.html#87"><abbr title="App\Domain\Model\CertificationAuthority::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#24"><abbr title="App\Domain\Model\CertificationTypeEntity::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#31"><abbr title="App\Domain\Model\CertificationTypeEntity::getName">getName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#36"><abbr title="App\Domain\Model\CertificationTypeEntity::setName">setName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#41"><abbr title="App\Domain\Model\CertificationTypeEntity::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#46"><abbr title="App\Domain\Model\CertificationTypeEntity::setDescription">setDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#51"><abbr title="App\Domain\Model\CertificationTypeEntity::getCertificationAuthority">getCertificationAuthority</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#56"><abbr title="App\Domain\Model\CertificationTypeEntity::setCertificationAuthority">setCertificationAuthority</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CertificationTypeEntity.php.html#61"><abbr title="App\Domain\Model\CertificationTypeEntity::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#125"><abbr title="App\Domain\Model\Company::isInactive">isInactive</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#130"><abbr title="App\Domain\Model\Company::assignUserToCompany">assignUserToCompany</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#143"><abbr title="App\Domain\Model\Company::removeUserFromCompany">removeUserFromCompany</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#151"><abbr title="App\Domain\Model\Company::registerOwnedProject">registerOwnedProject</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#164"><abbr title="App\Domain\Model\Company::purchaseProject">purchaseProject</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#177"><abbr title="App\Domain\Model\Company::formattedTaxpayer">formattedTaxpayer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#182"><abbr title="App\Domain\Model\Company::hasUser">hasUser</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#187"><abbr title="App\Domain\Model\Company::hasProject">hasProject</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Company.php.html#192"><abbr title="App\Domain\Model\Company::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#105"><abbr title="App\Domain\Model\Discount::code">code</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#110"><abbr title="App\Domain\Model\Discount::amount">amount</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#115"><abbr title="App\Domain\Model\Discount::isPercentage">isPercentage</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#120"><abbr title="App\Domain\Model\Discount::expiresAt">expiresAt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#125"><abbr title="App\Domain\Model\Discount::updateExpirationDate">updateExpirationDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#155"><abbr title="App\Domain\Model\Discount::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#65"><abbr title="App\Domain\Model\Project::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#89"><abbr title="App\Domain\Model\Project::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#109"><abbr title="App\Domain\Model\Project::getName">getName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#114"><abbr title="App\Domain\Model\Project::setName">setName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#119"><abbr title="App\Domain\Model\Project::getDescription">getDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#124"><abbr title="App\Domain\Model\Project::setDescription">setDescription</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#129"><abbr title="App\Domain\Model\Project::getAreaHa">getAreaHa</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#134"><abbr title="App\Domain\Model\Project::setAreaHa">setAreaHa</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#139"><abbr title="App\Domain\Model\Project::getQuantity">getQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#144"><abbr title="App\Domain\Model\Project::setQuantity">setQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#149"><abbr title="App\Domain\Model\Project::getPrice">getPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#154"><abbr title="App\Domain\Model\Project::setPrice">setPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#159"><abbr title="App\Domain\Model\Project::getStartDate">getStartDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#164"><abbr title="App\Domain\Model\Project::setStartDate">setStartDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#169"><abbr title="App\Domain\Model\Project::getEndDate">getEndDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#174"><abbr title="App\Domain\Model\Project::setEndDate">setEndDate</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#179"><abbr title="App\Domain\Model\Project::getOwner">getOwner</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#184"><abbr title="App\Domain\Model\Project::setOwner">setOwner</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#189"><abbr title="App\Domain\Model\Project::getBuyer">getBuyer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#194"><abbr title="App\Domain\Model\Project::setBuyer">setBuyer</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#199"><abbr title="App\Domain\Model\Project::getProjectType">getProjectType</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#204"><abbr title="App\Domain\Model\Project::setProjectType">setProjectType</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#209"><abbr title="App\Domain\Model\Project::getStatus">getStatus</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#214"><abbr title="App\Domain\Model\Project::setStatus">setStatus</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#219"><abbr title="App\Domain\Model\Project::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Project.php.html#237"><abbr title="App\Domain\Model\Project::trackProgress">trackProgress</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#55"><abbr title="App\Domain\Model\ShoppingCart::getOwner">getOwner</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#60"><abbr title="App\Domain\Model\ShoppingCart::setOwner">setOwner</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#65"><abbr title="App\Domain\Model\ShoppingCart::isOwner">isOwner</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#75"><abbr title="App\Domain\Model\ShoppingCart::setItems">setItems</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#85"><abbr title="App\Domain\Model\ShoppingCart::setTotal">setTotal</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#95"><abbr title="App\Domain\Model\ShoppingCart::setTax">setTax</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#100"><abbr title="App\Domain\Model\ShoppingCart::getStatus">getStatus</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#105"><abbr title="App\Domain\Model\ShoppingCart::setStatus">setStatus</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#124"><abbr title="App\Domain\Model\ShoppingCart::removeAllItems">removeAllItems</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#155"><abbr title="App\Domain\Model\ShoppingCart::checkout">checkout</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCart.php.html#161"><abbr title="App\Domain\Model\ShoppingCart::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#35"><abbr title="App\Domain\Model\ShoppingCartItem::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#45"><abbr title="App\Domain\Model\ShoppingCartItem::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#50"><abbr title="App\Domain\Model\ShoppingCartItem::getQuantity">getQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#55"><abbr title="App\Domain\Model\ShoppingCartItem::incrementQuantity">incrementQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#60"><abbr title="App\Domain\Model\ShoppingCartItem::incrementQuantityIn">incrementQuantityIn</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#65"><abbr title="App\Domain\Model\ShoppingCartItem::decrementQuantity">decrementQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#70"><abbr title="App\Domain\Model\ShoppingCartItem::decrementQuantityIn">decrementQuantityIn</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#75"><abbr title="App\Domain\Model\ShoppingCartItem::getPrice">getPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#80"><abbr title="App\Domain\Model\ShoppingCartItem::getProject">getProject</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#85"><abbr title="App\Domain\Model\ShoppingCartItem::getShoppingCart">getShoppingCart</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#90"><abbr title="App\Domain\Model\ShoppingCartItem::setQuantity">setQuantity</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#95"><abbr title="App\Domain\Model\ShoppingCartItem::setPrice">setPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#100"><abbr title="App\Domain\Model\ShoppingCartItem::setProject">setProject</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#105"><abbr title="App\Domain\Model\ShoppingCartItem::setShoppingCart">setShoppingCart</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#110"><abbr title="App\Domain\Model\ShoppingCartItem::getTotalPrice">getTotalPrice</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="ShoppingCartItem.php.html#115"><abbr title="App\Domain\Model\ShoppingCartItem::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#59"><abbr title="App\Domain\Model\User::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#75"><abbr title="App\Domain\Model\User::create">create</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#84"><abbr title="App\Domain\Model\User::getId">getId</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#89"><abbr title="App\Domain\Model\User::getName">getName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#94"><abbr title="App\Domain\Model\User::setName">setName</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#99"><abbr title="App\Domain\Model\User::getAge">getAge</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#104"><abbr title="App\Domain\Model\User::setAge">setAge</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#109"><abbr title="App\Domain\Model\User::getToken">getToken</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#114"><abbr title="App\Domain\Model\User::setToken">setToken</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#119"><abbr title="App\Domain\Model\User::getCompany">getCompany</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#124"><abbr title="App\Domain\Model\User::setCompany">setCompany</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#129"><abbr title="App\Domain\Model\User::getEmail">getEmail</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#146"><abbr title="App\Domain\Model\User::getUserIdentifier">getUserIdentifier</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#154"><abbr title="App\Domain\Model\User::getUsername">getUsername</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#162"><abbr title="App\Domain\Model\User::getRoles">getRoles</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#171"><abbr title="App\Domain\Model\User::setRoles">setRoles</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#181"><abbr title="App\Domain\Model\User::getPassword">getPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#186"><abbr title="App\Domain\Model\User::setPassword">setPassword</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#199"><abbr title="App\Domain\Model\User::getSalt">getSalt</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#207"><abbr title="App\Domain\Model\User::eraseCredentials">eraseCredentials</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#213"><abbr title="App\Domain\Model\User::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#221"><abbr title="App\Domain\Model\User::equals">equals</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Discount.php.html#168"><abbr title="App\Domain\Model\Discount::isValid">isValid</abbr></a></td><td class="text-right">40%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Company.php.html#130"><abbr title="App\Domain\Model\Company::assignUserToCompany">assignUserToCompany</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Company.php.html#151"><abbr title="App\Domain\Model\Company::registerOwnedProject">registerOwnedProject</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Company.php.html#164"><abbr title="App\Domain\Model\Company::purchaseProject">purchaseProject</abbr></a></td><td class="text-right">12</td></tr>
+       <tr><td><a href="Discount.php.html#168"><abbr title="App\Domain\Model\Discount::isValid">isValid</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="Company.php.html#143"><abbr title="App\Domain\Model\Company::removeUserFromCompany">removeUserFromCompany</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="Company.php.html#187"><abbr title="App\Domain\Model\Company::hasProject">hasProject</abbr></a></td><td class="text-right">6</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.32</a> using <a href="https://secure.php.net/" target="_top">PHP 8.2.28</a> and <a href="https://phpunit.de/">PHPUnit 9.6.22</a> at Fri Mar 14 22:38:59 UTC 2025.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../../_js/jquery.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/nv.d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([5,0,0,0,0,0,2,0,1,0,0,1], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([107,0,0,0,0,1,0,0,0,0,0,37], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[100,10,"<a href=\"Certification.php.html#13\">App\\Domain\\Model\\Certification<\/a>"],[0,9,"<a href=\"CertificationAuthority.php.html#15\">App\\Domain\\Model\\CertificationAuthority<\/a>"],[0,8,"<a href=\"CertificationTypeEntity.php.html#10\">App\\Domain\\Model\\CertificationTypeEntity<\/a>"],[56.060606060606055,31,"<a href=\"Company.php.html#22\">App\\Domain\\Model\\Company<\/a>"],[72.58064516129032,27,"<a href=\"Discount.php.html#24\">App\\Domain\\Model\\Discount<\/a>"],[0,26,"<a href=\"Project.php.html#17\">App\\Domain\\Model\\Project<\/a>"],[56.00000000000001,24,"<a href=\"ShoppingCart.php.html#20\">App\\Domain\\Model\\ShoppingCart<\/a>"],[0,16,"<a href=\"ShoppingCartItem.php.html#15\">App\\Domain\\Model\\ShoppingCartItem<\/a>"],[0,22,"<a href=\"User.php.html#21\">App\\Domain\\Model\\User<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"Certification.php.html#33\">App\\Domain\\Model\\Certification::__construct<\/a>"],[100,1,"<a href=\"Certification.php.html#47\">App\\Domain\\Model\\Certification::getName<\/a>"],[100,1,"<a href=\"Certification.php.html#52\">App\\Domain\\Model\\Certification::setName<\/a>"],[100,1,"<a href=\"Certification.php.html#57\">App\\Domain\\Model\\Certification::getDescription<\/a>"],[100,1,"<a href=\"Certification.php.html#62\">App\\Domain\\Model\\Certification::setDescription<\/a>"],[100,1,"<a href=\"Certification.php.html#67\">App\\Domain\\Model\\Certification::getType<\/a>"],[100,1,"<a href=\"Certification.php.html#72\">App\\Domain\\Model\\Certification::setType<\/a>"],[100,1,"<a href=\"Certification.php.html#77\">App\\Domain\\Model\\Certification::getAuthority<\/a>"],[100,1,"<a href=\"Certification.php.html#82\">App\\Domain\\Model\\Certification::setAuthority<\/a>"],[100,1,"<a href=\"Certification.php.html#87\">App\\Domain\\Model\\Certification::toArray<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#32\">App\\Domain\\Model\\CertificationAuthority::__construct<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#45\">App\\Domain\\Model\\CertificationAuthority::create<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#57\">App\\Domain\\Model\\CertificationAuthority::taxPayer<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#62\">App\\Domain\\Model\\CertificationAuthority::setTaxpayer<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#67\">App\\Domain\\Model\\CertificationAuthority::getName<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#72\">App\\Domain\\Model\\CertificationAuthority::setName<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#77\">App\\Domain\\Model\\CertificationAuthority::getWebsite<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#82\">App\\Domain\\Model\\CertificationAuthority::setWebsite<\/a>"],[0,1,"<a href=\"CertificationAuthority.php.html#87\">App\\Domain\\Model\\CertificationAuthority::toArray<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#24\">App\\Domain\\Model\\CertificationTypeEntity::__construct<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#31\">App\\Domain\\Model\\CertificationTypeEntity::getName<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#36\">App\\Domain\\Model\\CertificationTypeEntity::setName<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#41\">App\\Domain\\Model\\CertificationTypeEntity::getDescription<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#46\">App\\Domain\\Model\\CertificationTypeEntity::setDescription<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#51\">App\\Domain\\Model\\CertificationTypeEntity::getCertificationAuthority<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#56\">App\\Domain\\Model\\CertificationTypeEntity::setCertificationAuthority<\/a>"],[0,1,"<a href=\"CertificationTypeEntity.php.html#61\">App\\Domain\\Model\\CertificationTypeEntity::toArray<\/a>"],[100,1,"<a href=\"Company.php.html#54\">App\\Domain\\Model\\Company::__construct<\/a>"],[100,1,"<a href=\"Company.php.html#70\">App\\Domain\\Model\\Company::create<\/a>"],[100,1,"<a href=\"Company.php.html#75\">App\\Domain\\Model\\Company::fantasyName<\/a>"],[100,1,"<a href=\"Company.php.html#80\">App\\Domain\\Model\\Company::taxpayer<\/a>"],[100,1,"<a href=\"Company.php.html#85\">App\\Domain\\Model\\Company::updateFantasyName<\/a>"],[100,2,"<a href=\"Company.php.html#92\">App\\Domain\\Model\\Company::activate<\/a>"],[100,2,"<a href=\"Company.php.html#106\">App\\Domain\\Model\\Company::deactivate<\/a>"],[100,1,"<a href=\"Company.php.html#120\">App\\Domain\\Model\\Company::isActive<\/a>"],[0,1,"<a href=\"Company.php.html#125\">App\\Domain\\Model\\Company::isInactive<\/a>"],[0,3,"<a href=\"Company.php.html#130\">App\\Domain\\Model\\Company::assignUserToCompany<\/a>"],[0,2,"<a href=\"Company.php.html#143\">App\\Domain\\Model\\Company::removeUserFromCompany<\/a>"],[0,3,"<a href=\"Company.php.html#151\">App\\Domain\\Model\\Company::registerOwnedProject<\/a>"],[0,3,"<a href=\"Company.php.html#164\">App\\Domain\\Model\\Company::purchaseProject<\/a>"],[0,1,"<a href=\"Company.php.html#177\">App\\Domain\\Model\\Company::formattedTaxpayer<\/a>"],[0,1,"<a href=\"Company.php.html#182\">App\\Domain\\Model\\Company::hasUser<\/a>"],[0,2,"<a href=\"Company.php.html#187\">App\\Domain\\Model\\Company::hasProject<\/a>"],[0,1,"<a href=\"Company.php.html#192\">App\\Domain\\Model\\Company::toArray<\/a>"],[100,4,"<a href=\"Company.php.html#204\">App\\Domain\\Model\\Company::validateFantasyName<\/a>"],[100,2,"<a href=\"Discount.php.html#56\">App\\Domain\\Model\\Discount::__construct<\/a>"],[100,1,"<a href=\"Discount.php.html#72\">App\\Domain\\Model\\Discount::createWithAmountAndExpirationDate<\/a>"],[100,1,"<a href=\"Discount.php.html#84\">App\\Domain\\Model\\Discount::createWithAmountAndExpirationDateNotPercentage<\/a>"],[100,1,"<a href=\"Discount.php.html#97\">App\\Domain\\Model\\Discount::createWithProjectToApply<\/a>"],[0,1,"<a href=\"Discount.php.html#105\">App\\Domain\\Model\\Discount::code<\/a>"],[0,1,"<a href=\"Discount.php.html#110\">App\\Domain\\Model\\Discount::amount<\/a>"],[0,1,"<a href=\"Discount.php.html#115\">App\\Domain\\Model\\Discount::isPercentage<\/a>"],[0,1,"<a href=\"Discount.php.html#120\">App\\Domain\\Model\\Discount::expiresAt<\/a>"],[0,1,"<a href=\"Discount.php.html#125\">App\\Domain\\Model\\Discount::updateExpirationDate<\/a>"],[100,1,"<a href=\"Discount.php.html#130\">App\\Domain\\Model\\Discount::getTargetProject<\/a>"],[100,1,"<a href=\"Discount.php.html#135\">App\\Domain\\Model\\Discount::setTargetProject<\/a>"],[100,4,"<a href=\"Discount.php.html#140\">App\\Domain\\Model\\Discount::applyToAmount<\/a>"],[0,1,"<a href=\"Discount.php.html#155\">App\\Domain\\Model\\Discount::toArray<\/a>"],[40,4,"<a href=\"Discount.php.html#168\">App\\Domain\\Model\\Discount::isValid<\/a>"],[100,2,"<a href=\"Discount.php.html#190\">App\\Domain\\Model\\Discount::codeGenerator<\/a>"],[100,2,"<a href=\"Discount.php.html#202\">App\\Domain\\Model\\Discount::validateExpirationDate<\/a>"],[100,2,"<a href=\"Discount.php.html#214\">App\\Domain\\Model\\Discount::validateAmount<\/a>"],[0,1,"<a href=\"Project.php.html#65\">App\\Domain\\Model\\Project::__construct<\/a>"],[0,1,"<a href=\"Project.php.html#89\">App\\Domain\\Model\\Project::create<\/a>"],[0,1,"<a href=\"Project.php.html#109\">App\\Domain\\Model\\Project::getName<\/a>"],[0,1,"<a href=\"Project.php.html#114\">App\\Domain\\Model\\Project::setName<\/a>"],[0,1,"<a href=\"Project.php.html#119\">App\\Domain\\Model\\Project::getDescription<\/a>"],[0,1,"<a href=\"Project.php.html#124\">App\\Domain\\Model\\Project::setDescription<\/a>"],[0,1,"<a href=\"Project.php.html#129\">App\\Domain\\Model\\Project::getAreaHa<\/a>"],[0,1,"<a href=\"Project.php.html#134\">App\\Domain\\Model\\Project::setAreaHa<\/a>"],[0,1,"<a href=\"Project.php.html#139\">App\\Domain\\Model\\Project::getQuantity<\/a>"],[0,1,"<a href=\"Project.php.html#144\">App\\Domain\\Model\\Project::setQuantity<\/a>"],[0,1,"<a href=\"Project.php.html#149\">App\\Domain\\Model\\Project::getPrice<\/a>"],[0,1,"<a href=\"Project.php.html#154\">App\\Domain\\Model\\Project::setPrice<\/a>"],[0,1,"<a href=\"Project.php.html#159\">App\\Domain\\Model\\Project::getStartDate<\/a>"],[0,1,"<a href=\"Project.php.html#164\">App\\Domain\\Model\\Project::setStartDate<\/a>"],[0,1,"<a href=\"Project.php.html#169\">App\\Domain\\Model\\Project::getEndDate<\/a>"],[0,1,"<a href=\"Project.php.html#174\">App\\Domain\\Model\\Project::setEndDate<\/a>"],[0,1,"<a href=\"Project.php.html#179\">App\\Domain\\Model\\Project::getOwner<\/a>"],[0,1,"<a href=\"Project.php.html#184\">App\\Domain\\Model\\Project::setOwner<\/a>"],[0,1,"<a href=\"Project.php.html#189\">App\\Domain\\Model\\Project::getBuyer<\/a>"],[0,1,"<a href=\"Project.php.html#194\">App\\Domain\\Model\\Project::setBuyer<\/a>"],[0,1,"<a href=\"Project.php.html#199\">App\\Domain\\Model\\Project::getProjectType<\/a>"],[0,1,"<a href=\"Project.php.html#204\">App\\Domain\\Model\\Project::setProjectType<\/a>"],[0,1,"<a href=\"Project.php.html#209\">App\\Domain\\Model\\Project::getStatus<\/a>"],[0,1,"<a href=\"Project.php.html#214\">App\\Domain\\Model\\Project::setStatus<\/a>"],[0,1,"<a href=\"Project.php.html#219\">App\\Domain\\Model\\Project::toArray<\/a>"],[0,1,"<a href=\"Project.php.html#237\">App\\Domain\\Model\\Project::trackProgress<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#43\">App\\Domain\\Model\\ShoppingCart::__construct<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#55\">App\\Domain\\Model\\ShoppingCart::getOwner<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#60\">App\\Domain\\Model\\ShoppingCart::setOwner<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#65\">App\\Domain\\Model\\ShoppingCart::isOwner<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#70\">App\\Domain\\Model\\ShoppingCart::getItems<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#75\">App\\Domain\\Model\\ShoppingCart::setItems<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#80\">App\\Domain\\Model\\ShoppingCart::getTotal<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#85\">App\\Domain\\Model\\ShoppingCart::setTotal<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#90\">App\\Domain\\Model\\ShoppingCart::getTax<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#95\">App\\Domain\\Model\\ShoppingCart::setTax<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#100\">App\\Domain\\Model\\ShoppingCart::getStatus<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#105\">App\\Domain\\Model\\ShoppingCart::setStatus<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#110\">App\\Domain\\Model\\ShoppingCart::addItem<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#117\">App\\Domain\\Model\\ShoppingCart::removeItem<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#124\">App\\Domain\\Model\\ShoppingCart::removeAllItems<\/a>"],[100,6,"<a href=\"ShoppingCart.php.html#130\">App\\Domain\\Model\\ShoppingCart::calculateTotal<\/a>"],[100,1,"<a href=\"ShoppingCart.php.html#149\">App\\Domain\\Model\\ShoppingCart::calculateTax<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#155\">App\\Domain\\Model\\ShoppingCart::checkout<\/a>"],[0,1,"<a href=\"ShoppingCart.php.html#161\">App\\Domain\\Model\\ShoppingCart::toArray<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#35\">App\\Domain\\Model\\ShoppingCartItem::__construct<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#45\">App\\Domain\\Model\\ShoppingCartItem::create<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#50\">App\\Domain\\Model\\ShoppingCartItem::getQuantity<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#55\">App\\Domain\\Model\\ShoppingCartItem::incrementQuantity<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#60\">App\\Domain\\Model\\ShoppingCartItem::incrementQuantityIn<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#65\">App\\Domain\\Model\\ShoppingCartItem::decrementQuantity<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#70\">App\\Domain\\Model\\ShoppingCartItem::decrementQuantityIn<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#75\">App\\Domain\\Model\\ShoppingCartItem::getPrice<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#80\">App\\Domain\\Model\\ShoppingCartItem::getProject<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#85\">App\\Domain\\Model\\ShoppingCartItem::getShoppingCart<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#90\">App\\Domain\\Model\\ShoppingCartItem::setQuantity<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#95\">App\\Domain\\Model\\ShoppingCartItem::setPrice<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#100\">App\\Domain\\Model\\ShoppingCartItem::setProject<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#105\">App\\Domain\\Model\\ShoppingCartItem::setShoppingCart<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#110\">App\\Domain\\Model\\ShoppingCartItem::getTotalPrice<\/a>"],[0,1,"<a href=\"ShoppingCartItem.php.html#115\">App\\Domain\\Model\\ShoppingCartItem::toArray<\/a>"],[0,1,"<a href=\"User.php.html#59\">App\\Domain\\Model\\User::__construct<\/a>"],[0,1,"<a href=\"User.php.html#75\">App\\Domain\\Model\\User::create<\/a>"],[0,1,"<a href=\"User.php.html#84\">App\\Domain\\Model\\User::getId<\/a>"],[0,1,"<a href=\"User.php.html#89\">App\\Domain\\Model\\User::getName<\/a>"],[0,1,"<a href=\"User.php.html#94\">App\\Domain\\Model\\User::setName<\/a>"],[0,1,"<a href=\"User.php.html#99\">App\\Domain\\Model\\User::getAge<\/a>"],[0,1,"<a href=\"User.php.html#104\">App\\Domain\\Model\\User::setAge<\/a>"],[0,1,"<a href=\"User.php.html#109\">App\\Domain\\Model\\User::getToken<\/a>"],[0,1,"<a href=\"User.php.html#114\">App\\Domain\\Model\\User::setToken<\/a>"],[0,1,"<a href=\"User.php.html#119\">App\\Domain\\Model\\User::getCompany<\/a>"],[0,1,"<a href=\"User.php.html#124\">App\\Domain\\Model\\User::setCompany<\/a>"],[0,1,"<a href=\"User.php.html#129\">App\\Domain\\Model\\User::getEmail<\/a>"],[0,1,"<a href=\"User.php.html#146\">App\\Domain\\Model\\User::getUserIdentifier<\/a>"],[0,1,"<a href=\"User.php.html#154\">App\\Domain\\Model\\User::getUsername<\/a>"],[0,1,"<a href=\"User.php.html#162\">App\\Domain\\Model\\User::getRoles<\/a>"],[0,1,"<a href=\"User.php.html#171\">App\\Domain\\Model\\User::setRoles<\/a>"],[0,1,"<a href=\"User.php.html#181\">App\\Domain\\Model\\User::getPassword<\/a>"],[0,1,"<a href=\"User.php.html#186\">App\\Domain\\Model\\User::setPassword<\/a>"],[0,1,"<a href=\"User.php.html#199\">App\\Domain\\Model\\User::getSalt<\/a>"],[0,1,"<a href=\"User.php.html#207\">App\\Domain\\Model\\User::eraseCredentials<\/a>"],[0,1,"<a href=\"User.php.html#213\">App\\Domain\\Model\\User::toArray<\/a>"],[0,1,"<a href=\"User.php.html#221\">App\\Domain\\Model\\User::equals<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

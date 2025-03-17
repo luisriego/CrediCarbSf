@@ -8,6 +8,8 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_decode;
+
 class UserHealthCheckControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/user/health-check';

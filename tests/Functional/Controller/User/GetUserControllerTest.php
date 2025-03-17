@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\User;
 
 use App\Tests\Functional\FunctionalTestBase;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetUserControllerTest extends FunctionalTestBase
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function testGetAllUsers()
+    public function testGetAllUsers(): void
     {
         self::$superAdminClient->request('GET', '/api/user/all', [], [], ['CONTENT_TYPE' => 'application/json']);
 

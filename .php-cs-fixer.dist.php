@@ -5,10 +5,13 @@ $finder = PhpCsFixer\Finder::create()
     ->ignoreVCSIgnored(true)
     ->in([
         __DIR__ . '/src',
+        __DIR__ . '/tests',
     ]);
 
 if (!file_exists(__DIR__ . '/var')) {
-    mkdir(__DIR__ . '/var');
+    if (!mkdir($concurrentDirectory = __DIR__ . '/var') && !is_dir($concurrentDirectory)) {
+        throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+    }
 }
 
 return (new PhpCsFixer\Config())

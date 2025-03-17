@@ -16,4 +16,13 @@ trait AssertLengthRangeTrait
             throw InvalidArgumentException::createFromMinAndMaxLength($min, $max);
         }
     }
+
+    public function isValueRangeLengthValid(string $value, int $min, int $max): bool
+    {
+        if (mb_strlen($value) < $min || mb_strlen($value) > $max) {
+            return false;
+        }
+
+        return true;
+    }
 }

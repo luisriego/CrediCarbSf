@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\User;
 
 use App\Domain\Repository\UserRepositoryInterface;
-use App\Tests\Functional\Controller\ControllerTestBase;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function json_encode;
 
 class ActivateUserControllerTest extends FunctionalTestBase
 {
@@ -36,7 +37,7 @@ class ActivateUserControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -56,7 +57,7 @@ class ActivateUserControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -76,7 +77,7 @@ class ActivateUserControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -95,7 +96,7 @@ class ActivateUserControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();

@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\Project;
 
 use App\Tests\Functional\FunctionalTestBase;
+use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function array_merge;
+use function json_decode;
+use function json_encode;
+
+use const JSON_THROW_ON_ERROR;
 
 class CreateProjectControllerTest extends FunctionalTestBase
 {
@@ -20,21 +27,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_PRICE_LIKE = '20.00';
     private const PROJECT_TYPE = 'REFORESTATION';
 
-    private function getPayload(array $overrides = []): array
-    {
-        return array_merge([
-            'name' => self::PROJECT_NAME,
-            'description' => self::PROJECT_DESCRIPTION,
-            'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
-            'projectType' => self::PROJECT_TYPE,
-            'owner' => $this->companyId
-        ], $overrides);
-    }
-
     /** @test
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldCreateProjectSuccessfully(): void
     {
@@ -46,17 +40,17 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertArrayHasKey('projectId', $responseData);
     }
 
     /** @test
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldNotCreateProjectWhenUserUnauthorized(): void
     {
@@ -68,7 +62,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         $response = self::$baseClient->getResponse();
@@ -77,7 +71,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
     }
 
     /** @test
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldNotCreateProjectWhenDuplicate(): void
     {
@@ -89,7 +83,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         self::$authenticatedClient->request(
@@ -98,7 +92,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -107,7 +101,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
     }
 
     /** @test
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldNotCreateProjectWhenDuplicateLikeName(): void
     {
@@ -120,7 +114,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         self::$authenticatedClient->request(
@@ -129,7 +123,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payloadLike, JSON_THROW_ON_ERROR)
+            json_encode($payloadLike, JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -138,7 +132,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
     }
 
     /** @test
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldNotCreateProjectWhenInvalidData(): void
     {
@@ -148,7 +142,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'areaHa' => 'invalid',
             'quantity' => 'invalid',
             'price' => 'invalid',
-            'projectType' => 'InvalidType'
+            'projectType' => 'InvalidType',
         ]);
 
         self::$authenticatedClient->request(
@@ -157,11 +151,24 @@ class CreateProjectControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload, JSON_THROW_ON_ERROR)
+            json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
 
         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+    }
+
+    private function getPayload(array $overrides = []): array
+    {
+        return array_merge([
+            'name' => self::PROJECT_NAME,
+            'description' => self::PROJECT_DESCRIPTION,
+            'areaHa' => self::PROJECT_AREA,
+            'quantity' => self::PROJECT_QUANTITY,
+            'price' => self::PROJECT_PRICE,
+            'projectType' => self::PROJECT_TYPE,
+            'owner' => $this->companyId,
+        ], $overrides);
     }
 }

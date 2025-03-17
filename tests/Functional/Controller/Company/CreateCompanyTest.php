@@ -11,9 +11,9 @@ use App\Domain\Exception\Company\CompanyAlreadyExistsException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
-use App\Tests\Functional\Controller\ControllerTestBase;
 use App\Tests\Functional\FunctionalTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
+use TypeError;
 
 class CreateCompanyTest extends FunctionalTestBase
 {
@@ -58,7 +58,7 @@ class CreateCompanyTest extends FunctionalTestBase
 
         $inputDto = new CreateCompanyInputDto(
             'Test Company',
-            '33.592.510/0025-21'
+            '33.592.510/0025-21',
         );
 
         $this->companyRepository
@@ -76,24 +76,24 @@ class CreateCompanyTest extends FunctionalTestBase
 
         $inputDto = new CreateCompanyInputDto(
             'Test Company',
-            ''
+            '',
         );
 
         $this->createCompany->handle($inputDto);
     }
 
     public function testCreateCompanyWithEmptyFantasyName(): void
-{
-    $this->expectException(InvalidArgumentException::class);
-    $this->expectExceptionMessage('The following fields cannot be empty: fantasyName');
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The following fields cannot be empty: fantasyName');
 
-    $inputDto = new CreateCompanyInputDto(
-        '',
-        '33.592.510/0025-21'
-    );
+        $inputDto = new CreateCompanyInputDto(
+            '',
+            '33.592.510/0025-21',
+        );
 
-    $this->createCompany->handle($inputDto);
-}
+        $this->createCompany->handle($inputDto);
+    }
 
     public function testCreateCompanyWithInvalidTaxpayerLength(): void
     {
@@ -101,7 +101,7 @@ class CreateCompanyTest extends FunctionalTestBase
 
         $inputDto = new CreateCompanyInputDto(
             'Test Company',
-            '123'
+            '123',
         );
 
         $this->createCompany->handle($inputDto);
@@ -109,7 +109,7 @@ class CreateCompanyTest extends FunctionalTestBase
 
     public function testCreateCompanyWithNullInputDto(): void
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
 
         $this->createCompany->handle(null);
     }

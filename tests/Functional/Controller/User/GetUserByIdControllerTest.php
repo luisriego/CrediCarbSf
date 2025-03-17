@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\User;
 
-use App\Domain\Repository\UserRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function sprintf;
 
 class GetUserByIdControllerTest extends FunctionalTestBase
 {
@@ -24,9 +25,12 @@ class GetUserByIdControllerTest extends FunctionalTestBase
      */
     public function testGetUserById(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('%s/%s', self::ENDPOINT_USER, $this->userId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();

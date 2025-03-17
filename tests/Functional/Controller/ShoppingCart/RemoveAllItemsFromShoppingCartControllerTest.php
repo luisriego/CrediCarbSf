@@ -9,6 +9,8 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/%s/remove-all-items';
@@ -18,15 +20,17 @@ class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
         parent::setUp();
 
         $this->shoppingCartRepository = self::getContainer()->get(ShoppingCartRepositoryInterface::class);
-//
-//        // Add first item
-//        $this->addItemToShoppingCart();
-//
-//        // Add second item
-//        $this->addItemToShoppingCart();
+        //
+        //        // Add first item
+        //        $this->addItemToShoppingCart();
+        //
+        //        // Add second item
+        //        $this->addItemToShoppingCart();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function removeAllItemsFromCartSuccessfully(): void
     {
         // Verify the cart currently has items
@@ -35,33 +39,37 @@ class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT, $this->shoppingCartId)
+            sprintf(self::ENDPOINT, $this->shoppingCartId),
         );
 
         // Verify response
         $response = self::$authenticatedClient->getResponse();
         self::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-//        self::assertNull($this->shoppingCartRepository->find($this->shoppingCartId));
+        //        self::assertNull($this->shoppingCartRepository->find($this->shoppingCartId));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotRemoveAllItemsWhenUnauthorized(): void
     {
         self::$baseClient->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT, $this->shoppingCartId)
+            sprintf(self::ENDPOINT, $this->shoppingCartId),
         );
 
         $response = self::$baseClient->getResponse();
         self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotRemoveAllItemsWithInvalidShoppingCartId(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            sprintf(self::ENDPOINT, 'invalid-uid')
+            sprintf(self::ENDPOINT, 'invalid-uid'),
         );
 
         $response = self::$authenticatedClient->getResponse();

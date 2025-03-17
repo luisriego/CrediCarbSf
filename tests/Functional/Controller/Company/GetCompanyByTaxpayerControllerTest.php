@@ -9,6 +9,8 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
 {
     protected string $companyTaxpayer;

@@ -9,6 +9,9 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_encode;
+use function sprintf;
+
 class AddUserToCompanyControllerTest extends FunctionalTestBase
 {
     protected string $companyId;
@@ -32,9 +35,13 @@ class AddUserToCompanyControllerTest extends FunctionalTestBase
             Request::METHOD_POST,
             sprintf(
                 '%s/%s',
-                self::ADD_USER_TO_COMPANY_ENDPOINT, $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json'],
-            json_encode($payload)
+                self::ADD_USER_TO_COMPANY_ENDPOINT,
+                $this->companyId,
+            ),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -51,9 +58,13 @@ class AddUserToCompanyControllerTest extends FunctionalTestBase
             Request::METHOD_POST,
             sprintf(
                 '%s/%s',
-                self::ADD_USER_TO_COMPANY_ENDPOINT, $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json'],
-            json_encode($payload)
+                self::ADD_USER_TO_COMPANY_ENDPOINT,
+                $this->companyId,
+            ),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -69,8 +80,10 @@ class AddUserToCompanyControllerTest extends FunctionalTestBase
         self::$authenticatedClient->request(
             Request::METHOD_POST,
             sprintf('%s/%s', self::ADD_USER_TO_COMPANY_ENDPOINT, 'invalid_company_id'),
-            [], [], ['CONTENT_TYPE' => 'application/json'],
-            json_encode($payload)
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -86,8 +99,10 @@ class AddUserToCompanyControllerTest extends FunctionalTestBase
         self::$authenticatedClient->request(
             Request::METHOD_POST,
             sprintf('%s/%s', self::ADD_USER_TO_COMPANY_ENDPOINT, $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json'],
-            json_encode($payload)
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();

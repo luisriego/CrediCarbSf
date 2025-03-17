@@ -6,10 +6,11 @@ namespace App\Tests\Functional\Controller\Company;
 
 use App\Domain\Model\Company;
 use App\Domain\Model\User;
-use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function sprintf;
 
 class DeleteCompanyControllerTest extends FunctionalTestBase
 {
@@ -19,7 +20,7 @@ class DeleteCompanyControllerTest extends FunctionalTestBase
     }
 
     public function testDeleteCompanyWithAssociatedUsersSuccessfully(): void
-    {        
+    {
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
@@ -29,16 +30,16 @@ class DeleteCompanyControllerTest extends FunctionalTestBase
         $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
     }
 
-/*     public function testDeleteCompanySuccessfully(): void
-    {
-        self::$authenticatedClient->request(
-            Request::METHOD_DELETE,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-        );
+    /*     public function testDeleteCompanySuccessfully(): void
+        {
+            self::$authenticatedClient->request(
+                Request::METHOD_DELETE,
+                sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
+            );
 
-        $response = self::$authenticatedClient->getResponse();
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-    } */
+            $response = self::$authenticatedClient->getResponse();
+            $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        } */
 
     public function testDeleteNonExistingCompany(): void
     {
