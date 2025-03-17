@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Common\ProjectStatus;
+use App\Domain\Exception\HttpException;
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
@@ -13,6 +15,9 @@ use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Column;
+
+use function mb_strlen;
+use function sprintf;
 
 #[ORM\Entity(repositoryClass: ProjectRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -71,6 +76,37 @@ class Project
         ?string $projectType,
         ?Company $owner,
     ) {
+        if (empty($name)) {
+            throw InvalidArgumentException::createFromMessage('Name cannot be null');
+        }
+
+        if (
+            empty($description)
+            || mb_strlen($description) < self::DESCRIPTION_MIN_LENGTH
+            || mb_strlen($description) > self::DESCRIPTION_MAX_LENGTH) {
+            throw InvalidArgumentException::createFromMessage('Description cannot be null');
+        }
+
+        if (empty($areaHa) || $areaHa < self::AREA_MIN_LENGTH) {
+            throw InvalidArgumentException::createFromMessage(
+                sprintf('The area must be at least %d ha', self::AREA_MIN_LENGTH),
+            );
+        }
+
+        if (empty($quantity) || $quantity < self::QUANTITY_MIN_LENGTH) {
+            throw InvalidArgumentException::createFromMessage(
+                sprintf('The quantity must be at least %d tons', self::QUANTITY_MIN_LENGTH),
+            );
+        }
+
+        if (empty($price)) {
+            throw InvalidArgumentException::createFromMessage('Price cannot be null');
+        }
+
+        if (empty($projectType)) {
+            throw InvalidArgumentException::createFromMessage('Project type cannot be null');
+        }
+
         $this->initializeId();
         $this->name = $name;
         $this->description = $description;
@@ -214,6 +250,24 @@ class Project
     public function setStatus(ProjectStatus $status): void
     {
         $this->status = $status;
+    }
+
+    public function activate(): void
+    {
+        if ($this->isActive) {
+            throw new HttpException('Project is already active');
+        }
+
+        $this->isActive = true;
+    }
+
+    public function deactivate(): void
+    {
+        if (!$this->isActive) {
+            throw new HttpException('Project is already inactive');
+        }
+
+        $this->isActive = false;
     }
 
     public function toArray(): array

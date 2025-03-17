@@ -156,7 +156,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
 
         $response = self::$authenticatedClient->getResponse();
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     private function getPayload(array $overrides = []): array

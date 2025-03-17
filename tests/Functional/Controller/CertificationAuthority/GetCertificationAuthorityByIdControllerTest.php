@@ -8,6 +8,7 @@ use App\Tests\Functional\FunctionalTestBase;
 use Random\RandomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 
 use function array_splice;
 use function count;
@@ -48,22 +49,7 @@ class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
      */
     public function shouldReturnNotFoundWhenCertificationAuthorityDoesNotExist(): void
     {
-        $currentId = $this->certificationAuthorityId;
-        $lastFourDigits = mb_substr($currentId, -4);
-        $shuffledDigits = '';
-
-        $digitsArray = mb_str_split($lastFourDigits);
-
-        while (count($digitsArray) > 0) {
-            $index = random_int(0, count($digitsArray) - 1);
-            $shuffledDigits .= $digitsArray[$index];
-            array_splice($digitsArray, $index, 1);
-        }
-
-        $modifiedId = mb_substr($currentId, 0, -4) . $shuffledDigits;
-        $this->certificationAuthorityId = $modifiedId;
-
-        $nonExistentId = $modifiedId; // Assume this ID does not exist in the database
+        $nonExistentId =  Uuid::v4()->toRfc4122();
 
         self::$authenticatedClient->request(
             Request::METHOD_GET,

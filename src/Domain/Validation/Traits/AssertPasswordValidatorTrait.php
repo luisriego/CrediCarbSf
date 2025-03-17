@@ -7,6 +7,7 @@ namespace App\Domain\Validation\Traits;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\User;
 
+use function mb_strlen;
 use function preg_match;
 use function sprintf;
 
