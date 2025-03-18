@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Common\ProjectStatus;
-use App\Domain\Exception\HttpException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
@@ -103,8 +102,8 @@ class Project
             throw InvalidArgumentException::createFromMessage('Price cannot be null');
         }
 
-        if (empty($projectType)) {
-            throw InvalidArgumentException::createFromMessage('Project type cannot be null');
+        if (!$owner instanceof Company) {
+            throw InvalidArgumentException::createFromMessage('Owner must be an instance of Company');
         }
 
         $this->initializeId();
@@ -247,26 +246,18 @@ class Project
         return $this->status;
     }
 
-    public function setStatus(ProjectStatus $status): void
+    public function changePhase(ProjectStatus $newPhase): void
     {
-        $this->status = $status;
+        $this->status = $newPhase;
     }
 
     public function activate(): void
     {
-        if ($this->isActive) {
-            throw new HttpException('Project is already active');
-        }
-
         $this->isActive = true;
     }
 
     public function deactivate(): void
     {
-        if (!$this->isActive) {
-            throw new HttpException('Project is already inactive');
-        }
-
         $this->isActive = false;
     }
 
