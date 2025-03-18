@@ -12,10 +12,15 @@ use App\Domain\ValueObjects\Uuid;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function json_decode;
+use function json_encode;
+use function sprintf;
 
 /**
  * @doesNotPerformAssertions
@@ -60,18 +65,17 @@ abstract class ControllerTestBase extends WebTestCase
         $admin->setPassword($password);
         $admin->setRoles(['ROLE_ADMIN']);
 
-
         static::getContainer()->get(UserRepositoryInterface::class)->save($admin);
 
         $jwt = static::getContainer()->get(JWTTokenManagerInterface::class)->create($admin);
 
         self::$admin->setServerParameters([
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => \sprintf('Bearer %s', $jwt)
+            'HTTP_Authorization' => sprintf('Bearer %s', $jwt),
         ]);
 
-//        $company = $this->createCompany();
-//        $this->createSuperAdmin();
+        //        $company = $this->createCompany();
+        //        $this->createSuperAdmin();
         $this->userId = $this->createUser(null);
         $this->anotherUser = $this->createAnotherUser(null);
         $this->adminId = $admin->getId();
@@ -80,7 +84,7 @@ abstract class ControllerTestBase extends WebTestCase
     // Log in the user and set the token
     protected function logInUser(string $email, string $password): string
     {
-        self::$admin->request(Request::METHOD_POST, '/login', [], [], [], \json_encode([
+        self::$admin->request(Request::METHOD_POST, '/login', [], [], [], json_encode([
             'email' => $email,
             'password' => $password,
         ]));
@@ -89,7 +93,7 @@ abstract class ControllerTestBase extends WebTestCase
         $responseData = $this->getResponseData($response);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new \RuntimeException('Error logging in user');
+            throw new RuntimeException('Error logging in user');
         }
 
         return $responseData['token'];
@@ -98,7 +102,7 @@ abstract class ControllerTestBase extends WebTestCase
     protected function getResponseData(Response $response): array
     {
         try {
-            return \json_decode($response->getContent(), true);
+            return json_decode($response->getContent(), true);
         } catch (Exception $e) {
             throw $e;
         }
@@ -121,7 +125,8 @@ abstract class ControllerTestBase extends WebTestCase
             $payload['name'],
             $payload['email'],
             $payload['password'],
-            $payload['age']);
+            $payload['age'],
+        );
         $password = static::getContainer()
             ->get(PasswordHasherInterface::class)
             ->hashPasswordForUser($superAdmin, $payload['password']);
@@ -134,7 +139,7 @@ abstract class ControllerTestBase extends WebTestCase
 
         self::$admin->setServerParameters([
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_Authorization' => \sprintf('Bearer %s', $jwt)
+            'HTTP_Authorization' => sprintf('Bearer %s', $jwt),
         ]);
     }
 
@@ -150,12 +155,12 @@ abstract class ControllerTestBase extends WebTestCase
             'age' => 30,
         ];
 
-        self::$admin->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$admin->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$admin->getResponse();
 
         if (Response::HTTP_CREATED !== $response->getStatusCode()) {
-            throw new \RuntimeException('Error creating user');
+            throw new RuntimeException('Error creating user');
         }
 
         $responseData = $this->getResponseData($response);
@@ -175,12 +180,12 @@ abstract class ControllerTestBase extends WebTestCase
             'age' => 38,
         ];
 
-        self::$admin->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$admin->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$admin->getResponse();
 
         if (Response::HTTP_CREATED !== $response->getStatusCode()) {
-            throw new \RuntimeException('Error creating user');
+            throw new RuntimeException('Error creating user');
         }
 
         $responseData = $this->getResponseData($response);
@@ -193,14 +198,14 @@ abstract class ControllerTestBase extends WebTestCase
      */
     protected function createCompany(): string
     {
-//        $userId = $this->createUser();
+        //        $userId = $this->createUser();
 
         $payload = [
             'fantasyName' => 'Company Fake',
             'taxpayer' => '02024517000146',
         ];
 
-        self::$admin->request(Request::METHOD_POST, self::CREATE_COMPANY_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$admin->request(Request::METHOD_POST, self::CREATE_COMPANY_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$admin->getResponse();
 
@@ -226,17 +231,21 @@ abstract class ControllerTestBase extends WebTestCase
         self::$admin->request(
             Request::METHOD_POST,
             self::CREATE_COMPANY_ENDPOINT,
-            [], [], [], \json_encode($payload));
+            [],
+            [],
+            [],
+            json_encode($payload),
+        );
 
         $response = self::$admin->getResponse();
-//
-//        if (Response::HTTP_CREATED !== $response->getStatusCode()) {
-//            throw CompanyAlreadyExistsException::createFromTaxPayer($payload['taxpayer']);
-//        }
+        //
+        //        if (Response::HTTP_CREATED !== $response->getStatusCode()) {
+        //            throw CompanyAlreadyExistsException::createFromTaxPayer($payload['taxpayer']);
+        //        }
 
         $responseData = $this->getResponseData($response);
 
-//        return $responseData['CompanyId'];
+        //        return $responseData['CompanyId'];
     }
 
     protected function addUserToCompany(string $userId, string $companyId): void
@@ -246,12 +255,12 @@ abstract class ControllerTestBase extends WebTestCase
             'companyId' => $companyId,
         ];
 
-        self::$admin->request(Request::METHOD_POST, self::ADD_USER_TO_COMPANY_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$admin->request(Request::METHOD_POST, self::ADD_USER_TO_COMPANY_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$admin->getResponse();
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new \RuntimeException('Error adding user to company');
+            throw new RuntimeException('Error adding user to company');
         }
     }
 }

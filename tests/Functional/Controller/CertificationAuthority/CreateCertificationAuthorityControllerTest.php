@@ -8,6 +8,9 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_decode;
+use function json_encode;
+
 class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/certification-authority/create';
@@ -22,7 +25,9 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
         parent::setUp();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldCreateCertificationAuthoritySuccessfully(): void
     {
         self::$authenticatedClient->request(
@@ -31,17 +36,19 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true);
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertArrayHasKey('certificationAuthorityId', $responseData);
     }
 
-    /** @test */
-    public function ShouldNotCreateCertificationAuthorityWhenUserUnauthorized(): void
+    /**
+     * @test
+     */
+    public function shouldNotCreateCertificationAuthorityWhenUserUnauthorized(): void
     {
         self::$baseClient->request(
             Request::METHOD_POST,
@@ -49,7 +56,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -57,8 +64,10 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    /** @test */
-    public function ShouldNotCreateCertificationAuthorityWhenDuplicate(): void
+    /**
+     * @test
+     */
+    public function shouldNotCreateCertificationAuthorityWhenDuplicate(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_POST,
@@ -66,7 +75,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         self::$authenticatedClient->request(
@@ -75,7 +84,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -83,7 +92,9 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCreateCertificationAuthorityWithEmptyTaxpayer(): void
     {
         $payload = [
@@ -98,7 +109,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -106,7 +117,9 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCreateCertificationAuthorityWithEmptyName(): void
     {
         $payload = [
@@ -121,7 +134,7 @@ class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();

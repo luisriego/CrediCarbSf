@@ -45,6 +45,10 @@ composer-install: ## Installs composer dependencies
 ssh: ## bash into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
 
+ssh-sudo:
+	U_ID=${UID} docker exec -it --user root ${DOCKER_BE} bash
+
+
 db-create: ## Create the database
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 

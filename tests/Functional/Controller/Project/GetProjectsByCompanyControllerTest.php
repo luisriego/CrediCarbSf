@@ -9,6 +9,8 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class GetProjectsByCompanyControllerTest extends FunctionalTestBase
 {
     protected string $companyId;
@@ -24,9 +26,12 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByCompanySuccessfully(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -38,9 +43,12 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByCompanyWithInvalidCompanyId(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->invalidCompanyId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -50,9 +58,12 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByCompanyUnauthorized(): void
     {
-        self::$baseClient->request(Request::METHOD_GET,
+        self::$baseClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$baseClient->getResponse();
@@ -65,9 +76,12 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByCompanyWithAnyLoggedInUser(): void
     {
-        self::$anotherAuthenticatedClient->request(Request::METHOD_GET,
+        self::$anotherAuthenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->companyId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$anotherAuthenticatedClient->getResponse();
@@ -84,9 +98,12 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
     {
         $emptyCompanyId = '123e4567-e89b-12d3-a456-426614174001'; // Assume this company has no projects
 
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $emptyCompanyId),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();

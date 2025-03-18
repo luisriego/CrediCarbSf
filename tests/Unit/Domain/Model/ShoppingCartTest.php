@@ -13,7 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class ShoppingCartTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldCalculateTotalAndTaxCorrectly(): void
     {
         $company = $this->createMock(Company::class);
@@ -35,7 +37,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('3.50', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleEmptyCart(): void
     {
         $company = $this->createMock(Company::class);
@@ -48,7 +52,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('0.00', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleSingleItemCart(): void
     {
         $company = $this->createMock(Company::class);
@@ -66,7 +72,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('10.00', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleNegativeItemPrice(): void
     {
         $company = $this->createMock(Company::class);
@@ -84,7 +92,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('0.00', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleZeroTaxRate(): void
     {
         $company = $this->createMock(Company::class);
@@ -102,7 +112,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('0.00', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleHighTaxRate(): void
     {
         $company = $this->createMock(Company::class);
@@ -120,7 +132,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('100.00', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldApplyDiscountCorrectly(): void
     {
         $company = $this->createMock(Company::class);
@@ -139,7 +153,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('90.00', $shoppingCart->getTotal());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleDiscountOnSpecificProject(): void
     {
         $company = $this->createMock(Company::class);
@@ -162,7 +178,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('90.00', $shoppingCart->getTotal());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotApplyDiscountToDifferentProject(): void
     {
         $company = $this->createMock(Company::class);
@@ -188,7 +206,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('100.00', $shoppingCart->getTotal());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldHandleMultipleItemsWithDiscount(): void
     {
         $company = $this->createMock(Company::class);
@@ -211,7 +231,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('90.00', $shoppingCart->getTotal());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRecalculateTotalAndTaxWhenItemRemoved(): void
     {
         $company = $this->createMock(Company::class);
@@ -239,7 +261,9 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('1.50', $shoppingCart->getTax());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAllowNegativeTotalWithExcessiveDiscount(): void
     {
         $company = $this->createMock(Company::class);

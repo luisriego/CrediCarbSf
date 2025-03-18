@@ -9,6 +9,9 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_decode;
+use function json_encode;
+
 class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/remove-item/';
@@ -20,8 +23,8 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
         $this->addItemToShoppingCart();
 
         $this->shoppingCartRepository = self::getContainer()->get(ShoppingCartRepositoryInterface::class);
-//
-//        // Define the payload for adding an item
+        //
+        //        // Define the payload for adding an item
         $this->payload = [
             'ownerId' => $this->companyId,
             'projectId' => $this->projectId,
@@ -30,7 +33,9 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
         ];
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldRemoveItemFromShoppingCartSuccessfully(): void
     {
         self::$authenticatedClient->request(
@@ -39,16 +44,16 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            self::ENDPOINT . $this->shoppingCartItemId
+            self::ENDPOINT . $this->shoppingCartItemId,
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true);
 
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertArrayHasKey('shoppingCartId', $responseData);
@@ -56,12 +61,14 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
         self::assertNotContains($this->shoppingCartItemId, $responseData['itemIds']);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotRemoveItemFromShoppingCartWhenUnauthorized(): void
     {
         self::$baseClient->request(
             Request::METHOD_DELETE,
-            self::ENDPOINT . $this->shoppingCartItemId
+            self::ENDPOINT . $this->shoppingCartItemId,
         );
 
         $response = self::$baseClient->getResponse();
@@ -69,14 +76,16 @@ class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotRemoveItemFromShoppingCartWithInvalidItemId(): void
     {
         $invalidItemId = 'invalid-uid';
 
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            self::ENDPOINT . $invalidItemId
+            self::ENDPOINT . $invalidItemId,
         );
 
         $response = self::$authenticatedClient->getResponse();

@@ -9,7 +9,11 @@ RUN chown -R appuser:appuser /home/appuser/
 RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
 RUN echo "alias sf=bin/console" >> /home/appuser/.bashrc
 RUN echo "alias test='bin/phpunit --colors=always'" >> /home/appuser/.bashrc
+RUN echo "alias utest='bin/phpunit --colors=always --filter Unit'" >> /home/appuser/.bashrc
+RUN echo "alias ftest='bin/phpunit --colors=always --filter Functional'" >> /home/appuser/.bashrc
 RUN echo "alias tf='bin/phpunit --colors=always --filter'" >> /home/appuser/.bashrc
+RUN echo "alias tc='bin/phpunit --coverage-html coverage/'" >> /home/appuser/.bashrc
+RUN echo "alias tcf='bin/phpunit --coverage-html coverage/ --colors=always --filter'" >> /home/appuser/.bashrc
 RUN echo "alias fix='composer fix\:standards'" >> /home/appuser/.bashrc
 RUN echo "alias analyze='composer analyze\:standards'" >> /home/appuser/.bashrc
 
@@ -42,6 +46,8 @@ RUN composer self-update
 ## Install Symfony binary
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash
 RUN apt install symfony-cli
+
+RUN apt update && apt install -y symfony-cli vim && apt clean
 
 RUN mkdir -p /var/www/html
 

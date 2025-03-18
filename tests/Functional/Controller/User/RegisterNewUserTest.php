@@ -9,6 +9,8 @@ use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_encode;
+
 class RegisterNewUserTest extends FunctionalTestBase
 {
     /**
@@ -19,11 +21,15 @@ class RegisterNewUserTest extends FunctionalTestBase
         $payload = [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password123',
+            'password' => 'Password123',
             'age' => 25,
         ];
 
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::CREATE_USER_ENDPOINT,
+            [], [], [],
+            json_encode($payload, JSON_THROW_ON_ERROR));
 
         $response = self::$authenticatedClient->getResponse();
         $responseData = $this->getResponseData($response);
@@ -44,7 +50,7 @@ class RegisterNewUserTest extends FunctionalTestBase
             'age' => 25,
         ];
 
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$authenticatedClient->getResponse();
 
@@ -59,11 +65,11 @@ class RegisterNewUserTest extends FunctionalTestBase
         $payload = [
             'name' => 'Test User',
             'email' => 'invalid-email',
-            'password' => 'password123',
+            'password' => 'Password123',
             'age' => 25,
         ];
 
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
 
         $response = self::$authenticatedClient->getResponse();
 
@@ -78,11 +84,11 @@ class RegisterNewUserTest extends FunctionalTestBase
         $payload = [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'short',
+            'password' => 'Shor1',
             'age' => 25,
         ];
 
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload, JSON_THROW_ON_ERROR));
 
         $response = self::$authenticatedClient->getResponse();
 
@@ -97,20 +103,20 @@ class RegisterNewUserTest extends FunctionalTestBase
         $payload = [
             'name' => 'Test User',
             'email' => 'duplicate@example.com',
-            'password' => 'password123',
+            'password' => 'Password123',
             'age' => 25,
         ];
 
         // Create the first user
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
         $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
         // Try to create another user with the same email
-        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
         $response = self::$authenticatedClient->getResponse();
-//        $responseData = \json_decode($response->getContent(), true);
+        //        $responseData = \json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-//        $this->assertEquals('User with email <duplicate@example.com> already exists', $responseData['message']);
+        //        $this->assertEquals('User with email <duplicate@example.com> already exists', $responseData['message']);
     }
 }

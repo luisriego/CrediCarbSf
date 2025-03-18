@@ -8,6 +8,7 @@ use App\Domain\Model\User;
 use App\Domain\Validation\Traits\AssertLengthRangeTrait;
 use App\Domain\Validation\Traits\AssertMinimumAgeTrait;
 use App\Domain\Validation\Traits\AssertNotNullTrait;
+use App\Domain\Validation\Traits\AssertPasswordValidatorTrait;
 use App\Domain\Validation\Traits\AssertValidEmailTrait;
 
 class CreateUserInputDto
@@ -16,6 +17,7 @@ class CreateUserInputDto
     use AssertMinimumAgeTrait;
     use AssertValidEmailTrait;
     use AssertLengthRangeTrait;
+    use AssertPasswordValidatorTrait;
 
     private const ARGS = [
         'name',
@@ -44,6 +46,8 @@ class CreateUserInputDto
         $this->assertValueRangeLength($this->password, 6, 50);
 
         $this->assertValidEmail($this->email);
+
+        $this->assertPassword($this->password);
     }
 
     public static function create(?string $name, ?string $email, ?string $password, ?int $age): self

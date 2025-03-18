@@ -8,7 +8,6 @@ use App\Application\UseCase\User\ChangePasswordService\Dto\ChangePasswordInputDt
 use App\Application\UseCase\User\ChangePasswordService\Dto\ChangePasswordOutputDto;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Security\PasswordHasherInterface;
-use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 
 class ChangePasswordService
 {
@@ -23,13 +22,7 @@ class ChangePasswordService
     {
         $user = $this->userRepository->findOneByIdOrFail($dto->id);
 
-        if (!$this->passwordHasher->isPasswordValid($user, $dto->oldPassword)) {
-            throw new InvalidPasswordException('Invalid password.');
-        }
-
-        $user->setPassword($this->passwordHasher->hashPasswordForUser($user, $dto->newPassword));
-
-        $user->markAsUpdated();
+        $user->changePassword($dto->newPassword, $this->passwordHasher);
 
         $this->userRepository->save($user, true);
 

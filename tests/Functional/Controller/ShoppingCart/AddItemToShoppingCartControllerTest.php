@@ -8,6 +8,10 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function array_column;
+use function json_decode;
+use function json_encode;
+
 class AddItemToShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/add-item';
@@ -26,7 +30,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         ];
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldAddItemToShoppingCartSuccessfully(): void
     {
         self::$authenticatedClient->request(
@@ -35,11 +41,11 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true);
 
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         self::assertArrayHasKey('shoppingCartId', $responseData);
@@ -48,7 +54,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         self::assertContains($this->payload['projectId'], $projectIds);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAddItemToShoppingCartWhenUnauthorized(): void
     {
         self::$baseClient->request(
@@ -57,7 +65,7 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -65,7 +73,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAddItemToShoppingCartWithInvalidProjectId(): void
     {
         $this->payload['projectId'] = 'invalid-uid';
@@ -76,7 +86,7 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -84,7 +94,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAddItemToShoppingCartWithMissingFields(): void
     {
         unset($this->payload['projectId']);
@@ -95,7 +107,7 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $this->payload['projectId'] = $this->projectId;
@@ -105,7 +117,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAddItemToShoppingCartWithNegativeQuantity(): void
     {
         $this->payload['quantity'] = -1;
@@ -116,7 +130,7 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -124,7 +138,9 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
         self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotAddItemToShoppingCartWithInvalidPriceFormat(): void
     {
         $this->payload['price'] = 'invalid-price';
@@ -135,7 +151,7 @@ class AddItemToShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             [],
-            \json_encode($this->payload)
+            json_encode($this->payload),
         );
 
         $response = self::$authenticatedClient->getResponse();

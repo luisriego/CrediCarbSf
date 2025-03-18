@@ -84,31 +84,6 @@ class Certification
         $this->authority = $authority;
     }
 
-    public function deleteCertificationAuthority(string $authorityId): void
-    {
-        $entityManager = $this->getEntityManager();
-        $certificationRepository = $entityManager->getRepository(Certification::class);
-        $authorityRepository = $entityManager->getRepository(CertificationAuthority::class);
-
-        $authority = $authorityRepository->find($authorityId);
-
-        if ($authority) {
-            // Update all certifications to set authority to null
-            $certifications = $certificationRepository->findBy(['authority' => $authority]);
-
-            foreach ($certifications as $certification) {
-                $certification->setAuthority(null);
-                $entityManager->persist($certification);
-            }
-
-            $entityManager->flush();
-
-            // Now delete the authority
-            $entityManager->remove($authority);
-            $entityManager->flush();
-        }
-    }
-
     public function toArray(): array
     {
         return [

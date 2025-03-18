@@ -9,6 +9,8 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class GetProjectsByTypeControllerTest extends FunctionalTestBase
 {
     protected string $validType = 'Reforestation';
@@ -25,9 +27,12 @@ class GetProjectsByTypeControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByTypeSuccessfully(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validType),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -39,9 +44,12 @@ class GetProjectsByTypeControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByTypeWithInvalidType(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->invalidType),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -51,9 +59,12 @@ class GetProjectsByTypeControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByTypeUnauthorized(): void
     {
-        self::$baseClient->request(Request::METHOD_GET,
+        self::$baseClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validType),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$baseClient->getResponse();
@@ -66,9 +77,12 @@ class GetProjectsByTypeControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByTypeWithAnyLoggedInUser(): void
     {
-        self::$anotherAuthenticatedClient->request(Request::METHOD_GET,
+        self::$anotherAuthenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validType),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$anotherAuthenticatedClient->getResponse();

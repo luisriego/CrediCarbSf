@@ -5,19 +5,27 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller\ShoppingCart;
 
 use App\Tests\Functional\FunctionalTestBase;
+use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function json_decode;
+use function json_encode;
+
+use const JSON_THROW_ON_ERROR;
 
 class CheckoutShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/checkout';
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldCheckoutShoppingCartSuccessfully(): void
     {
         self::$authenticatedClient->request(
             Request::METHOD_POST,
-            self::ENDPOINT
+            self::ENDPOINT,
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -26,7 +34,7 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function shouldCheckoutShoppingCartSuccessfullyWithDiscount(): void
     {
@@ -38,7 +46,7 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['discountCode' => $discountCode], JSON_THROW_ON_ERROR)
+            json_encode(['discountCode' => $discountCode], JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -50,12 +58,14 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
         $this->assertNotNull($responseData['discountedTotal']);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotCheckoutShoppingCartWhenUnauthorized(): void
     {
         self::$baseClient->request(
             Request::METHOD_POST,
-            self::ENDPOINT
+            self::ENDPOINT,
         );
 
         $response = self::$baseClient->getResponse();
