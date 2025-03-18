@@ -14,16 +14,28 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectTest extends TestCase
 {
-    public function testCreateProject(): void
+    /** @var Company&\PHPUnit\Framework\MockObject\MockObject $companyMock */
+    private $companyMock;
+
+    protected function setUp(): void
     {
-        $project = new Project(
+        parent::setUp();
+
+        $this->companyMock = $this->createMock(Company::class);
+    }
+
+    public function testCreateProject(): void
+    {      
+        
+
+        $project = Project::create(
             'Test Project',
             'Some description text...',
             '10.0',
             '100',
             '20.0',
             'Carbon',
-            $this->createMock(Company::class),
+            $this->companyMock,
         );
 
         $this->assertSame('Test Project', $project->getName());
@@ -38,7 +50,7 @@ class ProjectTest extends TestCase
 
     public function testUpdateName(): void
     {
-        $project = Project::create('Old Name', 'Some description text...', '5.0', '10', '15.0', 'Carbon', null);
+        $project = Project::create('Old Name', 'Some description text...', '5.0', '10', '15.0', 'Carbon', $this->companyMock);
         $project->setName('New Name');
 
         $this->assertSame('New Name', $project->getName());
@@ -46,7 +58,7 @@ class ProjectTest extends TestCase
 
     public function testSetStatus(): void
     {
-        $project = Project::create('Test Project', 'Some description text...', '5.0', '10', '15.0', 'Other', null);
+        $project = Project::create('Test Project', 'Some description text...', '5.0', '10', '15.0', 'Other', $this->companyMock);
         $project->setStatus(ProjectStatus::IN_DEVELOPMENT);
 
         $this->assertEquals(ProjectStatus::IN_DEVELOPMENT, $project->getStatus());
@@ -54,7 +66,7 @@ class ProjectTest extends TestCase
 
     public function testTrackProgress(): void
     {
-        $project = Project::create('Progress Project', 'Some description text...', '5.0', '10', '15.0', 'Other', null);
+        $project = Project::create('Progress Project', 'Some description text...', '5.0', '10', '15.0', 'Other', $this->companyMock);
         $track = $project->trackProgress();
 
         $this->assertArrayHasKey('currentStatus', $track);
@@ -65,18 +77,34 @@ class ProjectTest extends TestCase
     public function testInvalidQuantityThrowsException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Project::create('Invalid Quantity', '', '5.0', '0', '15.0', 'Carbon', null);
+        Project::create('Invalid Quantity', '', '5.0', '0', '15.0', 'Carbon', $this->companyMock);
     }
 
     public function testDeactivateProject(): void
     {
-        $project = Project::create('Deactivate me', 'Some description text...', '10.0', '200', '50.0', 'Carbon', null);
+        $project = Project::create('Deactivate me', 'Some description text...', '10.0', '200', '50.0', 'Carbon', $this->companyMock);
 
         $project->deactivate(); // Suppose your Project has a deactivate() method
         $this->assertFalse($project->isActive());
 
-        // Attempting to deactivate again might throw a DomainException
-        $this->expectException(HttpException::class);
         $project->deactivate();
+        $this->assertFalse($project->isActive());
+    }
+
+    public function testActivateProject(): void
+    {
+        $project = Project::create('Activate me', 'Some description text...', '10.0', '200', '50.0', 'Carbon', $this->companyMock);
+
+        $project->activate();
+        $this->assertTrue($project->isActive());
+
+        $project->activate();
+        $this->assertTrue($project->isActive());
+    }
+
+    public function testInvalidOwnerThrowsException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Project::create('Invalid Owner', '', '5.0', '10', '15.0', 'Carbon', null);
     }
 }
