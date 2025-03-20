@@ -1,0 +1,27 @@
+framework:
+    workflows:
+        shopping_cart:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Domain\Model\ShoppingCart
+            initial_marking: 'ACTIVE'
+            places:
+                - 'ACTIVE'
+                - 'PROCESSING' 
+                - 'COMPLETED'
+                - 'CANCELLED'
+            transitions:
+                checkout:
+                    from: 'ACTIVE'
+                    to: 'PROCESSING'
+                complete:
+                    from: 'PROCESSING'
+                    to: 'COMPLETED'
+                cancel:
+                    from: ['ACTIVE', 'PROCESSING']
+                    to: 'CANCELLED'

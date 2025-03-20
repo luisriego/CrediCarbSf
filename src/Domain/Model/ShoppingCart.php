@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Common\ShoppingCartStatus;
+use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
+use App\Domain\Services\TaxCalculator;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
@@ -50,6 +52,11 @@ class ShoppingCart
         $this->status = ShoppingCartStatus::ACTIVE;
         $this->total = '0.00';
         $this->tax = '0.00';
+    }
+
+    public static function createWithOwner(Company $Owner): self
+    {
+        return new self($Owner);
     }
 
     public function getOwner(): Company
@@ -146,16 +153,25 @@ class ShoppingCart
         $this->total = number_format(max($total, 0), 2, '.', '');
     }
 
-    public function calculateTax(float $taxRate): void
+    public function calculateTaxWithCalculator(TaxCalculator $calculator): void
     {
         $total = (float) $this->total;
-        $this->tax = number_format($total * $taxRate, 2, '.', '');
+        $this->tax = number_format($calculator->calculateTaxForAmount($total), 2, '.', '');
     }
 
     public function checkout(?Discount $discount = null): void
     {
+        if (!$this->canBeCheckedOut()) {
+            throw ShoppingCartWorkflowException::createWithMessage('Shopping cart cannot be checked out', 422);
+        }
+        
         $this->calculateTotal($discount);
-        $this->status = ShoppingCartStatus::COMPLETED;
+        // $this->status = ShoppingCartStatus::COMPLETED;
+    }
+
+    public function cancel(): void
+    {
+        $this->removeAllItems();
     }
 
     public function toArray(): array
@@ -170,5 +186,16 @@ class ShoppingCart
             'createdOn' => $this->createdOn,
             'updatedOn' => $this->updatedOn,
         ];
+    }
+
+    private function canBeCheckedOut(): bool
+    {
+        return !$this->items->isEmpty() && $this->status === ShoppingCartStatus::ACTIVE;
+    }
+
+    private function canBeProcessed(): bool
+    {
+        // Any business rules about when processing is valid
+        return $this->status === ShoppingCartStatus::PROCESSING;
     }
 }

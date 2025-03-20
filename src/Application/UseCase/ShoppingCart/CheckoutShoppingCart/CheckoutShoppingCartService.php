@@ -6,11 +6,15 @@ namespace App\Application\UseCase\ShoppingCart\CheckoutShoppingCart;
 
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutputDto;
 use App\Application\UseCase\User\UserFinder\UserFinder;
+use App\Domain\Exception\HttpException;
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
+use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
+use App\Domain\Service\ShoppingCartWorkflowInterface;
+use App\Domain\Service\TaxCalculator;
 
 final readonly class CheckoutShoppingCartService
 {
@@ -18,10 +22,15 @@ final readonly class CheckoutShoppingCartService
         private ShoppingCartRepositoryInterface $repository,
         private DiscountRepositoryInterface $discountRepository,
         private UserFinder $userFinder,
+        private ShoppingCartWorkflowInterface $shoppingCartWorkflow,
+        private TaxCalculator $taxCalculator,
     ) {}
 
     /**
      * @throws InvalidDiscountException
+     * @throws EmptyCartException
+     * @throws InsufficientStockException
+     * @throws ShoppingCartWorkflowException
      */
     public function handle(?string $discountCode = null): CheckoutOutputDto
     {
@@ -43,7 +52,13 @@ final readonly class CheckoutShoppingCartService
         }
 
         $this->validateStock($shoppingCart);
-        $shoppingCart->checkout();
+        
+        if (!$this->shoppingCartWorkflow->canCheckout($shoppingCart)) {
+            throw ShoppingCartWorkflowException::createWithMessage('The shopping cart cannot be checked out');
+        }
+
+        $this->shoppingCartWorkflow->checkout($shoppingCart, $discount, $this->taxCalculator);
+        
         $this->repository->save($shoppingCart, true);
 
         return CheckoutOutputDto::fromEntity($shoppingCart, $discount);
