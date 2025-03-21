@@ -33,6 +33,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
 
     /**
      * @test
+     * @throws \JsonException
      */
     public function shouldUpdateItemQuantityInShoppingCartSuccessfully(): void
     {
@@ -46,7 +47,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         self::assertArrayHasKey('shoppingCartId', $responseData);

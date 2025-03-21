@@ -15,7 +15,7 @@ class WorkflowService implements ShoppingCartWorkflowInterface
     private Registry $workflowRegistry;
     private TaxCalculator $defaultTaxCalculator;
 
-    public function __construct(Registry $workflowRegistry, float $taxRate, TaxCalculator $defaultTaxCalculator)
+    public function __construct(Registry $workflowRegistry, TaxCalculator $defaultTaxCalculator)
     {
         $this->workflowRegistry = $workflowRegistry;
         $this->defaultTaxCalculator = $defaultTaxCalculator;

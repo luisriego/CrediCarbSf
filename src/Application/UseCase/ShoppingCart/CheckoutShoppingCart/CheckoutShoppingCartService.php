@@ -6,15 +6,14 @@ namespace App\Application\UseCase\ShoppingCart\CheckoutShoppingCart;
 
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutputDto;
 use App\Application\UseCase\User\UserFinder\UserFinder;
-use App\Domain\Exception\HttpException;
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
 use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
-use App\Domain\Service\ShoppingCartWorkflowInterface;
-use App\Domain\Service\TaxCalculator;
+use App\Domain\Services\ShoppingCartWorkflowInterface;
+use App\Domain\Services\TaxCalculator;
 
 final readonly class CheckoutShoppingCartService
 {
