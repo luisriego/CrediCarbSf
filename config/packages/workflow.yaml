@@ -6,22 +6,23 @@ framework:
                 enabled: true
             marking_store:
                 type: 'method'
-                property: 'status'
+                property: 'statusValue'
             supports:
                 - App\Domain\Model\ShoppingCart
-            initial_marking: 'ACTIVE'
+            initial_marking: 'active'
             places:
-                - 'ACTIVE'
-                - 'PROCESSING' 
-                - 'COMPLETED'
-                - 'CANCELLED'
+                - 'active'
+                - 'processing'
+                - 'completed'
+                - 'cancelled'
+
             transitions:
                 checkout:
-                    from: 'ACTIVE'
-                    to: 'PROCESSING'
+                    from: 'active'
+                    to: 'processing'
                 complete:
-                    from: 'PROCESSING'
-                    to: 'COMPLETED'
+                    from: 'processing'
+                    to: 'completed'
                 cancel:
-                    from: ['ACTIVE', 'PROCESSING']
-                    to: 'CANCELLED'
+                    from: ['active', 'processing']
+                    to: 'cancelled'

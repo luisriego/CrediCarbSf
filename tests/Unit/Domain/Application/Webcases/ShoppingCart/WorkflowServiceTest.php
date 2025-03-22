@@ -9,6 +9,7 @@ use App\Domain\Model\Discount;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Services\TaxCalculator;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Registry;
@@ -22,7 +23,10 @@ class WorkflowServiceTest extends TestCase
     private MockObject $taxCalculator;
     private MockObject $shoppingCart;
     private MockObject $discount;
-    
+
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         $this->workflow = $this->createMock(Workflow::class);
@@ -39,7 +43,6 @@ class WorkflowServiceTest extends TestCase
         
         $this->workflowService = new WorkflowService(
             $this->workflowRegistry,
-            0.16,
             $this->taxCalculator
         );
     }

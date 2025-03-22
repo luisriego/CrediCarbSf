@@ -10,6 +10,8 @@ use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
 use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
+use App\Domain\Model\ShoppingCart;
+use App\Domain\Model\User;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Domain\Services\ShoppingCartWorkflowInterface;
@@ -31,15 +33,16 @@ final readonly class CheckoutShoppingCartService
      * @throws InsufficientStockException
      * @throws ShoppingCartWorkflowException
      */
-    public function handle(?string $discountCode = null): CheckoutOutputDto
+    public function handle(User $user, ShoppingCart $shoppingCart, ?string $discountCode = null): CheckoutOutputDto
     {
-        $user = $this->userFinder->getCurrentUser();
-        $shoppingCart = $this->repository->findOneByOwnerIdOrFail($user->getCompany()->getId());
-
+        // Refactoring with TDA
         if ($shoppingCart->getItems()->isEmpty()) {
             throw new EmptyCartException();
         }
 
+        // Also here, a TDA to apply discount when exists
+        // something like...
+        // $this->applyDiscount(?string $discountCode = null);
         $discount = null;
 
         if ($discountCode !== null) {
@@ -51,13 +54,15 @@ final readonly class CheckoutShoppingCartService
         }
 
         $this->validateStock($shoppingCart);
-        
+
+        // make this in $this->shoppingCartWorkflow->checkout method
         if (!$this->shoppingCartWorkflow->canCheckout($shoppingCart)) {
             throw ShoppingCartWorkflowException::createWithMessage('The shopping cart cannot be checked out');
         }
 
+        // include a transaction around the checkout
         $this->shoppingCartWorkflow->checkout($shoppingCart, $discount, $this->taxCalculator);
-        
+
         $this->repository->save($shoppingCart, true);
 
         return CheckoutOutputDto::fromEntity($shoppingCart, $discount);

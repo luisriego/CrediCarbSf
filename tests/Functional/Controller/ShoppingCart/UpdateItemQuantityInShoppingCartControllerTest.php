@@ -43,7 +43,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            json_encode(['itemId' => $this->shoppingCartItemId, 'quantity' => 2]),
+            json_encode(['itemId' => $this->shoppingCartItemId, 'quantity' => 2], JSON_THROW_ON_ERROR),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -53,6 +53,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
         self::assertArrayHasKey('shoppingCartId', $responseData);
         self::assertArrayHasKey('itemIds', $responseData);
         self::assertContains($this->payload['itemId'], $responseData['itemIds']);
+
         self::assertEquals(3, $responseData['itemIds']['quantity']);
     }
 

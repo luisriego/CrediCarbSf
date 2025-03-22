@@ -18,7 +18,7 @@ class TaxCalculator
 
     /**
      * Calculates tax rate based on complex business rules
-     * Implement your business logic here
+     * Implement your business logic here.
      */
     public function determineTaxRate(array $context = []): float
     {

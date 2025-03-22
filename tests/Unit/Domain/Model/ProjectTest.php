@@ -10,6 +10,7 @@ use App\Domain\Exception\HttpException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use DomainException;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class ProjectTest extends TestCase
@@ -17,6 +18,9 @@ class ProjectTest extends TestCase
     /** @var Company&\PHPUnit\Framework\MockObject\MockObject $companyMock */
     private $companyMock;
 
+    /**
+     * @throws Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -59,7 +63,7 @@ class ProjectTest extends TestCase
     public function testSetStatus(): void
     {
         $project = Project::create('Test Project', 'Some description text...', '5.0', '10', '15.0', 'Other', $this->companyMock);
-        $project->setStatus(ProjectStatus::IN_DEVELOPMENT);
+        $project->changePhase(ProjectStatus::IN_DEVELOPMENT);
 
         $this->assertEquals(ProjectStatus::IN_DEVELOPMENT, $project->getStatus());
     }

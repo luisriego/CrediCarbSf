@@ -101,8 +101,8 @@ services:
         class: App\Adapter\Framework\Security\SymfonyPasswordHasher
         public: true
 
-    App\Domain\Services\ShoppingCartWorkflowInterface:
-        class: App\Application\UseCase\ShoppingCart\WorkflowService
-        arguments:
-            $workflowRegistry: '@workflow.registry'
-            $defaultTaxCalculator: '@App\Domain\Services\TaxCalculator'
+#    App\Domain\Services\ShoppingCartWorkflowInterface:
+#        class: App\Application\UseCase\ShoppingCart\WorkflowService
+#        arguments:
+#            $workflowRegistry: '@workflow.registry'
+#            $defaultTaxCalculator: '@App\Domain\Services\TaxCalculator'

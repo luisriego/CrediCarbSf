@@ -114,6 +114,16 @@ class ShoppingCart
         $this->status = $status;
     }
 
+    public function getStatusValue(): string
+    {
+        return $this->status->value;
+    }
+
+    public function setStatusValue(string $status): void
+    {
+        $this->status = ShoppingCartStatus::from($status);
+    }
+
     public function addItem(ShoppingCartItem $item): void
     {
         $this->items->add($item);
@@ -159,14 +169,16 @@ class ShoppingCart
         $this->tax = number_format($calculator->calculateTaxForAmount($total), 2, '.', '');
     }
 
+    /**
+     * @throws ShoppingCartWorkflowException
+     */
     public function checkout(?Discount $discount = null): void
     {
         if (!$this->canBeCheckedOut()) {
             throw ShoppingCartWorkflowException::createWithMessage('Shopping cart cannot be checked out', 422);
         }
-        
+
         $this->calculateTotal($discount);
-        // $this->status = ShoppingCartStatus::COMPLETED;
     }
 
     public function cancel(): void
@@ -182,7 +194,7 @@ class ShoppingCart
             'items' => $this->items->map(fn (ShoppingCartItem $item) => $item->toArray())->toArray(),
             'total' => $this->total,
             'tax' => $this->tax,
-            'status' => $this->status->getValue(),
+            'status' => $this->status,
             'createdOn' => $this->createdOn,
             'updatedOn' => $this->updatedOn,
         ];

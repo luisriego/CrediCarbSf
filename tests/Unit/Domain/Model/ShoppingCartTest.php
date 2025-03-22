@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Domain\Model;
 
+use App\Domain\Common\ShoppingCartStatus;
+use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\Company;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Model\ShoppingCartItem;
 use App\Domain\Services\TaxCalculator;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Workflow\Marking;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class ShoppingCartTest extends TestCase
 {
@@ -131,4 +136,45 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals('15.00', $shoppingCart->getTotal());
         $this->assertEquals('1.50', $shoppingCart->getTax());
     }
+
+    /**
+     * @test
+     * @throws Exception
+     * @throws ShoppingCartWorkflowException
+     */
+    public function shouldCheckoutSuccessfully(): void
+    {
+        // Arrange
+        $company = $this->createMock(Company::class);
+        $shoppingCart = ShoppingCart::createWithOwner($company);
+
+        $item1 = $this->createMock(ShoppingCartItem::class);
+        $item1->method('getTotalPrice')->willReturn('20.00');
+
+        $item2 = $this->createMock(ShoppingCartItem::class);
+        $item2->method('getTotalPrice')->willReturn('15.00');
+
+        $shoppingCart->addItem($item1);
+        $shoppingCart->addItem($item2);
+
+        $this->assertEquals(ShoppingCartStatus::ACTIVE, $shoppingCart->getStatus());
+
+        $marking = $this->createMock(Marking::class);
+
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->once())
+            ->method('apply')
+            ->with($shoppingCart, 'checkout')
+            ->willReturnCallback(function($cart) use ($marking) {
+                $cart->setStatus(ShoppingCartStatus::PROCESSING);
+                return $marking;
+            });
+
+        $workflow->apply($shoppingCart, 'checkout');
+
+        $this->assertEquals(ShoppingCartStatus::PROCESSING, $shoppingCart->getStatus());
+        $this->assertEquals('35.00', $shoppingCart->getTotal());
+
+    }
+
 }

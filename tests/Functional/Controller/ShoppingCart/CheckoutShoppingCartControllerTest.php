@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\ShoppingCart;
 
+use App\Application\UseCase\User\UserFinder\UserFinder;
+use App\Domain\Repository\ShoppingCartRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +23,7 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
 
     /**
      * @test
+     * @throws JsonException
      */
     public function shouldCheckoutShoppingCartSuccessfully(): void
     {
@@ -29,11 +33,16 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
         );
 
         $response = self::$authenticatedClient->getResponse();
+        $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJson($response->getContent());
+        $this->assertArrayHasKey('status', $responseData);
+        $this->assertEquals('processing', $responseData['status']);
+
     }
 
     /**
+     * @test
      * @throws JsonException
      */
     public function shouldCheckoutShoppingCartSuccessfullyWithDiscount(): void
@@ -56,6 +65,9 @@ class CheckoutShoppingCartControllerTest extends FunctionalTestBase
         $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertArrayHasKey('discountedTotal', $responseData);
         $this->assertNotNull($responseData['discountedTotal']);
+        $this->assertArrayHasKey('status', $responseData);
+        $this->assertEquals('processing', $responseData['status']);
+
     }
 
     /**

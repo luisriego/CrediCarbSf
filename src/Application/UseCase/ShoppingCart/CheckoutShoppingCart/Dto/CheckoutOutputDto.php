@@ -16,6 +16,7 @@ final readonly class CheckoutOutputDto
         private string $ownerName,
         private array $items,
         private float $total,
+        private string $status,
         private ?string $discountCode = null,
         private ?float $discountedTotal = null,
     ) {}
@@ -47,6 +48,7 @@ final readonly class CheckoutOutputDto
                 $shoppingCart->getItems()->toArray(),
             ),
             $total,
+            'processing',
             $discount?->code(),
             $discountedTotal,
         );
@@ -60,6 +62,7 @@ final readonly class CheckoutOutputDto
             'ownerName' => $this->ownerName,
             'items' => $this->items,
             'total' => $this->total,
+            'status' => $this->status,
             'discountCode' => $this->discountCode,
             'discountedTotal' => $this->discountedTotal,
         ];
@@ -88,5 +91,10 @@ final readonly class CheckoutOutputDto
     public function total(): float
     {
         return $this->total;
+    }
+
+    public function status(): string
+    {
+        return $this->status;
     }
 }
