@@ -113,19 +113,15 @@ class WorkflowServiceTest extends TestCase
         $this->shoppingCart->expects($this->once())
             ->method('checkout')
             ->with($this->discount);
-            
-        $this->shoppingCart->expects($this->once())
-            ->method('calculateTaxWithCalculator')
-            ->with($this->taxCalculator);
-            
+
         $this->workflow->expects($this->once())
             ->method('apply')
             ->with($this->shoppingCart, 'checkout');
-            
+
         // Execute
-        $this->workflowService->checkout($this->shoppingCart, $this->discount, $this->taxCalculator);
+        $this->workflowService->checkout($this->shoppingCart, $this->discount);
     }
-    
+
     /**
      * @test
      */

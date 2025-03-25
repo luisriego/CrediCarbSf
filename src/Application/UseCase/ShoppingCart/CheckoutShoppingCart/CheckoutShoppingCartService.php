@@ -5,44 +5,36 @@ declare(strict_types=1);
 namespace App\Application\UseCase\ShoppingCart\CheckoutShoppingCart;
 
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutputDto;
-use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
 use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\ShoppingCart;
-use App\Domain\Model\User;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Domain\Services\ShoppingCartWorkflowInterface;
-use App\Domain\Services\TaxCalculator;
 
 final readonly class CheckoutShoppingCartService
 {
     public function __construct(
         private ShoppingCartRepositoryInterface $repository,
         private DiscountRepositoryInterface $discountRepository,
-        private UserFinder $userFinder,
         private ShoppingCartWorkflowInterface $shoppingCartWorkflow,
-        private TaxCalculator $taxCalculator,
     ) {}
 
     /**
-     * @throws InvalidDiscountException
      * @throws EmptyCartException
      * @throws InsufficientStockException
-     * @throws ShoppingCartWorkflowException
+     * @throws ShoppingCartWorkflowException|InvalidDiscountException
      */
-    public function handle(User $user, ShoppingCart $shoppingCart, ?string $discountCode = null): CheckoutOutputDto
+    public function handle(ShoppingCart $shoppingCart, ?string $discountCode = null): CheckoutOutputDto
     {
-        // Refactoring with TDA
-        if ($shoppingCart->getItems()->isEmpty()) {
-            throw new EmptyCartException();
-        }
+        $this->validateEmptyCart($shoppingCart);
+        $this->validateStock($shoppingCart);
 
-        // Also here, a TDA to apply discount when exists
-        // something like...
-        // $this->applyDiscount(?string $discountCode = null);
+        //        // Also here, a TDA to apply discount when exists
+        //        // something like...
+        //        // $this->applyDiscount(?string $discountCode = null);
         $discount = null;
 
         if ($discountCode !== null) {
@@ -53,22 +45,27 @@ final readonly class CheckoutShoppingCartService
             }
         }
 
-        $this->validateStock($shoppingCart);
-
         // make this in $this->shoppingCartWorkflow->checkout method
-        if (!$this->shoppingCartWorkflow->canCheckout($shoppingCart)) {
-            throw ShoppingCartWorkflowException::createWithMessage('The shopping cart cannot be checked out');
-        }
+//        if (!$this->shoppingCartWorkflow->canCheckout($shoppingCart)) {
+//            throw ShoppingCartWorkflowException::createWithMessage('The shopping cart cannot be checked out');
+//        }
 
         // include a transaction around the checkout
-        $this->shoppingCartWorkflow->checkout($shoppingCart, $discount, $this->taxCalculator);
+        $this->shoppingCartWorkflow->checkout($shoppingCart, $discount);
 
         $this->repository->save($shoppingCart, true);
 
         return CheckoutOutputDto::fromEntity($shoppingCart, $discount);
     }
 
-    private function validateStock($shoppingCart): void
+    private function validateEmptyCart(ShoppingCart $shoppingCart): void
+    {
+        if ($shoppingCart->getItems()->isEmpty()) {
+            throw new EmptyCartException();
+        }
+    }
+
+    private function validateStock(ShoppingCart $shoppingCart): void
     {
         foreach ($shoppingCart->getItems() as $item) {
             if ($item->getQuantity() > $item->getProject()->getQuantity()) {

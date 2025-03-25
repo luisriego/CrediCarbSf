@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\ShoppingCart;
 
-use App\Application\UseCase\User\UserFinder\UserFinder;
-use App\Domain\Repository\ShoppingCartRepositoryInterface;
-use App\Domain\Repository\UserRepositoryInterface;
+use App\Domain\Event\ShoppingCartCheckedOut;
 use App\Tests\Functional\FunctionalTestBase;
 use JsonException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +19,25 @@ use const JSON_THROW_ON_ERROR;
 class CheckoutShoppingCartControllerTest extends FunctionalTestBase
 {
     private const ENDPOINT = '/api/shopping-cart/checkout';
+
+    /**
+     * @test
+     */
+    public function shouldDispatchEventsWhenCheckoutIsSuccessful(): void
+    {
+        // Get the event counter from the container
+        $eventCounter = static::getContainer()->get('test.event_counter');
+        $eventCounter->count = 0;
+        self::$authenticatedClient->request(
+            Request::METHOD_POST,
+            self::ENDPOINT
+        );
+
+        $response = self::$authenticatedClient->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        // Check directly if the counter increased
+        $this->assertGreaterThan(0, $eventCounter->count, 'No ShoppingCartCheckedOut events has been detected');
+    }
 
     /**
      * @test

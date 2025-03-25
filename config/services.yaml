@@ -101,8 +101,12 @@ services:
         class: App\Adapter\Framework\Security\SymfonyPasswordHasher
         public: true
 
-#    App\Domain\Services\ShoppingCartWorkflowInterface:
-#        class: App\Application\UseCase\ShoppingCart\WorkflowService
-#        arguments:
-#            $workflowRegistry: '@workflow.registry'
-#            $defaultTaxCalculator: '@App\Domain\Services\TaxCalculator'
+    App\Application\EventHandler\DiscountCodeAppliedHandler:
+        arguments:
+            - '@App\Domain\Repository\ShoppingCartRepositoryInterface'
+            - '@App\Domain\Repository\DiscountRepositoryInterface'
+            - '@logger'
+        tags:
+            - { name: 'app.event_handler', event: 'App\Domain\Event\DiscountCodeApplied' }
+
+    App\Domain\Event\DomainEventDispatcherInterface: '@App\Adapter\Framework\Event\SymfonyDomainEventDispatcher'

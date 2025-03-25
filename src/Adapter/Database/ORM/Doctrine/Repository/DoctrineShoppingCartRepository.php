@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Adapter\Database\ORM\Doctrine\Repository;
 
+use App\Domain\Common\ShoppingCartStatus;
+use App\Domain\Event\DomainEventDispatcherInterface;
+use App\Domain\Event\EventSourcedEntityInterface;
 use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
@@ -12,8 +15,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineShoppingCartRepository extends ServiceEntityRepository implements ShoppingCartRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private DomainEventDispatcherInterface $eventDispatcher,
+    ) {
         parent::__construct($registry, ShoppingCart::class);
     }
 
@@ -32,6 +37,10 @@ class DoctrineShoppingCartRepository extends ServiceEntityRepository implements 
 
         if ($flush) {
             $this->getEntityManager()->flush();
+        }
+
+        if ($shoppingCart instanceof EventSourcedEntityInterface) {
+            $this->eventDispatcher->dispatchAll($shoppingCart->releaseEvents());
         }
     }
 
@@ -56,6 +65,25 @@ class DoctrineShoppingCartRepository extends ServiceEntityRepository implements 
     public function findOwnerById(string $ownerId): ?ShoppingCart
     {
         return $this->findOneBy(['owner' => $ownerId]);
+    }
+
+    public function findActiveCartForCompanyOwnerOrFail(string $ownerId): ?ShoppingCart
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->where('c.owner = :ownerId')
+            ->andWhere('c.status = :status')
+            ->andWhere('c.isActive = :isActive')
+            ->setParameter('companyId', $ownerId)
+            ->setParameter('status', ShoppingCartStatus::ACTIVE)
+            ->setParameter('isActive', true);
+
+        $companyOwner = $qb->getQuery()->getOneOrNullResult();
+
+        if (empty($companyOwner)) {
+            throw ResourceNotFoundException::createFromClassAndId(ShoppingCart::class, $ownerId);
+        }
+
+        return $companyOwner;
     }
 
     public function findOneByOwnerIdOrFail(string $ownerId): ResourceNotFoundException|ShoppingCart

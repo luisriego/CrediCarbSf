@@ -38,7 +38,7 @@ class CheckoutShoppingCartController extends AbstractController
             throw $this->createAccessDeniedException('Access Denied.');
         }
 
-        $response = $this->service->handle($user, $cart);
+        $response = $this->service->handle($cart);
 
         return new JsonResponse($response->toArray(), Response::HTTP_OK);
     }

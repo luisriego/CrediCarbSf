@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Domain\Event\ShoppingCartCheckedOut;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
@@ -110,6 +111,24 @@ class FunctionalTestBase extends WebTestCase
             ]);
         }
 
+        // Get the event dispatcher
+        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        // Create a counter for events
+        $eventCounter = new class() {
+            public $count = 0;
+            public function increment(): void
+            { $this->count++; }
+        };
+        // Store eventCounter in the container for later use
+        static::getContainer()->set('test.event_counter', $eventCounter);
+        // Register the listener in the application container
+        $eventDispatcher->addListener(
+            ShoppingCartCheckedOut::class,
+            function (ShoppingCartCheckedOut $event) use ($eventCounter) {
+                $eventCounter->increment();
+            }
+        );
+
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
         $project = static::getContainer()->get(ProjectRepositoryInterface::class)->findOneBy(['name' => 'Project 2']);
         $authority = static::getContainer()->get(CertificationAuthorityRepositoryInterface::class)->findOneBy(['taxpayer' => '48846500000175']);
@@ -124,6 +143,13 @@ class FunctionalTestBase extends WebTestCase
         $this->projectId = $project->getId();
         $this->certificationAuthorityId = $authority->getId();
         $this->shoppingCartId = $shoppingCart->getId();
+    }
+
+    protected function getBearerToken(): string
+    {
+        // Implement your token generation logic here
+        // This is just a placeholder
+        return 'your_bearer_token';
     }
 
     protected function createUser(string $name, string $email): void

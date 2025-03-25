@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\ShoppingCart;
 
+use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\Discount;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Services\ShoppingCartWorkflowInterface;
@@ -29,36 +30,30 @@ class WorkflowService implements ShoppingCartWorkflowInterface
         return $workflow->can($cart, 'checkout') && !$cart->getItems()->isEmpty();
     }
 
-    public function checkout(ShoppingCart $cart, ?Discount $discount = null, ?TaxCalculator $taxCalculator = null): void
+    /**
+     * @throws ShoppingCartWorkflowException
+     */
+    public function checkout(ShoppingCart $cart, ?Discount $discount = null): void
     {
         $cart->checkout($discount);
 
-        $cart->calculateTaxWithCalculator(
-            $taxCalculator ?? $this->defaultTaxCalculator,
-        );
-
-        // Solo nos encargamos de la transición de estado
         $workflow = $this->workflowRegistry->get($cart, 'shopping_cart');
         $workflow->apply($cart, 'checkout');
     }
 
     public function canCancel(ShoppingCart $cart): bool
     {
-        $workflow = $this->workflowRegistry->get($cart, 'shopping_cart');
-
-        return $workflow->can($cart, 'cancel');
+        return $this->workflowRegistry->get($cart, 'shopping_cart')->can($cart, 'cancel');
     }
 
     public function cancel(ShoppingCart $cart): void
     {
         if (!$this->canCancel($cart)) {
-            throw new LogicException('No se puede cancelar el carrito en su estado actual');
+            throw new LogicException('The shopping cart cannot be canceled in its current state.');
         }
 
-        // Llamamos a la lógica de negocio en el dominio
         $cart->cancel();
 
-        // Solo nos encargamos de la transición de estado
         $workflow = $this->workflowRegistry->get($cart, 'shopping_cart');
         $workflow->apply($cart, 'cancel');
     }

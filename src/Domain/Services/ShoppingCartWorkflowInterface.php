@@ -11,7 +11,7 @@ interface ShoppingCartWorkflowInterface
 {
     public function canCheckout(ShoppingCart $cart): bool;
 
-    public function checkout(ShoppingCart $cart, ?Discount $discount = null, ?TaxCalculator $taxCalculator = null): void;
+    public function checkout(ShoppingCart $cart, ?Discount $discount = null): void;
 
     public function canCancel(ShoppingCart $cart): bool;
 
