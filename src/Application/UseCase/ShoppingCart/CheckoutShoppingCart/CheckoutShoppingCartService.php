@@ -8,11 +8,10 @@ use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\Dto\CheckoutOutput
 use App\Domain\Exception\ShoppingCart\EmptyCartException;
 use App\Domain\Exception\ShoppingCart\InsufficientStockException;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
-use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
-use App\Domain\Services\ShoppingCartWorkflowInterface;
+use App\Domain\Service\ShoppingCartWorkflowInterface;
 
 final readonly class CheckoutShoppingCartService
 {
@@ -25,32 +24,16 @@ final readonly class CheckoutShoppingCartService
     /**
      * @throws EmptyCartException
      * @throws InsufficientStockException
-     * @throws ShoppingCartWorkflowException|InvalidDiscountException
+     * @throws InvalidDiscountException
      */
     public function handle(ShoppingCart $shoppingCart, ?string $discountCode = null): CheckoutOutputDto
     {
         $this->validateEmptyCart($shoppingCart);
         $this->validateStock($shoppingCart);
 
-        //        // Also here, a TDA to apply discount when exists
-        //        // something like...
-        //        // $this->applyDiscount(?string $discountCode = null);
-        $discount = null;
+        $discount = $this->discountRepository->findOneByCode($discountCode) ?? null;
+        $discount?->validateDiscount();
 
-        if ($discountCode !== null) {
-            $discount = $this->discountRepository->findOneByCodeOrFail($discountCode);
-
-            if (!$discount->isValid()) {
-                throw InvalidDiscountException::createWithMessage('Invalid discount code');
-            }
-        }
-
-        // make this in $this->shoppingCartWorkflow->checkout method
-//        if (!$this->shoppingCartWorkflow->canCheckout($shoppingCart)) {
-//            throw ShoppingCartWorkflowException::createWithMessage('The shopping cart cannot be checked out');
-//        }
-
-        // include a transaction around the checkout
         $this->shoppingCartWorkflow->checkout($shoppingCart, $discount);
 
         $this->repository->save($shoppingCart, true);

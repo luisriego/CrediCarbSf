@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Application\Service\ShoppingCart;
+namespace App\Tests\Unit\Domain\Application\Webcases\ShoppingCart;
 
 use App\Application\UseCase\ShoppingCart\WorkflowService;
 use App\Domain\Model\Discount;
 use App\Domain\Model\ShoppingCart;
-use App\Domain\Services\TaxCalculator;
+use App\Domain\Service\TaxCalculator;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;

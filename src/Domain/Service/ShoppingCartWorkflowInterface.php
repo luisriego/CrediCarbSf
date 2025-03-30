@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Services;
+namespace App\Domain\Service;
 
 use App\Domain\Model\Discount;
 use App\Domain\Model\ShoppingCart;

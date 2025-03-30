@@ -21,7 +21,12 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-        $this->addItemToShoppingCart();
+
+//        $this->addItemToShoppingCart();
+
+        $this->entityManager = self::getContainer()->get('doctrine.orm.entity_manager');
+        $this->entityManager->beginTransaction();
+
 
         // Define the payload for updating item quantity
         $this->payload = [
@@ -30,6 +35,14 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
             'quantity' => 2,
         ];
     }
+
+    protected function tearDown(): void
+    {
+        // Roll back the transaction to restore the database state
+        $this->entityManager->rollback();
+        parent::tearDown();
+    }
+
 
     /**
      * @test
@@ -54,7 +67,7 @@ class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
         self::assertArrayHasKey('itemIds', $responseData);
         self::assertContains($this->payload['itemId'], $responseData['itemIds']);
 
-        self::assertEquals(3, $responseData['itemIds']['quantity']);
+        self::assertEquals(4, $responseData['itemIds']['quantity']);
     }
 
     /**

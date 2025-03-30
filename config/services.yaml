@@ -110,3 +110,10 @@ services:
             - { name: 'app.event_handler', event: 'App\Domain\Event\DiscountCodeApplied' }
 
     App\Domain\Event\DomainEventDispatcherInterface: '@App\Adapter\Framework\Event\SymfonyDomainEventDispatcher'
+
+
+
+    App\Tests\Subscriber\ShoppingCartEventSubscriber:
+        public: true
+        tags:
+            - { name: kernel.event_subscriber }

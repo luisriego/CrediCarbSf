@@ -12,7 +12,7 @@ use App\Domain\Event\ShoppingCartCheckedOut;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
 use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
-use App\Domain\Services\TaxCalculator;
+use App\Domain\Service\TaxCalculator;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
@@ -198,9 +198,8 @@ class ShoppingCart implements EventSourcedEntityInterface
             $this->id,
             $this->total,
             $this->tax,
-            $this->owner->id()
+            $this->owner->id(),
         ));
-
     }
 
     public function cancel(): void
@@ -217,14 +216,6 @@ class ShoppingCart implements EventSourcedEntityInterface
         $this->domainEvents = [];
 
         return $events;
-    }
-
-    /**
-     * Registra un evento de dominio.
-     */
-    protected function recordEvent(DomainEventInterface $event): void
-    {
-        $this->domainEvents[] = $event;
     }
 
     public function applyValidatedDiscount(Discount $discount): void
@@ -263,6 +254,14 @@ class ShoppingCart implements EventSourcedEntityInterface
             'createdOn' => $this->createdOn,
             'updatedOn' => $this->updatedOn,
         ];
+    }
+
+    /**
+     * Registra un evento de dominio.
+     */
+    protected function recordEvent(DomainEventInterface $event): void
+    {
+        $this->domainEvents[] = $event;
     }
 
     private function canBeCheckedOut(): bool

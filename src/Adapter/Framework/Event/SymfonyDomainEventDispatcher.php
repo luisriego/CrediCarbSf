@@ -16,7 +16,7 @@ readonly class SymfonyDomainEventDispatcher implements DomainEventDispatcherInte
 
     public function dispatch(DomainEventInterface $event): void
     {
-//        var_dump('Dispatching event: ' . get_class($event)); // for debugging
+        //        var_dump('Dispatching event: ' . get_class($event)); // for debugging
         $this->eventDispatcher->dispatch($event);
     }
 

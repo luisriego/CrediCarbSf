@@ -62,6 +62,15 @@ class DoctrineDiscountRepository extends ServiceEntityRepository implements Disc
         return $discount;
     }
 
+    public function findOneByCode(?string $code): ?Discount
+    {
+        if ($code === null) {
+            return null;
+        }
+
+        return $this->findOneBy(['code' => $code]);
+    }
+
     public function exists(Discount $discount): bool
     {
         $qb = $this->createQueryBuilder('d')

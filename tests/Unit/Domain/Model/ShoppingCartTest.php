@@ -9,7 +9,7 @@ use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\Company;
 use App\Domain\Model\ShoppingCart;
 use App\Domain\Model\ShoppingCartItem;
-use App\Domain\Services\TaxCalculator;
+use App\Domain\Service\TaxCalculator;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Workflow\Marking;

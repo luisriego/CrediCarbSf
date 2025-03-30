@@ -7,8 +7,8 @@ namespace App\Application\UseCase\ShoppingCart;
 use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Model\Discount;
 use App\Domain\Model\ShoppingCart;
-use App\Domain\Services\ShoppingCartWorkflowInterface;
-use App\Domain\Services\TaxCalculator;
+use App\Domain\Service\ShoppingCartWorkflowInterface;
+use App\Domain\Service\TaxCalculator;
 use LogicException;
 use Symfony\Component\Workflow\Registry;
 

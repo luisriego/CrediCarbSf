@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\Controller\ShoppingCart;
 
+use App\Adapter\Framework\Http\Dto\ShoppingCart\CheckoutRequestDto;
 use App\Application\UseCase\ShoppingCart\CheckoutShoppingCart\CheckoutShoppingCartService;
 use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
-use App\Domain\Exception\ShoppingCart\ShoppingCartWorkflowException;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,11 +25,10 @@ class CheckoutShoppingCartController extends AbstractController
 
     /**
      * @throws InvalidDiscountException
-     * @throws ShoppingCartWorkflowException
      */
     #[Route('/api/shopping-cart/checkout', name: 'checkout_shopping_cart', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function __invoke(): Response
+    public function __invoke(CheckoutRequestDto $requestDto): Response
     {
         $user = $this->userFinder->getCurrentUser();
         $cart = $this->repository->findOneByOwnerIdOrFail($user->getCompany()->id());
@@ -38,7 +37,7 @@ class CheckoutShoppingCartController extends AbstractController
             throw $this->createAccessDeniedException('Access Denied.');
         }
 
-        $response = $this->service->handle($cart);
+        $response = $this->service->handle($cart, $requestDto->discountCode);
 
         return new JsonResponse($response->toArray(), Response::HTTP_OK);
     }

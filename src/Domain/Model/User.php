@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
+use App\Domain\Common\UserRole;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\Trait\IdentifierTrait;
@@ -20,6 +21,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function array_unique;
+use function in_array;
 use function sha1;
 use function uniqid;
 
@@ -188,6 +190,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function hasRole(UserRole $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
     }
 
     /**
