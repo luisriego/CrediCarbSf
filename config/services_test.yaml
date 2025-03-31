@@ -1,0 +1,29 @@
+services:
+    _defaults:
+        public: true
+        autowire: true
+        autoconfigure: true
+
+    # Make all test services public to allow accessing them in tests
+    App\Tests\:
+        resource: '../tests/*'
+        exclude:
+            - '../tests/bootstrap.php'
+
+    # Event Subscriber for testing
+    App\Tests\Subscriber\ShoppingCartEventSubscriber:
+        public: true
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Event Counter Service
+    test.event_counter:
+        class: stdClass
+        public: true
+        properties:
+            count: 0
+
+    # Mock services for testing if needed
+    # test.mock_service:
+    #     class: App\Tests\Mock\MockService
+    #     public: true

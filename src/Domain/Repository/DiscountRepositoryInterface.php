@@ -18,5 +18,7 @@ interface DiscountRepositoryInterface
 
     public function findOneByCodeOrFail(string $code): Discount;
 
+    public function findOneByCode(?string $code): ?Discount;
+
     public function exists(Discount $discount): bool;
 }

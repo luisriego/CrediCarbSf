@@ -19,6 +19,8 @@ interface ShoppingCartRepositoryInterface
 
     public function findOwnerById(string $ownerId): ?ShoppingCart;
 
+    public function findActiveCartForCompanyOwnerOrFail(string $companyId): ?ShoppingCart;
+
     public function findOneByOwnerIdOrFail(string $ownerId): ResourceNotFoundException|ShoppingCart;
 
     public function findFirst(): ?ShoppingCart;

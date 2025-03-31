@@ -11,9 +11,9 @@ final class CreateProjectRequestDto implements RequestDto
 {
     public string $name;
     public string $description;
-    public ?string $areaHa;
-    public string $quantity;
-    public string $price;
+    public ?int $areaHa;
+    public int $quantityInKg;
+    public int $priceInCents;
     public string $projectType;
     public ?string $owner;
 
@@ -22,8 +22,8 @@ final class CreateProjectRequestDto implements RequestDto
         $this->name = $request->get('name');
         $this->description = $request->get('description');
         $this->areaHa = $request->get('areaHa');
-        $this->quantity = $request->get('quantity');
-        $this->price = $request->get('price');
+        $this->quantityInKg = $request->get('quantityInKg');
+        $this->priceInCents = $request->get('priceInCents');
         $this->projectType = $request->get('projectType');
         $this->owner = $request->get('owner');
     }

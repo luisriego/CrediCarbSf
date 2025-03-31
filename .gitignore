@@ -15,6 +15,7 @@ docker-compose.yml
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+/coverage/
 ###< phpunit/phpunit ###
 
 ###> symfony/phpunit-bridge ###

@@ -20,9 +20,10 @@ readonly class CreateProjectService
 
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
-        if ($this->companyRepository->existById($inputDto->owner) === false) {
-            throw ProjectAlreadyExistsException::ownerNotFound();
-        }
+        // replace whit an TDA method like existByIdOrFail()
+//        if ($this->companyRepository->existById($inputDto->owner) === false) {
+//            throw ProjectAlreadyExistException::ownerNotFound();
+//        }
 
         $companyOwner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
 
@@ -30,8 +31,8 @@ readonly class CreateProjectService
             $inputDto->name,
             $inputDto->description,
             $inputDto->areaHa,
-            $inputDto->quantity,
-            $inputDto->price,
+            $inputDto->quantityInKg,
+            $inputDto->priceInCents,
             $inputDto->projectType,
             $companyOwner,
         );

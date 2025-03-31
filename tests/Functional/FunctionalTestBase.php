@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Domain\Event\ShoppingCartCheckedOut;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
+use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -110,12 +113,31 @@ class FunctionalTestBase extends WebTestCase
             ]);
         }
 
+        // Get the event dispatcher
+        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        // Create a counter for events
+        $eventCounter = new class() {
+            public $count = 0;
+            public function increment(): void
+            { $this->count++; }
+        };
+        // Store eventCounter in the container for later use
+        static::getContainer()->set('test.event_counter', $eventCounter);
+        // Register the listener in the application container
+        $eventDispatcher->addListener(
+            ShoppingCartCheckedOut::class,
+            function (ShoppingCartCheckedOut $event) use ($eventCounter) {
+                $eventCounter->increment();
+            }
+        );
+
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
         $project = static::getContainer()->get(ProjectRepositoryInterface::class)->findOneBy(['name' => 'Project 2']);
         $authority = static::getContainer()->get(CertificationAuthorityRepositoryInterface::class)->findOneBy(['taxpayer' => '48846500000175']);
         $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
         $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
         $shoppingCart = static::getContainer()->get(ShoppingCartRepositoryInterface::class)->findOneBy(['owner' => $company]);
+        $shoppingCartItem = static::getContainer()->get(ShoppingCartItemRepositoryInterface::class)->findOneBy(['shoppingCart' => $shoppingCart]);
         $repo = static::getContainer()->get(\App\Domain\Repository\UserRepositoryInterface::class);
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
@@ -124,6 +146,14 @@ class FunctionalTestBase extends WebTestCase
         $this->projectId = $project->getId();
         $this->certificationAuthorityId = $authority->getId();
         $this->shoppingCartId = $shoppingCart->getId();
+        $this->shoppingCartItemId = $shoppingCartItem->getId();
+    }
+
+    protected function getBearerToken(): string
+    {
+        // Implement your token generation logic here
+        // This is just a placeholder
+        return 'your_bearer_token';
     }
 
     protected function createUser(string $name, string $email): void
@@ -178,6 +208,27 @@ class FunctionalTestBase extends WebTestCase
         $this->shoppingCartId = $responseData['shoppingCartId'];
         $this->shoppingCartItemId = $responseData['itemIds'][0]['id'];
     }
+
+    protected function forceReloadDatabase(): void
+    {
+        $entityManager = self::getContainer()->get('doctrine.orm.entity_manager');
+
+        $entityManager->clear();
+        $entityManager->getConnection()->close();
+
+        $application = new \Symfony\Bundle\FrameworkBundle\Console\Application(static::$kernel);
+        $application->setAutoExit(false);
+
+        $input = new \Symfony\Component\Console\Input\ArrayInput([
+            'command' => 'hautelook:fixtures:load',
+            '--no-interaction' => true,
+            '--no-bundles' => true,
+        ]);
+
+        $output = new \Symfony\Component\Console\Output\NullOutput();
+        $application->run($input, $output);
+    }
+
 
     protected function purgeDatabase(): void
     {

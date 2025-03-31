@@ -5,7 +5,9 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
+        "ext-bcmath": "*",
         "ext-ctype": "*",
+        "ext-http": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
@@ -43,11 +45,10 @@
         "symfony/ux-turbo": "^2.22",
         "symfony/validator": "6.4.*",
         "symfony/web-link": "6.4.*",
+        "symfony/workflow": "6.4.*",
         "symfony/yaml": "6.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "ext-http": "*",
-        "ext-bcmath": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {

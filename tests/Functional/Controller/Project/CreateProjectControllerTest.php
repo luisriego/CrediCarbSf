@@ -21,10 +21,10 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_NAME = 'Project Test';
     private const PROJECT_NAME_LIKE = 'Test Project';
     private const PROJECT_DESCRIPTION = 'Description Test';
-    private const PROJECT_AREA = '100.00';
-    private const PROJECT_QUANTITY = '50.00';
-    private const PROJECT_PRICE = '10.00';
-    private const PROJECT_PRICE_LIKE = '20.00';
+    private const PROJECT_AREA = 10000;
+    private const PROJECT_QUANTITY = 5000;
+    private const PROJECT_PRICE = 1000;
+    private const PROJECT_PRICE_LIKE = 2000;
     private const PROJECT_TYPE = 'REFORESTATION';
 
     /** @test
@@ -54,7 +54,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
      */
     public function shouldNotCreateProjectWhenUserUnauthorized(): void
     {
-        $payload = $this->getPayload(['price' => self::PROJECT_PRICE_LIKE]);
+        $payload = $this->getPayload(['priceInCents' => self::PROJECT_PRICE_LIKE]);
 
         self::$baseClient->request(
             Request::METHOD_POST,
@@ -139,9 +139,9 @@ class CreateProjectControllerTest extends FunctionalTestBase
         $payload = $this->getPayload([
             'name' => 'Pr',  // name too short
             'description' => '',
-            'areaHa' => 'invalid',
-            'quantity' => 'invalid',
-            'price' => 'invalid',
+            'areaHa' => 0,
+            'quantity' => 0,
+            'price' => 0,
             'projectType' => 'InvalidType',
         ]);
 
@@ -165,8 +165,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'name' => self::PROJECT_NAME,
             'description' => self::PROJECT_DESCRIPTION,
             'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
+            'quantityInKg' => self::PROJECT_QUANTITY, 
+            'priceInCents' => self::PROJECT_PRICE,  
             'projectType' => self::PROJECT_TYPE,
             'owner' => $this->companyId,
         ], $overrides);

@@ -19,30 +19,31 @@ class CreateDiscountInputDto
     private const ARGS = [
         'creatorId',
         'amount',
-        'expiresAt',
     ];
 
     public function __construct(
         public string $creatorId,
         public int $amount,
-        public string $expiresAt,
+        public ?string $expiresAt,
+        public ?bool $isPercentage = true,
+        public ?string $projectId = null,
     ) {
         $this->assertNotNull(self::ARGS, [
             $this->creatorId,
             $this->amount,
-            $this->expiresAt,
         ]);
 
         $this->assertValidUid($this->creatorId);
         $this->assertValidQuantity($this->amount);
-        $this->assertValidDateTime($this->expiresAt);
     }
 
     public static function create(
         string $creatorId,
         int $amount,
-        string $expiresAt,
+        ?string $expiresAt,
+        ?bool $isPercentage = true,
+        ?string $projectId = null,
     ): self {
-        return new static($creatorId, $amount, $expiresAt);
+        return new static($creatorId, $amount, $expiresAt, $isPercentage, $projectId);
     }
 }

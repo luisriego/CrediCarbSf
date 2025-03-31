@@ -13,6 +13,15 @@ trait IdentifierTrait
     #[ORM\Column(type: 'string', length: 36, options: ['fixed' => true])]
     protected readonly string $id;
 
+    public function id(): ?string
+    {
+        if (!isset($this->id)) {
+            $this->initializeId();
+        }
+
+        return $this->id;
+    }
+
     public function getId(): string
     {
         return $this->id;

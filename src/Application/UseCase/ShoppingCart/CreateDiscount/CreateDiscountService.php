@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Application\UseCase\ShoppingCart\CreateDiscount;
 
 use App\Application\UseCase\ShoppingCart\CreateDiscount\Dto\CreateDiscountInputDto;
+use App\Application\UseCase\User\UserFinder\UserFinder;
 use App\Domain\Exception\ShoppingCart\DiscountAlreadyExistsException;
-use App\Domain\Model\Discount;
+use App\Domain\Factory\DiscountFactory;
 use App\Domain\Repository\DiscountRepositoryInterface;
-use App\Domain\Repository\UserRepositoryInterface;
-use DateTimeImmutable;
 use Random\RandomException;
 
-class CreateDiscountService
+readonly class CreateDiscountService
 {
     public function __construct(
-        private readonly DiscountRepositoryInterface $discountRepository,
-        private readonly UserRepositoryInterface $userRepository,
+        private DiscountRepositoryInterface $discountRepository,
+        private DiscountFactory $discountFactory,
+        private UserFinder $userFinder,
     ) {}
 
     /**
@@ -24,21 +24,23 @@ class CreateDiscountService
      */
     public function handle(CreateDiscountInputDto $inputDto): string
     {
-        $user = $this->userRepository->findOneByIdOrFail($inputDto->creatorId);
-        $expiresAt = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $inputDto->expiresAt);
+        $user = $this->userFinder->getCurrentUser();
 
-        $discount = Discount::createWithAmountAndExpirationDate(
+        $discount = $this->discountFactory->create(
             $user,
             $inputDto->amount,
-            $expiresAt,
+            $inputDto->expiresAt,
+            $inputDto->isPercentage,
+            $inputDto->projectId,
         );
 
+        // use the TDA principle, may be avoidRepeated method
         if ($this->discountRepository->exists($discount)) {
             throw DiscountAlreadyExistsException::createRepeated();
         }
 
         $this->discountRepository->save($discount, true);
 
-        return $discount->getId();
+        return $discount->code();
     }
 }

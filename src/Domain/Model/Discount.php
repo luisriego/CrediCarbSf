@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Common\UserRole;
+use App\Domain\Exception\Security\UnauthorizedDiscountApprovalException;
+use App\Domain\Exception\ShoppingCart\InvalidDiscountException;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Trait\CreatedByTrait;
 use App\Domain\Trait\IdentifierTrait;
@@ -40,7 +43,7 @@ class Discount
     #[ORM\Column(type: 'boolean')]
     private bool $isPercentage;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $expiresAt = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
@@ -53,12 +56,16 @@ class Discount
     /**
      * @throws RandomException
      */
-    private function __construct(User $user, int $amount, DateTimeImmutable $expiresAt, bool $isPercentage = true, string $code = '')
-    {
+    public function __construct(
+        User $user,
+        int $amount,
+        ?string $expiresAt,
+        ?bool $isPercentage = true,
+        string $code = '',
+    ) {
         $this->initializeId();
         $this->initializeCreatedOn();
-        $this->validateAmount($amount);
-        $this->amount = $amount;
+        $this->amount = $this->validateAmount($amount, $isPercentage);
         $this->expiresAt = $this->validateExpirationDate($expiresAt);
         $this->code = empty($code) ? self::codeGenerator() : mb_strtoupper($code);
         $this->isPercentage = $isPercentage;
@@ -69,7 +76,7 @@ class Discount
     /**
      * @throws RandomException
      */
-    public static function createWithAmountAndExpirationDate($user, $amount, $expiresAt): self
+    public static function createWithAmountAndExpirationDate(User $user, int $amount, ?string $expiresAt): self
     {
         return new static(
             $user,
@@ -81,7 +88,7 @@ class Discount
     /**
      * @throws RandomException
      */
-    public static function createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt): self
+    public static function createWithAmountAndExpirationDateNotPercentage(User $user, int $amount, ?string $expiresAt): self
     {
         return new static(
             $user,
@@ -94,7 +101,7 @@ class Discount
     /**
      * @throws RandomException
      */
-    public static function createWithProjectToApply(User $user, int $amount, DateTimeImmutable $expiresAt, Project $project): self
+    public static function createWithProjectToApply(User $user, int $amount, ?string $expiresAt, Project $project): self
     {
         $discount = new static($user, $amount, $expiresAt);
         $discount->setTargetProject($project);
@@ -120,6 +127,31 @@ class Discount
     public function expiresAt(): ?DateTimeImmutable
     {
         return $this->expiresAt;
+    }
+
+    public function approver(): ?User
+    {
+        return $this->approvedBy ?? null;
+    }
+
+    /**
+     * @throws UnauthorizedDiscountApprovalException
+     */
+    public function approve(User $approver): void
+    {
+        if (!$this->canBeApprovedBy($approver)) {
+            throw UnauthorizedDiscountApprovalException::createFromCodeAndUser($approver, $this);
+        }
+
+        $this->approvedBy = $approver;
+        $this->isActive = true;
+    }
+
+    public function canBeApprovedBy(User $user): bool
+    {
+        return $user->hasRole(UserRole::DISCOUNT_APPROVER)
+            || $user->hasRole(UserRole::ADMIN)
+            || $user->hasRole(UserRole::SUPER_ADMIN);
     }
 
     public function updateExpirationDate(?DateTimeImmutable $expiresAt): void
@@ -179,6 +211,20 @@ class Discount
     }
 
     /**
+     * @throws InvalidDiscountException
+     */
+    public function validateDiscount(): void
+    {
+        if ($this->expiresAt < new DateTimeImmutable()) {
+            throw InvalidDiscountException::createWithMessage('Discount has expired.');
+        }
+
+        if (!$this->isValid()) {
+            throw InvalidDiscountException::createWithMessage('Discount code is invalid.');
+        }
+    }
+
+    /**
      * Generates a random alphanumeric uppercase discount code.
      *
      * @param int $length The length of the generated code (default is 10)
@@ -199,8 +245,16 @@ class Discount
         return $code;
     }
 
-    private function validateExpirationDate(DateTimeImmutable $expiresAt): DateTimeImmutable
+    private function validateExpirationDate(?string $expiresAt): DateTimeImmutable
     {
+        if (!empty($expiresAt)) {
+            $expiresAt = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $expiresAt);
+        }
+
+        if (empty($expiresAt)) {
+            $expiresAt = new DateTimeImmutable('+ 30 days');
+        }
+
         $now = new DateTimeImmutable();
         $minExpirationDate = $now->add(new DateInterval('P1D'));
 
@@ -211,10 +265,16 @@ class Discount
         return $expiresAt;
     }
 
-    private function validateAmount(int $amount): void
+    private function validateAmount(int $amount, bool $isPercentage = true): int
     {
         if ($amount < 0) {
             throw new InvalidArgumentException('The discount amount cannot be negative.');
         }
+
+        if ($amount > 10000 && $isPercentage) {
+            throw new InvalidArgumentException('The discount amount cannot be greater than 100%.');
+        }
+
+        return $amount;
     }
 }

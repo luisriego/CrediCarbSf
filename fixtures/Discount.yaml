@@ -1,0 +1,9 @@
+App\Domain\Model\Discount:
+    discount_1:
+        __construct:
+            - '@user_1'                             
+            - 2000                                 
+            - '2025-12-31 23:59:59'                
+            - true                                 
+
+

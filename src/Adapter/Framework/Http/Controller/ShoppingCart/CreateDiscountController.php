@@ -32,7 +32,9 @@ class CreateDiscountController extends AbstractController
             CreateDiscountInputDto::create(
                 $requestDto->creatorId,
                 $requestDto->amount,
-                $requestDto->expiresAt->format('Y-m-d H:i:s'),
+                $requestDto->expiresAt,
+                $requestDto->isPercentage,
+                $requestDto->projectId,
             ),
         );
 

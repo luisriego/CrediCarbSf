@@ -9,7 +9,7 @@ use function array_column;
 enum ShoppingCartStatus: string
 {
     case ACTIVE = 'active';
-    case INACTIVE = 'inactive';
+    case PROCESSING = 'processing';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
 
