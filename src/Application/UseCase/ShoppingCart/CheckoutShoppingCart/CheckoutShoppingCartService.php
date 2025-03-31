@@ -51,7 +51,7 @@ final readonly class CheckoutShoppingCartService
     private function validateStock(ShoppingCart $shoppingCart): void
     {
         foreach ($shoppingCart->getItems() as $item) {
-            if ($item->getQuantity() > $item->getProject()->getQuantity()) {
+            if ($item->quantityInKg() > $item->getProject()->quantityInKg()) {
                 throw new InsufficientStockException($item->getProject()->getName());
             }
         }

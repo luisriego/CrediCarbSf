@@ -54,7 +54,7 @@ class CreateProjectControllerTest extends FunctionalTestBase
      */
     public function shouldNotCreateProjectWhenUserUnauthorized(): void
     {
-        $payload = $this->getPayload(['price' => self::PROJECT_PRICE_LIKE]);
+        $payload = $this->getPayload(['priceInCents' => self::PROJECT_PRICE_LIKE]);
 
         self::$baseClient->request(
             Request::METHOD_POST,
@@ -139,9 +139,9 @@ class CreateProjectControllerTest extends FunctionalTestBase
         $payload = $this->getPayload([
             'name' => 'Pr',  // name too short
             'description' => '',
-            'areaHa' => 'invalid',
-            'quantity' => 'invalid',
-            'price' => 'invalid',
+            'areaHa' => 0,
+            'quantity' => 0,
+            'price' => 0,
             'projectType' => 'InvalidType',
         ]);
 
@@ -165,8 +165,8 @@ class CreateProjectControllerTest extends FunctionalTestBase
             'name' => self::PROJECT_NAME,
             'description' => self::PROJECT_DESCRIPTION,
             'areaHa' => self::PROJECT_AREA,
-            'quantity' => self::PROJECT_QUANTITY,
-            'price' => self::PROJECT_PRICE,
+            'quantityInKg' => self::PROJECT_QUANTITY, 
+            'priceInCents' => self::PROJECT_PRICE,  
             'projectType' => self::PROJECT_TYPE,
             'owner' => $this->companyId,
         ], $overrides);

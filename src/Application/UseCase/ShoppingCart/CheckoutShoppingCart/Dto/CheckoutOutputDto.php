@@ -41,8 +41,8 @@ final readonly class CheckoutOutputDto
                 fn ($item) => [
                     'id' => $item->getProject()->getId(),
                     'name' => $item->getProject()->getName(),
-                    'quantity' => $item->getQuantity(),
-                    'price' => $item->getProject()->getPrice(),
+                    'quantity' => $item->quantityInKg(),
+                    'price' => $item->getProject()->priceInCents(),
                     'total' => $item->getTotalPrice(),
                 ],
                 $shoppingCart->getItems()->toArray(),

@@ -23,8 +23,8 @@ class CreateProjectInputDto
         public string $name,
         public string $description,
         public int $areaHa,
-        public int $quantity,
-        public int $price,
+        public int $quantityInKg,
+        public int $priceInCents,
         public string $projectType,
         public ?string $owner,
     ) {
@@ -32,8 +32,8 @@ class CreateProjectInputDto
             $this->name,
             $this->description,
             $this->areaHa,
-            $this->quantity,
-            $this->price,
+            $this->quantityInKg,
+            $this->priceInCents,
             $this->projectType,
         ]);
     }
@@ -42,11 +42,11 @@ class CreateProjectInputDto
         ?string $name,
         ?string $description,
         ?int $areaHa,
-        ?int $quantity,
-        ?int $price,
+        ?int $quantityInKg,
+        ?int $priceInCents,
         ?string $projectType,
         ?string $owner,
     ): self {
-        return new static($name, $description, $areaHa, $quantity, $price, $projectType, $owner);
+        return new static($name, $description, $areaHa, $quantityInKg, $priceInCents, $projectType, $owner);
     }
 }

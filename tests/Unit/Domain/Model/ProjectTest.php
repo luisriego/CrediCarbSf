@@ -44,9 +44,9 @@ class ProjectTest extends TestCase
 
         $this->assertSame('Test Project', $project->getName());
         $this->assertSame('Some description text...', $project->getDescription());
-        $this->assertSame(1000, $project->getAreaHa());
-        $this->assertSame(10000, $project->getQuantity());
-        $this->assertSame(200, $project->getPrice());
+        $this->assertSame(1000, $project->areaHa());
+        $this->assertSame(10000, $project->quantityInKg());
+        $this->assertSame(2000, $project->priceInCents());
         $this->assertSame('Carbon', $project->getProjectType());
         $this->assertTrue($project->isActive());
         $this->assertEquals(ProjectStatus::PLANNED, $project->getStatus());

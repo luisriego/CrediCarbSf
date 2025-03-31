@@ -47,7 +47,7 @@ class ShoppingCartItem
         return new self($project, $quantity, $price);
     }
 
-    public function getQuantity(): int
+    public function quantityInKg(): int
     {
         return $this->quantity;
     }
@@ -72,7 +72,7 @@ class ShoppingCartItem
         $this->quantity -= $quantityToDecrement;
     }
 
-    public function getPrice(): string
+    public function priceInCents(): string
     {
         return $this->price;
     }
@@ -117,8 +117,8 @@ class ShoppingCartItem
         return [
             'id' => $this->getId(),
             'project' => $this->getProject()->toArray(),
-            'quantity' => $this->getQuantity(),
-            'price' => $this->getPrice(),
+            'quantity' => $this->quantityInKg(),
+            'price' => $this->priceInCents(),
             'totalPrice' => $this->getTotalPrice(),
         ];
     }

@@ -41,7 +41,7 @@ class Project
     private ?int $areaHa;
 
     #[Column(type: 'integer')]
-    private ?int $quantityInTons;
+    private ?int $quantityInKg;
 
     #[Column(type: 'integer')]
     private ?int $priceInCents;
@@ -70,7 +70,7 @@ class Project
         ?string $name,
         ?string $description,
         ?int $areaHa,
-        ?int $quantityInTons,
+        ?int $quantityInKg,
         ?int $priceInCents,
         ?string $projectType,
         ?Company $owner,
@@ -92,9 +92,9 @@ class Project
             );
         }
 
-        if (empty($quantityInTons) || $quantityInTons < self::QUANTITY_MIN_LENGTH) {
+        if (empty($quantityInKg) || $quantityInKg < self::QUANTITY_MIN_LENGTH) {
             throw InvalidArgumentException::createFromMessage(
-                sprintf('The quantityInTons must be at least %d tons', self::QUANTITY_MIN_LENGTH),
+                sprintf('The quantityInKg must be at least %d tons', self::QUANTITY_MIN_LENGTH),
             );
         }
 
@@ -110,7 +110,7 @@ class Project
         $this->name = $name;
         $this->description = $description;
         $this->areaHa = $areaHa;
-        $this->quantityInTons = $quantityInTons;
+        $this->quantityInKg = $quantityInKg;
         $this->priceInCents = $priceInCents;
         $this->projectType = $projectType;
         $this->status = ProjectStatus::PLANNED;
@@ -125,7 +125,7 @@ class Project
         $name,
         $description,
         $areaHa,
-        $quantityInTons,
+        $quantityInKg,
         $priceInCents,
         $projectType,
         $owner,
@@ -134,7 +134,7 @@ class Project
             $name,
             $description,
             $areaHa,
-            $quantityInTons,
+            $quantityInKg,
             $priceInCents,
             $projectType,
             $owner,
@@ -161,7 +161,7 @@ class Project
         $this->description = $description;
     }
 
-    public function getAreaHa(): int
+    public function areaHa(): int
     {
         return $this->areaHa;
     }
@@ -171,17 +171,17 @@ class Project
         $this->areaHa = $areaHa;
     }
 
-    public function getQuantity(): int
+    public function quantityInKg(): int
     {
-        return $this->quantityInTons;
+        return $this->quantityInKg;
     }
 
-    public function setQuantity(int $quantityInTons): void
+    public function setQuantity(int $quantityInKg): void
     {
-        $this->quantityInTons = $quantityInTons;
+        $this->quantityInKg = $quantityInKg;
     }
 
-    public function getPrice(): int
+    public function priceInCents(): int
     {
         return $this->priceInCents;
     }
@@ -268,7 +268,7 @@ class Project
             'name' => $this->name,
             'description' => $this->description,
             'areaHa' => $this->areaHa,
-            'quantityInTons' => $this->quantityInTons,
+            'quantityInKg' => $this->quantityInKg,
             'priceInCents' => $this->priceInCents,
             'startDate' => $this->startDate?->format('Y-m-d H:i:s'),
             'endDate' => $this->endDate?->format('Y-m-d H:i:s'),
