@@ -22,9 +22,9 @@ class CreateProjectInputDto
     public function __construct(
         public string $name,
         public string $description,
-        public string $areaHa,
-        public string $quantity,
-        public string $price,
+        public int $areaHa,
+        public int $quantity,
+        public int $price,
         public string $projectType,
         public ?string $owner,
     ) {
@@ -41,9 +41,9 @@ class CreateProjectInputDto
     public static function create(
         ?string $name,
         ?string $description,
-        ?string $areaHa,
-        ?string $quantity,
-        ?string $price,
+        ?int $areaHa,
+        ?int $quantity,
+        ?int $price,
         ?string $projectType,
         ?string $owner,
     ): self {

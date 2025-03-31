@@ -37,14 +37,14 @@ class Project
     #[Column(type: 'string', length: 1500, nullable: true)]
     private ?string $description = null;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $areaHa;
+    #[Column(type: 'integer')]
+    private ?int $areaHa;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $quantity; // Quantity in tons of CO2
+    #[Column(type: 'integer')]
+    private ?int $quantityInTons;
 
-    #[Column(type: 'decimal', precision: 10, scale: 2)]
-    private ?string $price; // Current Price of the CO2 Project ton unit
+    #[Column(type: 'integer')]
+    private ?int $priceInCents;
 
     #[Column(type: 'string', nullable: true)]
     private ?string $projectType;
@@ -69,9 +69,9 @@ class Project
     public function __construct(
         ?string $name,
         ?string $description,
-        ?string $areaHa,
-        ?string $quantity,
-        ?string $price,
+        ?int $areaHa,
+        ?int $quantityInTons,
+        ?int $priceInCents,
         ?string $projectType,
         ?Company $owner,
     ) {
@@ -92,13 +92,13 @@ class Project
             );
         }
 
-        if (empty($quantity) || $quantity < self::QUANTITY_MIN_LENGTH) {
+        if (empty($quantityInTons) || $quantityInTons < self::QUANTITY_MIN_LENGTH) {
             throw InvalidArgumentException::createFromMessage(
-                sprintf('The quantity must be at least %d tons', self::QUANTITY_MIN_LENGTH),
+                sprintf('The quantityInTons must be at least %d tons', self::QUANTITY_MIN_LENGTH),
             );
         }
 
-        if (empty($price)) {
+        if (empty($priceInCents)) {
             throw InvalidArgumentException::createFromMessage('Price cannot be null');
         }
 
@@ -110,8 +110,8 @@ class Project
         $this->name = $name;
         $this->description = $description;
         $this->areaHa = $areaHa;
-        $this->quantity = $quantity;
-        $this->price = $price;
+        $this->quantityInTons = $quantityInTons;
+        $this->priceInCents = $priceInCents;
         $this->projectType = $projectType;
         $this->status = ProjectStatus::PLANNED;
         $this->owner = $owner;
@@ -125,8 +125,8 @@ class Project
         $name,
         $description,
         $areaHa,
-        $quantity,
-        $price,
+        $quantityInTons,
+        $priceInCents,
         $projectType,
         $owner,
     ): self {
@@ -134,8 +134,8 @@ class Project
             $name,
             $description,
             $areaHa,
-            $quantity,
-            $price,
+            $quantityInTons,
+            $priceInCents,
             $projectType,
             $owner,
         );
@@ -161,34 +161,34 @@ class Project
         $this->description = $description;
     }
 
-    public function getAreaHa(): string
+    public function getAreaHa(): int
     {
         return $this->areaHa;
     }
 
-    public function setAreaHa(string $areaHa): void
+    public function setAreaHa(int $areaHa): void
     {
         $this->areaHa = $areaHa;
     }
 
-    public function getQuantity(): string
+    public function getQuantity(): int
     {
-        return $this->quantity;
+        return $this->quantityInTons;
     }
 
-    public function setQuantity(string $quantity): void
+    public function setQuantity(int $quantityInTons): void
     {
-        $this->quantity = $quantity;
+        $this->quantityInTons = $quantityInTons;
     }
 
-    public function getPrice(): string
+    public function getPrice(): int
     {
-        return $this->price;
+        return $this->priceInCents;
     }
 
-    public function setPrice(string $price): void
+    public function setPrice(int $priceInCents): void
     {
-        $this->price = $price;
+        $this->priceInCents = $priceInCents;
     }
 
     public function getStartDate(): DateTime
@@ -268,8 +268,8 @@ class Project
             'name' => $this->name,
             'description' => $this->description,
             'areaHa' => $this->areaHa,
-            'quantity' => $this->quantity,
-            'price' => $this->price,
+            'quantityInTons' => $this->quantityInTons,
+            'priceInCents' => $this->priceInCents,
             'startDate' => $this->startDate?->format('Y-m-d H:i:s'),
             'endDate' => $this->endDate?->format('Y-m-d H:i:s'),
             'projectType' => $this->projectType,

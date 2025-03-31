@@ -21,10 +21,10 @@ class CreateProjectControllerTest extends FunctionalTestBase
     private const PROJECT_NAME = 'Project Test';
     private const PROJECT_NAME_LIKE = 'Test Project';
     private const PROJECT_DESCRIPTION = 'Description Test';
-    private const PROJECT_AREA = '100.00';
-    private const PROJECT_QUANTITY = '50.00';
-    private const PROJECT_PRICE = '10.00';
-    private const PROJECT_PRICE_LIKE = '20.00';
+    private const PROJECT_AREA = 10000;
+    private const PROJECT_QUANTITY = 5000;
+    private const PROJECT_PRICE = 1000;
+    private const PROJECT_PRICE_LIKE = 2000;
     private const PROJECT_TYPE = 'REFORESTATION';
 
     /** @test

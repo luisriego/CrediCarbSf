@@ -11,9 +11,9 @@ final class CreateProjectRequestDto implements RequestDto
 {
     public string $name;
     public string $description;
-    public ?string $areaHa;
-    public string $quantity;
-    public string $price;
+    public ?int $areaHa;
+    public int $quantity;
+    public int $price;
     public string $projectType;
     public ?string $owner;
 
