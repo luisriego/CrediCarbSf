@@ -121,12 +121,6 @@ class Company
     {
         return $this->isActive === self::STATUS_ACTIVE;
     }
-
-    public function isInactive(): bool
-    {
-        return $this->isActive === self::STATUS_INACTIVE;
-    }
-
     public function assignUserToCompany(User $user): void
     {
         if (!$this->isActive) {

@@ -166,19 +166,9 @@ class Project
         return $this->areaHa;
     }
 
-    public function setAreaHa(int $areaHa): void
-    {
-        $this->areaHa = $areaHa;
-    }
-
     public function quantityInKg(): int
     {
         return $this->quantityInKg;
-    }
-
-    public function setQuantity(int $quantityInKg): void
-    {
-        $this->quantityInKg = $quantityInKg;
     }
 
     public function priceInCents(): int
@@ -186,29 +176,14 @@ class Project
         return $this->priceInCents;
     }
 
-    public function setPrice(int $priceInCents): void
-    {
-        $this->priceInCents = $priceInCents;
-    }
-
     public function getStartDate(): DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartDate(DateTime $startDate): void
-    {
-        $this->startDate = $startDate;
-    }
-
     public function getEndDate(): DateTime
     {
         return $this->endDate;
-    }
-
-    public function setEndDate(DateTime $endDate): void
-    {
-        $this->endDate = $endDate;
     }
 
     public function getOwner(): Company
@@ -234,11 +209,6 @@ class Project
     public function getProjectType(): string
     {
         return $this->projectType;
-    }
-
-    public function setProjectType(string $projectType): void
-    {
-        $this->projectType = $projectType;
     }
 
     public function getStatus(): ProjectStatus

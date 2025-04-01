@@ -18,13 +18,11 @@ readonly class CreateProjectService
         private CompanyRepositoryInterface $companyRepository,
     ) {}
 
+    /**
+     * @throws ProjectAlreadyExistsException
+     */
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
-        // replace whit an TDA method like existByIdOrFail()
-//        if ($this->companyRepository->existById($inputDto->owner) === false) {
-//            throw ProjectAlreadyExistException::ownerNotFound();
-//        }
-
         $companyOwner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
 
         $project = Project::create(

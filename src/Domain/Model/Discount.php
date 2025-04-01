@@ -119,11 +119,6 @@ class Discount
         return $this->amount;
     }
 
-    public function isPercentage(): bool
-    {
-        return $this->isPercentage;
-    }
-
     public function expiresAt(): ?DateTimeImmutable
     {
         return $this->expiresAt;

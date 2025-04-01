@@ -256,9 +256,6 @@ class ShoppingCart implements EventSourcedEntityInterface
         ];
     }
 
-    /**
-     * Registra un evento de dominio.
-     */
     protected function recordEvent(DomainEventInterface $event): void
     {
         $this->domainEvents[] = $event;
@@ -278,14 +275,12 @@ class ShoppingCart implements EventSourcedEntityInterface
 
     private function calculateTaxForAmount(float $amount): float
     {
-        // Determina el régimen fiscal aplicable
         $taxRegime = $this->determineTaxRegime();
 
         if ($taxRegime === 'simples_nacional') {
             return $amount * $this->determineSimplesRate(100000)['effectiveRate'];
         }
 
-        // Para otros regímenes, calculamos los impuestos individualmente
         $federalTax = $this->roundTaxValue($this->calculateFederalTaxes($amount));
         $stateTax = $this->roundTaxValue($this->calculateStateTax($amount));
         $municipalTax = $this->roundTaxValue($this->calculateMunicipalTax($amount));
@@ -293,16 +288,12 @@ class ShoppingCart implements EventSourcedEntityInterface
         return $federalTax + $stateTax + $municipalTax;
     }
 
-    /**
-     * Calcula los impuestos federales aplicables.
-     */
     private function calculateFederalTaxes(float $amount): float
     {
-        // Tasas simplificadas para demostración
         $federalRates = [
-            'ipi' => 0.10,   // 10% IPI
-            'pis' => 0.0165, // 1.65% PIS
-            'cofins' => 0.076, // 7.6% COFINS
+            'ipi' => 0.10,
+            'pis' => 0.0165,
+            'cofins' => 0.076,
         ];
 
         $totalFederalTax = 0;
@@ -324,19 +315,13 @@ class ShoppingCart implements EventSourcedEntityInterface
         return 0.05;
     }
 
-    /**
-     * Determina el régimen fiscal aplicable.
-     */
     private function determineTaxRegime(): string
     {
-        // Aquí implementarías la lógica para determinar el régimen fiscal
-        // Esto podría basarse en el tipo de empresa, ingresos anuales, etc.
-        return 'normal'; // o 'simples_nacional', 'lucro_presumido', etc.
+
+        return 'normal';
     }
 
     /**
-     * Determines the Simples Nacional tax rate based on the company's revenue.
-     *
      * @param float  $annualRevenue Company's annual revenue in BRL
      * @param string $activityType  Type of activity (commerce, industry, services)
      *
@@ -344,7 +329,6 @@ class ShoppingCart implements EventSourcedEntityInterface
      */
     private function determineSimplesRate(float $annualRevenue, string $activityType = 'commerce'): array
     {
-        // Simples Nacional annexes by activity type
         $activityAnnexes = [
             'commerce' => 'annex1',
             'industry' => 'annex2',
@@ -373,10 +357,8 @@ class ShoppingCart implements EventSourcedEntityInterface
                 ['limitBRL' => 3600000, 'aliquot' => 0.21, 'deduction' => 125640],
                 ['limitBRL' => 4800000, 'aliquot' => 0.33, 'deduction' => 648000],
             ],
-            // Other annexes would be added here as needed
         ];
 
-        // Determine the applicable range based on annual revenue
         $applicableRange = null;
 
         foreach ($taxRanges[$annex] as $range) {
@@ -386,34 +368,31 @@ class ShoppingCart implements EventSourcedEntityInterface
             }
         }
 
-        // If revenue exceeds all ranges, use the last one
         if ($applicableRange === null) {
             $applicableRange = end($taxRanges[$annex]);
         }
 
-        // Calculate effective rate using Simples Nacional formula
         $effectiveRate = (($annualRevenue * $applicableRange['aliquot']) - $applicableRange['deduction']) / $annualRevenue;
 
-        // Approximate breakdown of included taxes (varies by annex)
         $taxBreakdown = [];
 
-        if ($annex === 'annex1') { // Commerce
+        if ($annex === 'annex1') {
             $taxBreakdown = [
-                'irpj' => $effectiveRate * 0.055,      // Corporate Income Tax
-                'csll' => $effectiveRate * 0.05,       // Social Contribution on Net Income
-                'cofins' => $effectiveRate * 0.277,     // Contribution for Social Security Financing
-                'pis_pasep' => $effectiveRate * 0.06,   // Social Integration Program
-                'cpp' => $effectiveRate * 0.417,       // Employer's Social Security Contribution
-                'icms' => $effectiveRate * 0.141,       // State Value-Added Tax
+                'irpj' => $effectiveRate * 0.055,
+                'csll' => $effectiveRate * 0.05,
+                'cofins' => $effectiveRate * 0.277,
+                'pis_pasep' => $effectiveRate * 0.06,
+                'cpp' => $effectiveRate * 0.417,
+                'icms' => $effectiveRate * 0.141,
             ];
-        } elseif ($annex === 'annex3') { // General services
+        } elseif ($annex === 'annex3') {
             $taxBreakdown = [
                 'irpj' => $effectiveRate * 0.04,
                 'csll' => $effectiveRate * 0.035,
                 'cofins' => $effectiveRate * 0.216,
                 'pis_pasep' => $effectiveRate * 0.047,
                 'cpp' => $effectiveRate * 0.428,
-                'iss' => $effectiveRate * 0.234,        // Municipal Service Tax
+                'iss' => $effectiveRate * 0.234,
             ];
         }
 
@@ -440,7 +419,6 @@ class ShoppingCart implements EventSourcedEntityInterface
 
     private function canBeProcessed(): bool
     {
-        // Any business rules about when processing is valid
         return $this->status === ShoppingCartStatus::PROCESSING;
     }
 }
