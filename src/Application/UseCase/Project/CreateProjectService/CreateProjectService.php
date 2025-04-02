@@ -11,7 +11,7 @@ use App\Domain\Model\Project;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class CreateProjectService
+final readonly class CreateProjectService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

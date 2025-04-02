@@ -8,7 +8,7 @@ use App\Application\UseCase\ShoppingCart\ViewCartSummary\Dto\ViewCartSummaryOutp
 use App\Domain\Model\User;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 
-readonly class ViewCartSummaryService
+final readonly class ViewCartSummaryService
 {
     public function __construct(
         private ShoppingCartRepositoryInterface $shoppingCartRepository,

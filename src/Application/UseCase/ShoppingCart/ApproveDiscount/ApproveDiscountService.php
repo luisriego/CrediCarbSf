@@ -9,7 +9,7 @@ use App\Domain\Exception\Security\UnauthorizedDiscountApprovalException;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use App\Domain\Service\UserContextInterface;
 
-readonly class ApproveDiscountService
+final readonly class ApproveDiscountService
 {
     public function __construct(
         private DiscountRepositoryInterface $discountRepository,

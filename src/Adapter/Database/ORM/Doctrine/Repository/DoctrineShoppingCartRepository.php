@@ -13,11 +13,11 @@ use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineShoppingCartRepository extends ServiceEntityRepository implements ShoppingCartRepositoryInterface
+final class DoctrineShoppingCartRepository extends ServiceEntityRepository implements ShoppingCartRepositoryInterface
 {
     public function __construct(
-        ManagerRegistry $registry,
-        private DomainEventDispatcherInterface $eventDispatcher,
+        ManagerRegistry                                 $registry,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct($registry, ShoppingCart::class);
     }

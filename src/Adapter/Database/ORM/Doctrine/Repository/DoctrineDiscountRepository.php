@@ -10,7 +10,7 @@ use App\Domain\Repository\DiscountRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineDiscountRepository extends ServiceEntityRepository implements DiscountRepositoryInterface
+final class DoctrineDiscountRepository extends ServiceEntityRepository implements DiscountRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

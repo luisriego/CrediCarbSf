@@ -10,7 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
 
-class DoctrineCertificationTypeRepository extends ServiceEntityRepository implements CertificationTypeRepositoryInterface
+final class DoctrineCertificationTypeRepository extends ServiceEntityRepository implements CertificationTypeRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

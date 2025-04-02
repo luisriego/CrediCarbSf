@@ -9,7 +9,7 @@ use App\Application\UseCase\User\ActivateUser\Dto\ActivateUserOutputDto;
 use App\Domain\Exception\User\UserTokenInvalidException;
 use App\Domain\Repository\UserRepositoryInterface;
 
-readonly class ActivateUser
+final readonly class ActivateUser
 {
     public function __construct(private UserRepositoryInterface $userRepository) {}
 

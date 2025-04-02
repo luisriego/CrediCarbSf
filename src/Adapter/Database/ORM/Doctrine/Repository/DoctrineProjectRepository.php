@@ -19,7 +19,7 @@ use function mb_strtolower;
 use function sort;
 use function sprintf;
 
-class DoctrineProjectRepository extends ServiceEntityRepository implements ProjectRepositoryInterface
+final class DoctrineProjectRepository extends ServiceEntityRepository implements ProjectRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

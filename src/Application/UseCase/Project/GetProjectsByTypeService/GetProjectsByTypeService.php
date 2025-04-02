@@ -8,7 +8,7 @@ use App\Application\UseCase\Project\GetProjectsByTypeService\Dto\GetProjectsByTy
 use App\Application\UseCase\Project\GetProjectsByTypeService\Dto\GetProjectsByTypeIOutputDto;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class GetProjectsByTypeService
+final readonly class GetProjectsByTypeService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

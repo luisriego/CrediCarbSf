@@ -8,7 +8,7 @@ use App\Application\UseCase\Project\GetProjectsByCompanyService\Dto\GetProjectsB
 use App\Application\UseCase\Project\GetProjectsByCompanyService\Dto\GetProjectsByCompanyOutputDto;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class GetProjectsByCompanyService
+final readonly class GetProjectsByCompanyService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

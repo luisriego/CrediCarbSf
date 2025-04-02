@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use function array_map;
 
-readonly class GetAllProjectsService
+final readonly class GetAllProjectsService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

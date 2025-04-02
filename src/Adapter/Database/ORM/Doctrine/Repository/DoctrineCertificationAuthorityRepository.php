@@ -11,7 +11,7 @@ use App\Domain\Repository\CertificationRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineCertificationAuthorityRepository extends ServiceEntityRepository implements CertificationAuthorityRepositoryInterface
+final class DoctrineCertificationAuthorityRepository extends ServiceEntityRepository implements CertificationAuthorityRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry, private readonly CertificationRepositoryInterface $certificationRepository)
     {

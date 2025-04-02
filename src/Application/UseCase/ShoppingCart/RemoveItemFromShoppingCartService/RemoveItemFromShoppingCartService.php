@@ -9,11 +9,11 @@ use App\Application\UseCase\ShoppingCart\RemoveItemFromShoppingCartService\Dto\R
 use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 
-final class RemoveItemFromShoppingCartService
+final readonly class RemoveItemFromShoppingCartService
 {
     public function __construct(
-        private readonly ShoppingCartItemRepositoryInterface $shoppingCartItemRepository,
-        private readonly ShoppingCartRepositoryInterface $shoppingCartRepository,
+        private ShoppingCartItemRepositoryInterface $shoppingCartItemRepository,
+        private ShoppingCartRepositoryInterface     $shoppingCartRepository,
     ) {}
 
     public function handle(RemoveItemFromShoppingCartInputDto $inputDto): ?RemoveItemFromShoppingCartOutputDto

@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 use function sprintf;
 
-class DoctrineCompanyRepository extends ServiceEntityRepository implements CompanyRepositoryInterface
+final class DoctrineCompanyRepository extends ServiceEntityRepository implements CompanyRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

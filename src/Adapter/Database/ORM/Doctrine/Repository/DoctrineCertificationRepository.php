@@ -10,7 +10,7 @@ use App\Domain\Repository\CertificationRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineCertificationRepository extends ServiceEntityRepository implements CertificationRepositoryInterface
+final class DoctrineCertificationRepository extends ServiceEntityRepository implements CertificationRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

@@ -11,7 +11,7 @@ use App\Domain\Factory\DiscountFactory;
 use App\Domain\Repository\DiscountRepositoryInterface;
 use Random\RandomException;
 
-readonly class CreateDiscountService
+final readonly class CreateDiscountService
 {
     public function __construct(
         private DiscountRepositoryInterface $discountRepository,

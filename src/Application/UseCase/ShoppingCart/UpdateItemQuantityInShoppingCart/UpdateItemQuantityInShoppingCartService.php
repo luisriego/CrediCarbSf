@@ -11,7 +11,7 @@ use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use DomainException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-readonly class UpdateItemQuantityInShoppingCartService
+final readonly class UpdateItemQuantityInShoppingCartService
 {
     public function __construct(
         private ShoppingCartRepositoryInterface $shoppingCartRepository,

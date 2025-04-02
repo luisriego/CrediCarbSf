@@ -10,7 +10,7 @@ use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineShoppingCartItemRepository extends ServiceEntityRepository implements ShoppingCartItemRepositoryInterface
+final class DoctrineShoppingCartItemRepository extends ServiceEntityRepository implements ShoppingCartItemRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
