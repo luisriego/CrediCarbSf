@@ -1,10 +1,10 @@
 parameters:
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
+
 
     App\Adapter\Framework\Http\Controller\:
         resource: '../src/Adapter/Framework/Http/Controller/'
@@ -20,6 +20,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Domain/Model/'
             - '../src/Kernel.php'
+
+    App\Domain\Factory\CompanyFactory:
+        public: true
 
     # Let Controllers publicly accessible when not using the AbstractController class
     # User controllers

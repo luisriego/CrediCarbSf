@@ -51,7 +51,7 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    public function __construct(string $taxpayer, ?string $fantasyName)
+    private function __construct(string $taxpayer, ?string $fantasyName)
     {
         $this->assertValidTaxpayer($taxpayer);
         $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);

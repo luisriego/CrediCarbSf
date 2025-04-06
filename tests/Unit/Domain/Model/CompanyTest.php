@@ -106,10 +106,6 @@ class CompanyTest extends TestCase
         Company::create('33592510002521', $longName);
     }
 
-    /**
-     * Test creating a company with a null fantasy name, which should succeed
-     * if null is allowed.
-     */
     public function testCreateCompanyWithNullFantasyName(): void
     {
         $company = Company::create('33592510002521', null);

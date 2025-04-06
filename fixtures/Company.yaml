@@ -1,7 +1,16 @@
 App\Domain\Model\Company:
   company_1:
-    __construct: ['33592510000154', 'Vale S.A. - Matriz']
+    __factory:
+      'App\Domain\Model\Company::create':
+        - '33592510000154'
+        - 'Vale S.A. - Matriz'
   company_2:
-    __construct: ['33592510002521', 'Vale S.A. - Filial (Pindaré Mirim)']
+    __factory:
+      'App\Domain\Model\Company::create':
+        - '33592510002521'
+        - 'Vale S.A. - Filial (Pindaré Mirim)'
   company_3:
-    __construct: ['33592510015500', 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)']
+    __factory:
+      'App\Domain\Model\Company::create':
+        - '33592510015500'
+        - 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)'
