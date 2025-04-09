@@ -24,6 +24,27 @@ services:
     App\Domain\Factory\CompanyFactory:
         public: true
 
+        # Command handlers
+    command_handlers:
+        namespace: App\Application\Command\
+        resource: '../src/Application/Command/**/*Handler.php'
+        tags:
+            - { name: messenger.message_handler, bus: command.bus }
+
+    # Query handlers
+    query_handlers:
+        namespace: App\Application\Query\
+        resource: '../src/Application/Query/**/*Handler.php'
+        tags:
+            - { name: messenger.message_handler, bus: query.bus }
+
+    # Event subscribers
+    event_subscribers:
+        namespace: App\Application\EventSubscriber\
+        resource: '../src/Application/EventSubscriber/**/*Subscriber.php'
+        tags:
+            - { name: messenger.message_handler, bus: event.bus }
+
     # Let Controllers publicly accessible when not using the AbstractController class
     # User controllers
     App\Adapter\Framework\Http\Controller\User\ActivateUserController:

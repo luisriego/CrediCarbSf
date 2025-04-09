@@ -36,9 +36,9 @@ class CreateCompanyTest extends FunctionalTestBase
 
         $this->companyRepository
             ->expects($this->once())
-            ->method('existByTaxpayer')
-            ->with('33592510002521')
-            ->willReturn(null);
+            ->method('validateTaxpayerUniqueness')
+            ->with('33592510002521');
+    ;
 
         $this->companyRepository
             ->expects($this->once())
@@ -63,9 +63,10 @@ class CreateCompanyTest extends FunctionalTestBase
 
         $this->companyRepository
             ->expects($this->once())
-            ->method('existByTaxpayer')
+            ->method('validateTaxpayerUniqueness')
             ->with('33592510002521')
-            ->willReturn(Company::create('33592510002521', 'Test Company'));
+            ->willThrowException(new CompanyAlreadyExistsException(403,'Company with this taxpayer ID already exists'));
+
 
         $this->createCompany->handle($inputDto);
     }

@@ -25,9 +25,7 @@ class CreateCompany
             throw new InvalidArgumentException('The following fields cannot be empty: fantasyName');
         }
 
-        if (null !== $this->companyRepository->existByTaxpayer($inputDto->taxpayer)) {
-            throw CompanyAlreadyExistsException::createFromTaxPayer($inputDto->taxpayer);
-        }
+        $this->companyRepository->validateTaxpayerUniqueness($inputDto->taxpayer);
 
         $company = Company::create(
             $inputDto->taxpayer,

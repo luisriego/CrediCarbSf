@@ -92,6 +92,13 @@ final class DoctrineCompanyRepository extends ServiceEntityRepository implements
         return $company;
     }
 
+    public function validateTaxpayerUniqueness(string $taxpayer): void
+    {
+        if (null ===  $this->findOneBy(['taxpayer' => $taxpayer])) {
+            throw ResourceNotFoundException::createFromClassAndProperty(Company::class, 'Taxpayer', $taxpayer);
+        }
+    }
+
     public function findOneByTaxpayerOrFail(string $taxpayer): Company
     {
         if (null === $company = $this->findOneBy(['taxpayer' => $taxpayer])) {
@@ -99,11 +106,6 @@ final class DoctrineCompanyRepository extends ServiceEntityRepository implements
         }
 
         return $company;
-    }
-
-    public function existByTaxpayer(string $taxpayer): ?Company
-    {
-        return $this->findOneBy(['taxpayer' => $taxpayer]);
     }
 
     public function existById(string $id): bool

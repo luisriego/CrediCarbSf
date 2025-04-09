@@ -24,7 +24,7 @@ interface CompanyRepositoryInterface
 
     public function findOneByTaxpayerOrFail(string $taxpayer): Company;
 
-    public function existByTaxpayer(string $taxpayer): ?Company;
+    public function validateTaxpayerUniqueness(string $taxpayer): void;
 
     public function existById(string $id): bool;
 
