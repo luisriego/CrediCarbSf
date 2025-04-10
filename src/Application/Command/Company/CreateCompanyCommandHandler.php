@@ -4,7 +4,6 @@ namespace App\Application\Command\Company;
 
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
-use App\Domain\ValueObjects\Taxpayer;
 
 final readonly class CreateCompanyCommandHandler
 {
@@ -15,15 +14,11 @@ final readonly class CreateCompanyCommandHandler
 
     public function __invoke(CreateCompanyCommand $command): void
     {
-        $taxpayer = Taxpayer::fromString($command->taxpayer());
-
-        // this verification may be on Domain layer, I need to study where and how;
-        // by now i'll do that in repo with existByTaxpayerOrFail
-        $this->companyRepository->validateTaxpayerUniqueness($taxpayer);
+        $this->companyRepository->validateTaxpayerUniqueness($command->taxpayer());
 
         $company = Company::create(
             $command->id(),
-            $taxpayer,
+            $command->taxpayer(),
             $command->fantasyName(),
         );
 

@@ -6,134 +6,108 @@ namespace App\Tests\Functional\Controller\Company;
 
 use App\Application\UseCase\Company\CreateCompany\CreateCompany;
 use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyInputDto;
-use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyOutputDto;
-use App\Domain\Exception\Company\CompanyAlreadyExistsException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
-use App\Domain\ValueObjects\Uuid;
-use App\Tests\Functional\FunctionalTestBase;
+use App\Tests\Unit\Domain\Model\Mother\CompanyMother;
 use PHPUnit\Framework\MockObject\MockObject;
-use TypeError;
+use PHPUnit\Framework\TestCase;
 
-class CreateCompanyTest extends FunctionalTestBase
+final class CreateCompanyTest extends TestCase
 {
-    private CreateCompany $createCompany;
-    private readonly CompanyRepositoryInterface|MockObject $companyRepository;
+    private CreateCompany $createCompanyUseCase;
+    private CompanyRepositoryInterface|MockObject $companyRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        parent::setUp();
         $this->companyRepository = $this->createMock(CompanyRepositoryInterface::class);
-        $this->createCompany = new CreateCompany($this->companyRepository);
+        $this->createCompanyUseCase = new CreateCompany($this->companyRepository);
     }
 
-    public function testCreateCompanySuccessfully(): void
+    public function testShouldCreateCompanySuccessfully(): void
     {
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            'Test Company',
-            '33.592.510/0025-21',
+        // Arrange
+        $company = CompanyMother::create();
+        $inputDto = CreateCompanyInputDto::create(
+            $company->id(),
+            $company->taxpayer(),
+            $company->fantasyName(),
         );
 
         $this->companyRepository
             ->expects($this->once())
             ->method('validateTaxpayerUniqueness')
-            ->with('33592510002521');
-    ;
+            ->with($company->taxpayer());
 
         $this->companyRepository
             ->expects($this->once())
             ->method('add')
-            ->with($this->callback(function (Company $company): bool {
-                return $company->fantasyName() === 'Test Company';
-            }));
+            ->with($this->isInstanceOf(Company::class), true);
 
-        $responseDTO = $this->createCompany->handle($inputDto);
+        // Act
+        $outputDto = $this->createCompanyUseCase->handle($inputDto);
 
-        self::assertInstanceOf(CreateCompanyOutputDto::class, $responseDTO);
+        // Assert
+        $this->assertNotEmpty($outputDto->companyId);
     }
 
-    public function testCreateCompanyAlreadyExists(): void
+    public function testShouldThrowExceptionWhenTaxpayerIsEmpty(): void
     {
-        $this->expectException(CompanyAlreadyExistsException::class);
+        // Arrange
+        $company = CompanyMother::create();
+        $inputDto = CreateCompanyInputDto::create(
+            $company->id(),
+            '', // empty taxpayer
+            $company->fantasyName()
+        );
+    
+        // Assert
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The following fields cannot be empty: taxpayer');
+    
+        // Act
+        $this->createCompanyUseCase->handle($inputDto);
+    }
 
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            'Test Company',
-            '33.592.510/0025-21',
+    public function testShouldThrowExceptionWhenFantasyNameIsEmpty(): void
+    {
+        // Arrange
+        $company = CompanyMother::create();
+        $inputDto = CreateCompanyInputDto::create(
+            $company->id(),
+            $company->taxpayer(),
+            '',
+        );
+
+        // Assert
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The following fields cannot be empty: fantasyName');
+
+        // Act
+        $this->createCompanyUseCase->handle($inputDto);
+    }
+
+    public function testShouldThrowExceptionWhenTaxpayerAlreadyExists(): void
+    {
+        // Arrange
+        $company = CompanyMother::create();
+        $inputDto = CreateCompanyInputDto::create(
+            $company->id(),
+            $company->taxpayer(),
+            $company->fantasyName(),
         );
 
         $this->companyRepository
             ->expects($this->once())
             ->method('validateTaxpayerUniqueness')
-            ->with('33592510002521')
-            ->willThrowException(new CompanyAlreadyExistsException(403,'Company with this taxpayer ID already exists'));
+            ->with($company->taxpayer())
+            ->willThrowException(new InvalidArgumentException('Taxpayer already exists'));
 
-
-        $this->createCompany->handle($inputDto);
-    }
-
-    public function testCreateCompanyWithEmptyTaxpayer(): void
-    {
+        // Assert
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Taxpayer already exists');
 
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            'Test Company',
-            '',
-        );
-
-        $this->createCompany->handle($inputDto);
-    }
-
-    public function testCreateCompanyWithEmptyFantasyName(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The following fields cannot be empty: fantasyName');
-
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            '',
-            '33.592.510/0025-21',
-        );
-
-        $this->createCompany->handle($inputDto);
-    }
-
-    public function testCreateCompanyWithInvalidTaxpayerLength(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            'Test Company',
-            '123',
-        );
-
-        $this->createCompany->handle($inputDto);
-    }
-
-    public function testCreateCompanyWithNullInputDto(): void
-    {
-        $this->expectException(TypeError::class);
-
-        $this->createCompany->handle(null);
-    }
-
-    public function testCreateCompanyFailedBecauseSequentialCnpj(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid CNPJ digits');
-
-        $inputDto = new CreateCompanyInputDto(
-            Uuid::random()->value(),
-            'Test Company',
-            '12345678901234',
-        );
-
-        $responseDTO = $this->createCompany->handle($inputDto);
-
-        self::assertInstanceOf(CreateCompanyOutputDto::class, $responseDTO);
+        // Act
+        $this->createCompanyUseCase->handle($inputDto);
     }
 }

@@ -14,13 +14,12 @@ class Taxpayer
     private function __construct(
         private readonly string $taxpayer,
     ) {
-        $this->assertValidTaxpayer($taxpayer);
-        $this->value = $this->cleanTaxpayer($taxpayer);
+        $this->value = $this->validTaxpayer($taxpayer);
     }
 
     public static function fromString(string $taxpayer): self
     {
-        return new self($taxpayer);
+        return new static($taxpayer);
     }
 
     public function getValue(): string

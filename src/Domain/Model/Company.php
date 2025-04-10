@@ -39,8 +39,8 @@ class Company
     #[ORM\Column(type: 'string', length: 14, options: ['fixed' => true])]
     private string $taxpayer;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $fantasyName;
+    #[ORM\Column(type: 'string', length: 100)]
+    private string $fantasyName;
 
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'company', orphanRemoval: false)]
     private Collection $users;
@@ -51,15 +51,12 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    private function __construct(string $id, string $taxpayer, ?string $fantasyName)
+    private function __construct(string $id, string $taxpayer, string $fantasyName)
     {
-        $this->assertValidTaxpayer($taxpayer);
-        $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
         $this->validateFantasyName($fantasyName);
 
-//        $this->initializeId();
         $this->id = $id;
-        $this->taxpayer = $taxpayer;
+        $this->taxpayer = $this->validTaxpayer($taxpayer);
         $this->fantasyName = $fantasyName;
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
@@ -68,12 +65,12 @@ class Company
         $this->initializeCreatedOn();
     }
 
-    public static function create(string $id, string $taxpayer, ?string $fantasyName): self
+    public static function create(string $id, string $taxpayer, string $fantasyName): self
     {
         return new self($id, $taxpayer, $fantasyName);
     }
 
-    public function fantasyName(): ?string
+    public function fantasyName(): string
     {
         return $this->fantasyName;
     }

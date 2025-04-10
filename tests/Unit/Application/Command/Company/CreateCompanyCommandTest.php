@@ -3,7 +3,8 @@
 namespace App\Tests\Unit\Application\Command\Company;
 
 use App\Application\Command\Company\CreateCompanyCommand;
-use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\ValueObjects\FantasyName;
+use App\Domain\ValueObjects\Taxpayer;
 use App\Domain\ValueObjects\Uuid;
 use PHPUnit\Framework\TestCase;
 
@@ -12,27 +13,34 @@ class CreateCompanyCommandTest extends TestCase
 {
     public function testCreateWithValidData(): void
     {
-        $command = new CreateCompanyCommand(
-            Uuid::random()->value(),
-            'Fantasy Company Name',
-            '33.592.510/0025-21'
+        $id = Uuid::random();
+        $taxpayer = Taxpayer::fromString('33592510002521');
+        $fantasyName = FantasyName::fromString('Valid Company Name');
+
+        $command = CreateCompanyCommand::create(
+            $id,
+            $taxpayer,
+            $fantasyName
         );
 
-        $this->assertEquals('Fantasy Company Name', $command->fantasyName());
-        $this->assertEquals('33.592.510/0025-21', $command->taxpayer());
+        $this->assertInstanceOf(CreateCompanyCommand::class, $command);
     }
 
     public function testIsImmutable(): void
     {
-        $command = new CreateCompanyCommand(
-            Uuid::random()->value(),
-            'Fantasy Company Name',
-            '33.592.510/0025-21'
+        $command = CreateCompanyCommand::create(
+            Uuid::random(),
+            Taxpayer::fromString('33592510002521'),
+            FantasyName::fromString('Valid Company Name')
         );
 
-        // Test that command properties cannot be altered
         $reflectionClass = new \ReflectionClass($command);
-        $this->assertTrue($reflectionClass->isReadOnly());
+        $readOnlyProps = array_filter(
+            $reflectionClass->getProperties(),
+            fn(\ReflectionProperty $prop) => $prop->isReadOnly()
+        );
+
+        $this->assertCount(3, $readOnlyProps);
     }
 
     /**

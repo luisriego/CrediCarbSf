@@ -16,9 +16,14 @@ class Uuid implements Stringable
         $this->ensureIsValidUuid($value);
     }
 
+    public static function fromString(string $id): self
+    {
+        return new static($id);
+    }
+
     public function __toString(): string
     {
-        return $this->value();
+        return $this->value;
     }
 
     public static function random(): self

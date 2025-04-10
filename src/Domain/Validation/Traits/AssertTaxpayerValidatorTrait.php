@@ -19,8 +19,20 @@ trait AssertTaxpayerValidatorTrait
 
     public function assertValidTaxpayer(string $taxpayer): void
     {
-        $taxpayer = $this->cleanTaxpayer($taxpayer);
+        $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
+        $this->validateTaxpayer($cleanTaxpayer);
+    }
 
+    public function validTaxpayer(string $taxpayer): string
+    {
+        $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
+        $this->validateTaxpayer($cleanTaxpayer);
+        
+        return $cleanTaxpayer;
+    }
+
+    private function validateTaxpayer(string $taxpayer): void
+    {
         if (mb_strlen($taxpayer) === 11) {
             $this->assertValidCpf($taxpayer);
         } elseif (mb_strlen($taxpayer) === 14) {

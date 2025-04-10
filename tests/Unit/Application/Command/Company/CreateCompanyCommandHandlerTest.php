@@ -26,7 +26,7 @@ class CreateCompanyCommandHandlerTest extends TestCase
     {
         $this->companyRepository = $this->createMock(CompanyRepositoryInterface::class);
         $this->handler = new CreateCompanyCommandHandler($this->companyRepository);
-        $this->validCompanyId = Uuid::random()->value();
+        $this->validCompanyId = Uuid::random();
         $this->validTaxpayer = '33592510002521';
         $this->validFantasyName = 'Test Company';
     }
@@ -38,69 +38,31 @@ class CreateCompanyCommandHandlerTest extends TestCase
     public function testHandleCreatesAndSavesCompany(): void
     {
         // Arrange
-        $companyRepository = $this->createMock(CompanyRepositoryInterface::class);
-        $handler = new CreateCompanyCommandHandler($companyRepository);
-
-        $companyId = Uuid::random()->value();
-        $command = new CreateCompanyCommand(
-            $companyId,
-            'Test Company',
-            '33592510002521'
-        );
-
-        // Expect the company to be saved
-        $companyRepository->expects($this->once())
-            ->method('save')
-            ->with($this->callback(function (Company $company) use ($companyId) {
-                return $company->id() === $companyId
-                    && $company->taxpayer() === '33592510002521'
-                    && $company->fantasyName() === 'Test Company';
-            }));
-
-        // Act
-        $handler->__invoke($command);
-    }
-
-    /**
-     * Corner case: Company with null fantasy name
-     */
-    public function testHandleCreatesCompanyWithNullFantasyName(): void
-    {
-        // Arrange
-        $command = new CreateCompanyCommand(
+        $command = CreateCompanyCommand::create(
             $this->validCompanyId,
-            null,
-            $this->validTaxpayer
+            $this->validTaxpayer,
+            $this->validFantasyName
         );
 
         $this->companyRepository->expects($this->once())
-            ->method('validateTaxpayerUniqueness');
-
-        $this->companyRepository->expects($this->once())
             ->method('save')
-            ->with(
-                $this->callback(function (Company $company) {
-                    return $company->id() === $this->validCompanyId
-                        && $company->fantasyName() === null
-                        && $company->taxpayer() === $this->validTaxpayer;
-                }),
-                true
-            );
+            ->with($this->callback(function (Company $company) {
+                return $company->id() === $this->validCompanyId
+                    && $company->taxpayer() === $this->validTaxpayer
+                    && $company->fantasyName() === $this->validFantasyName;
+            }));
 
         // Act
         $this->handler->__invoke($command);
     }
 
-    /**
-     * Corner case: Duplicate taxpayer
-     */
     public function testHandleThrowsExceptionForDuplicateTaxpayer(): void
     {
         // Arrange
-        $command = new CreateCompanyCommand(
+        $command = CreateCompanyCommand::create(
             $this->validCompanyId,
-            $this->validFantasyName,
-            $this->validTaxpayer
+            $this->validTaxpayer,
+            $this->validFantasyName
         );
 
         $this->companyRepository->expects($this->once())
@@ -117,85 +79,87 @@ class CreateCompanyCommandHandlerTest extends TestCase
         $this->handler->__invoke($command);
     }
 
-    /**
-     * Corner case: Invalid taxpayer format
-     */
     public function testHandleThrowsExceptionForInvalidTaxpayer(): void
     {
         // Arrange
         $invalidTaxpayer = '123456'; // Too short
 
-        $command = new CreateCompanyCommand(
+        // Assert
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Taxpayer length');
+
+        // Act - Exception will be thrown when creating the Command
+        CreateCompanyCommand::create(
             $this->validCompanyId,
-            $this->validFantasyName,
-            $invalidTaxpayer
+            $invalidTaxpayer,
+            $this->validFantasyName
         );
 
-        // We expect the Taxpayer::fromString to throw an exception
-        // before even reaching the repository validation
+        // We never get here
         $this->companyRepository->expects($this->never())
             ->method('validateTaxpayerUniqueness');
-
         $this->companyRepository->expects($this->never())
             ->method('save');
+    }
 
-        // Assert & Act
-        $this->expectException(InvalidArgumentException::class);
+    public function testHandleCreatesCompanyWithMinimumLengthFantasyName(): void
+    {
+        // Arrange
+        $command = CreateCompanyCommand::create(
+            $this->validCompanyId,
+            $this->validTaxpayer,
+            'Valid',  // 5 caracteres, longitud mínima válida
+        );
 
+        $this->companyRepository->expects($this->once())
+            ->method('validateTaxpayerUniqueness');
+
+        $this->companyRepository->expects($this->once())
+            ->method('save')
+            ->with(
+                $this->callback(function (Company $company) {
+                    return $company->id() === $this->validCompanyId
+                        && $company->fantasyName() === 'Valid'
+                        && $company->taxpayer() === $this->validTaxpayer;
+                }),
+                true
+            );
+
+        // Act
         $this->handler->__invoke($command);
     }
 
-    /**
-     * Corner case: Invalid fantasy name (too short)
-     */
     public function testHandleThrowsExceptionForTooShortFantasyName(): void
     {
         // Arrange
         $tooShortFantasyName = 'ABC'; // Below minimum length
 
-        $command = new CreateCompanyCommand(
-            $this->validCompanyId,
-            $tooShortFantasyName,
-            $this->validTaxpayer
-        );
-
-        // ValidationTaxpayerUniqueness will be called before fantasy name validation
-        $this->companyRepository->expects($this->once())
-            ->method('validateTaxpayerUniqueness');
-
-        $this->companyRepository->expects($this->never())
-            ->method('save');
-
-        // Assert & Act
+        // Assert
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Fantasy name must be between 5 and 100 characters');
 
-        $this->handler->__invoke($command);
+        // Act - Exception will be thrown when creating the Command
+        CreateCompanyCommand::create(
+            $this->validCompanyId,
+            $this->validTaxpayer,
+            $tooShortFantasyName
+        );
     }
 
-    /**
-     * Corner case: Invalid fantasy name (too long)
-     */
     public function testHandleThrowsExceptionForTooLongFantasyName(): void
     {
         // Arrange
         $tooLongFantasyName = str_repeat('A', 101); // Exceeds maximum length
 
-        $command = new CreateCompanyCommand(
-            $this->validCompanyId,
-            $tooLongFantasyName,
-            $this->validTaxpayer
-        );
-
-        // ValidationTaxpayerUniqueness will be called before fantasy name validation
-        $this->companyRepository->expects($this->once())
-            ->method('validateTaxpayerUniqueness');
-
-        $this->companyRepository->expects($this->never())
-            ->method('save');
-
-        // Assert & Act
+        // Assert
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Fantasy name must be between 5 and 100 characters');
 
-        $this->handler->__invoke($command);
+        // Act - Exception will be thrown when creating the Command
+        CreateCompanyCommand::create(
+            $this->validCompanyId,
+            $this->validTaxpayer,
+            $tooLongFantasyName
+        );
     }
 }
