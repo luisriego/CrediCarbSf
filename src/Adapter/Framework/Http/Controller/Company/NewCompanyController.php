@@ -16,10 +16,11 @@ readonly class NewCompanyController
     ) {
     }
 
-    #[Route('/api/company', methods: ['POST'])]
-    public function __invoke(CreateCompanyRequestDto $requestDto): JsonResponse
+    #[Route('/api/company/{id}', methods: ['PUT'])]
+    public function __invoke(string $id, CreateCompanyRequestDto $requestDto): JsonResponse
     {
         $command = new CreateCompanyCommand(
+            $id,
             $requestDto->fantasyName,
             $requestDto->taxpayer
         );

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetAllProjectsControllerTest extends FunctionalTestBase
 {
-    use RefreshDatabaseTrait;
+//    use RefreshDatabaseTrait;
 
     private const ENDPOINT = '/api/project/all';
 

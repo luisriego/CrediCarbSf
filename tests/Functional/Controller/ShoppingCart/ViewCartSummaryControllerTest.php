@@ -13,7 +13,7 @@ use function json_decode;
 
 class ViewCartSummaryControllerTest extends FunctionalTestBase
 {
-    use RefreshDatabaseTrait;
+//    use RefreshDatabaseTrait;
     private const ENDPOINT = '/api/shopping-cart';
 
     public function setUp(): void
@@ -21,10 +21,10 @@ class ViewCartSummaryControllerTest extends FunctionalTestBase
         parent::setUp();
 
         //        // Load the fixtures
-        //        $this->loadFixtures([
-        //            'fixtures/ShoppingCart.yaml',
-        //            'fixtures/ShoppingCartItem.yaml',
-        //        ]);
+//                $this->loadFixtures([
+//                    'fixtures/ShoppingCart.yaml',
+//                    'fixtures/ShoppingCartItem.yaml',
+//                ]);
     }
 
     /**

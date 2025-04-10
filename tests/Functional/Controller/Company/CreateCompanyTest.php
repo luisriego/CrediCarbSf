@@ -11,6 +11,7 @@ use App\Domain\Exception\Company\CompanyAlreadyExistsException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\ValueObjects\Uuid;
 use App\Tests\Functional\FunctionalTestBase;
 use PHPUnit\Framework\MockObject\MockObject;
 use TypeError;
@@ -30,6 +31,7 @@ class CreateCompanyTest extends FunctionalTestBase
     public function testCreateCompanySuccessfully(): void
     {
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             'Test Company',
             '33.592.510/0025-21',
         );
@@ -57,6 +59,7 @@ class CreateCompanyTest extends FunctionalTestBase
         $this->expectException(CompanyAlreadyExistsException::class);
 
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             'Test Company',
             '33.592.510/0025-21',
         );
@@ -76,6 +79,7 @@ class CreateCompanyTest extends FunctionalTestBase
         $this->expectException(InvalidArgumentException::class);
 
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             'Test Company',
             '',
         );
@@ -89,6 +93,7 @@ class CreateCompanyTest extends FunctionalTestBase
         $this->expectExceptionMessage('The following fields cannot be empty: fantasyName');
 
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             '',
             '33.592.510/0025-21',
         );
@@ -101,6 +106,7 @@ class CreateCompanyTest extends FunctionalTestBase
         $this->expectException(InvalidArgumentException::class);
 
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             'Test Company',
             '123',
         );
@@ -121,6 +127,7 @@ class CreateCompanyTest extends FunctionalTestBase
         $this->expectExceptionMessage('Invalid CNPJ digits');
 
         $inputDto = new CreateCompanyInputDto(
+            Uuid::random()->value(),
             'Test Company',
             '12345678901234',
         );

@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Application\Command\Company;
 
 use App\Application\Command\Company\CreateCompanyCommand;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\ValueObjects\Uuid;
 use PHPUnit\Framework\TestCase;
 
 
@@ -12,6 +13,7 @@ class CreateCompanyCommandTest extends TestCase
     public function testCreateWithValidData(): void
     {
         $command = new CreateCompanyCommand(
+            Uuid::random()->value(),
             'Fantasy Company Name',
             '33.592.510/0025-21'
         );
@@ -23,6 +25,7 @@ class CreateCompanyCommandTest extends TestCase
     public function testIsImmutable(): void
     {
         $command = new CreateCompanyCommand(
+            Uuid::random()->value(),
             'Fantasy Company Name',
             '33.592.510/0025-21'
         );

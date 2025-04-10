@@ -28,6 +28,7 @@ class CreateCompany
         $this->companyRepository->validateTaxpayerUniqueness($inputDto->taxpayer);
 
         $company = Company::create(
+            $inputDto->id,
             $inputDto->taxpayer,
             $inputDto->fantasyName,
         );

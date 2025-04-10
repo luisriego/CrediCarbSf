@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
@@ -13,7 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
-use InvalidArgumentException;
 
 use function mb_strlen;
 use function preg_replace;
@@ -51,14 +51,15 @@ class Company
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'buyer', orphanRemoval: false)]
     private Collection $boughtProjects;
 
-    private function __construct(string $taxpayer, ?string $fantasyName)
+    private function __construct(string $id, string $taxpayer, ?string $fantasyName)
     {
         $this->assertValidTaxpayer($taxpayer);
         $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
         $this->validateFantasyName($fantasyName);
 
-        $this->initializeId();
-        $this->taxpayer = $cleanTaxpayer;
+//        $this->initializeId();
+        $this->id = $id;
+        $this->taxpayer = $taxpayer;
         $this->fantasyName = $fantasyName;
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
@@ -67,9 +68,9 @@ class Company
         $this->initializeCreatedOn();
     }
 
-    public static function create(string $taxpayer, ?string $fantasyName): self
+    public static function create(string $id, string $taxpayer, ?string $fantasyName): self
     {
-        return new self($taxpayer, $fantasyName);
+        return new self($id, $taxpayer, $fantasyName);
     }
 
     public function fantasyName(): ?string

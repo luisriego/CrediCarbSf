@@ -22,8 +22,9 @@ final readonly class CreateCompanyCommandHandler
         $this->companyRepository->validateTaxpayerUniqueness($taxpayer);
 
         $company = Company::create(
+            $command->id(),
+            $taxpayer,
             $command->fantasyName(),
-            $taxpayer
         );
 
         $this->companyRepository->save($company, true);

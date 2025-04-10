@@ -17,11 +17,13 @@ class CreateCompanyInputDto
         'taxpayer',
     ];
 
+    public string $id;
     public string $fantasyName;
     public string $taxpayer;
 
-    public function __construct(string $fantasyName, string $taxpayer)
+    public function __construct(string $id, string $fantasyName, string $taxpayer)
     {
+        $this->id = $id;
         $this->fantasyName = $fantasyName;
         $this->taxpayer = $this->cleanTaxpayer($taxpayer);
 
@@ -29,8 +31,8 @@ class CreateCompanyInputDto
         $this->assertValidTaxpayer($this->taxpayer);
     }
 
-    public static function create(?string $fantasyName, ?string $taxpayer): self
+    public static function create(string $id, ?string $fantasyName, ?string $taxpayer): self
     {
-        return new static($fantasyName, $taxpayer);
+        return new static($id, $fantasyName, $taxpayer);
     }
 }

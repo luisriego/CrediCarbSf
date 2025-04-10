@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Domain\Model;
 
 use App\Domain\Model\Company;
+use App\Domain\ValueObjects\Uuid;
 use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +16,7 @@ class CompanyTest extends TestCase
 {
     public function testCreateValidCompany(): void
     {
-        $company = Company::create('33592510002521', 'Test Company');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Test Company');
 
         $this->assertEquals('33592510002521', $company->taxpayer());
         $this->assertEquals('Test Company', $company->fantasyName());
@@ -29,12 +30,12 @@ class CompanyTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid Taxpayer length');
 
-        Company::create('invalidtax', 'Some Company');
+        Company::create(Uuid::random()->value(),'invalidtax', 'Some Company');
     }
 
     public function testActivateCompany(): void
     {
-        $company = Company::create('33592510002521', 'Test Company');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Test Company');
         $company->deactivate();
         $company->activate();
 
@@ -43,7 +44,7 @@ class CompanyTest extends TestCase
 
     public function testDeactivateCompany(): void
     {
-        $company = Company::create('33592510002521', 'Test Company');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Test Company');
         $company->deactivate();
 
         $this->assertFalse($company->isActive());
@@ -51,7 +52,7 @@ class CompanyTest extends TestCase
 
     public function testDeactivateAlreadyInactiveCompanyThrowsException(): void
     {
-        $company = Company::create('33592510002521', 'Test Company');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Test Company');
         $company->deactivate();
 
         $this->expectException(DomainException::class);
@@ -62,7 +63,7 @@ class CompanyTest extends TestCase
 
     public function testActivateAlreadyActiveCompanyThrowsException(): void
     {
-        $company = Company::create('33592510002521', 'Test Company');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Test Company');
 
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('already active');
@@ -72,7 +73,7 @@ class CompanyTest extends TestCase
 
     public function testUpdateFantasyName(): void
     {
-        $company = Company::create('33592510002521', 'Old Name');
+        $company = Company::create(Uuid::random()->value(),'33592510002521', 'Old Name');
         $company->updateFantasyName('New Name');
 
         $this->assertEquals('New Name', $company->fantasyName());
@@ -88,7 +89,7 @@ class CompanyTest extends TestCase
         $this->expectExceptionMessage('Fantasy name must be between 5 and 100 characters');
 
         // "AB" is presumably shorter than the required minimum
-        Company::create('33592510002521', 'AB');
+        Company::create(Uuid::random()->value(),'33592510002521', 'AB');
     }
 
     /**
@@ -103,12 +104,12 @@ class CompanyTest extends TestCase
         // A 200-character string exceeding any typical upper limit, e.g., 100
         $longName = str_repeat('X', 200);
 
-        Company::create('33592510002521', $longName);
+        Company::create(Uuid::random()->value(),'33592510002521', $longName);
     }
 
     public function testCreateCompanyWithNullFantasyName(): void
     {
-        $company = Company::create('33592510002521', null);
+        $company = Company::create(Uuid::random()->value(),'33592510002521', null);
         $this->assertNull($company->fantasyName());
         $this->assertTrue($company->isActive());
     }
@@ -123,7 +124,7 @@ class CompanyTest extends TestCase
         $this->expectExceptionMessage('Invalid Taxpayer length');
 
         // This string has 14 characters, but includes letters
-        Company::create('12345678ABCD12', 'Invalid Taxpayer');
+        Company::create(Uuid::random()->value(),'12345678ABCD12', 'Invalid Taxpayer');
     }
 
     /**
@@ -137,7 +138,7 @@ class CompanyTest extends TestCase
         $validCnpj = '33592510002521';
 
         // This should not throw an exception if your code validates CNPJ properly
-        $company = Company::create($validCnpj, 'Test Company with Valid CNPJ');
+        $company = Company::create(Uuid::random()->value(), $validCnpj, 'Test Company with Valid CNPJ');
 
         $this->assertEquals($validCnpj, $company->taxpayer());
         $this->assertTrue($company->isActive());
@@ -157,6 +158,6 @@ class CompanyTest extends TestCase
         $invalidCnpj = '12345678901234';
 
         // Since it's invalid, we expect an exception
-        Company::create($invalidCnpj, 'Company with Invalid CNPJ');
+        Company::create(Uuid::random()->value(), $invalidCnpj, 'Company with Invalid CNPJ');
     }
 }
