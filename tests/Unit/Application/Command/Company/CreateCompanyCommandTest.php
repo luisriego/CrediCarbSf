@@ -3,9 +3,9 @@
 namespace App\Tests\Unit\Application\Command\Company;
 
 use App\Application\Command\Company\CreateCompanyCommand;
-use App\Domain\ValueObjects\FantasyName;
-use App\Domain\ValueObjects\Taxpayer;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\Taxpayer;
+use App\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
 
 
@@ -53,7 +53,7 @@ class CreateCompanyCommandTest extends TestCase
         $this->expectException(\App\Domain\Exception\InvalidArgumentException::class);
 
         // For example, if validation happens in Taxpayer::fromString
-        \App\Domain\ValueObjects\Taxpayer::fromString($taxpayer);
+        \App\Domain\ValueObject\Taxpayer::fromString($taxpayer);
     }
 
     private static function invalidTaxpayerDataProvider(): array

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Project;
 
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

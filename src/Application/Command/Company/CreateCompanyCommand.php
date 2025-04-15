@@ -2,33 +2,36 @@
 
 namespace App\Application\Command\Company;
 
-use App\Domain\ValueObjects\Uuid;
-use App\Domain\ValueObjects\FantasyName;
-use App\Domain\ValueObjects\Taxpayer;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
+use App\Domain\ValueObject\Uuid;
+use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\Taxpayer;
 
 
 final readonly class CreateCompanyCommand
 {
     public function __construct(
-        private Uuid $id,
-        private Taxpayer $taxpayer,
-        private FantasyName $fantasyName,
+        private CompanyId $id,
+        private CompanyTaxpayer $taxpayer,
+        private CompanyName $fantasyName,
     ) {
     }
 
     public static function create(
-        ?string $id = null,
+        string $id,
         string $taxpayer,
         string $fantasyName
     ): self {
         return new self(
-            $id ? Uuid::fromString($id) : Uuid::random(),
-            Taxpayer::fromString($taxpayer),
-            FantasyName::fromString($fantasyName)
+            CompanyId::fromString($id),
+            CompanyTaxpayer::fromString($taxpayer),
+            CompanyName::fromString($fantasyName)
         );
     }
 
-    public function id(): string
+    public function id(): CompanyId
     {
         return $this->id;
     }

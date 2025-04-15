@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Domain\Application\Webcases\ShoppingCart;
+namespace App\Tests\Unit\Application;
 
 use App\Application\UseCase\ShoppingCart\WorkflowService;
 use App\Domain\Model\Discount;

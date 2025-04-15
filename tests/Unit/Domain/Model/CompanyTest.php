@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Domain\Model;
 
 use App\Domain\Model\Company;
-use App\Domain\ValueObjects\FantasyName;
-use App\Domain\ValueObjects\Taxpayer;
+use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\Taxpayer;
 use App\Tests\Unit\Domain\Model\Mother\CompanyMother;
 use DomainException;
 use InvalidArgumentException;
@@ -98,9 +98,9 @@ class CompanyTest extends TestCase
     public function testCreateCompanyWithMinimumValidFantasyName(): void
     {
         $company = CompanyMother::create(
-            fantasyName: FantasyName::fromString('Valid')
+            fantasyName: 'Valid'
         );
-        
+
         $this->assertEquals('Valid', $company->fantasyName());
         $this->assertTrue($company->isActive());
     }
@@ -117,7 +117,7 @@ class CompanyTest extends TestCase
     {
         $validCnpj = '33592510002521';
         $company = CompanyMother::create(
-            taxpayer: Taxpayer::fromString($validCnpj)
+            taxpayer: $validCnpj
         );
 
         $this->assertEquals($validCnpj, $company->taxpayer());

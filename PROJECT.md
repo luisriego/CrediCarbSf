@@ -1,42 +1,39 @@
-@baseUrl = {{$dotenv BASE_URL}}
-@token = {{$dotenv TOKEN}}
+# CrediCarbSf
 
-### Get All Projects
-GET {{baseUrl}}/project
-Authorization: Bearer {{token}}
+## Description
+Application for project and company management with certification processes, implemented in a clean, scalable architecture.
 
-### Get Project by ID ---------------------------------------------------------------------------
-GET {{baseUrl}}/project/{{projectId}} -----------------------------------------------------------
-Authorization: Bearer {{token}} -----------------------------------------------------------------
+## Technical Requirements
+- PHP 8.2
+- Symfony 6.4
+- MySQL
+- Docker environment
+- Composer
 
-### Get Projects by Status ----------------------------------------------------------------------
-GET {{baseUrl}}/project/status/{{status}} -------------------------------------------------------
-Authorization: Bearer {{token}} -----------------------------------------------------------------
+## Architecture
+This project follows a Hexagonal Architecture with Domain-Driven Design principles. All code adheres to SOLID principles and Clean Code practices. The system uses Events and Subscriber patterns for communication between components.
 
-### Get Projects by Type ------------------------------------------------------------------------
-GET {{baseUrl}}/project/type/{{projectType}} ----------------------------------------------------
-Authorization: Bearer {{token}} -----------------------------------------------------------------
+The project is currently being enhanced with CQRS+Event Sourcing, implemented incrementally.
 
-### Get Project Progress
-GET {{baseUrl}}/project/{{projectId}}/progress
-Authorization: Bearer {{token}}
+### Directory Structure
+- `/src/Domain`: Domain entities, Value Objects and Aggregates
+- `/src/Application`: Commands and Queries (CQRS)
+- `/src/Infrastructure`: Repositories, adapters and infrastructure-related services
 
-### Get Project Milestones
-GET {{baseUrl}}/project/{{projectId}}/milestones
-Authorization: Bearer {{token}}
+## Core Entities
+for the moment
+- **Project**: Central entity representing projects
+- **Company**: Entities representing companies that own or buy projects
+- **Certification**: Represents certifications for projects
+- **CertificationAuthority**: Entities that issue certifications
+- **CertificationTypeEntity**: Types of certifications available
+- **Discount**: Discount information applied to purchases
+- **ShoppingCart**: Shopping cart for purchasing projects
+- **ShoppingCartItem**: Individual items in shopping carts
+- **User**: User accounts in the system
 
-### Get Project Statistics
-GET {{baseUrl}}/project/statistics
-Authorization: Bearer {{token}}
-
-### Get Projects by Date Range
-GET {{baseUrl}}/project/range?startDate={{startDate}}&endDate={{endDate}}
-Authorization: Bearer {{token}}
-
-### Get Projects by Company ---- Do yet ---------------------------------------------------------
-GET {{baseUrl}}/project/company/{{companyId}} ---------------------------------------------------
-Authorization: Bearer {{token}} -----------------------------------------------------------------
-
-### Get Project Cost Analysis
-GET {{baseUrl}}/project/{{projectId}}/cost-analysis
-Authorization: Bearer {{token}}
+## Testing Approach
+The project follows extensive test coverage:
+- Unit tests for domain logic
+- Integration tests for application services
+- Functional tests for API endpoints

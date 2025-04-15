@@ -13,7 +13,7 @@ use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
 use App\Domain\Validation\Traits\AssertLengthRangeTrait;
 use App\Domain\Validation\Traits\AssertPasswordValidatorTrait;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\This;

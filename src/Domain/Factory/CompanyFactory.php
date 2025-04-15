@@ -3,18 +3,21 @@
 namespace App\Domain\Factory;
 
 use App\Domain\Model\Company;
-use App\Domain\ValueObjects\FantasyName;
-use App\Domain\ValueObjects\Taxpayer;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
+use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\Taxpayer;
+use App\Domain\ValueObject\Uuid;
 
 class CompanyFactory
 {
     public static function create(string $id, string $taxpayer, string $fantasyName): Company
     {
         return Company::create(
-            $id ?? Uuid::random()->value(),
-            $taxpayer,
-            $fantasyName,
+            CompanyId::fromString($id),
+            CompanyTaxpayer::fromString($taxpayer),
+            CompanyName::fromString($fantasyName),
         );
     }
 }

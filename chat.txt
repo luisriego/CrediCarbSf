@@ -1,0 +1,10 @@
+RESUMEN DEL PROYECTO:
+- Sistema desarrollado en PHP 8.2 con Symfony 6.4 y MySQL en ambiente dockerizado
+- Arquitectura Hexagonal, DDD, SOLID y Clean Code
+- Implementa Events y Subscriber Pattern
+- Desarrollo guiado por TDD con uso extensivo de testing
+- Requiere implementación progresiva de CQRS+Event Sourcing
+- Entidades principales: Certification, CertificationAuthority, CertificationTypeEntity, Company, Discount, Project, ShoppingCart, ShoppingCartItem, User
+- Objetivo: Sistema de gestión de proyectos con certificaciones y comercialización
+- Repositorio de eventos pendiente para completar Event Sourcing
+- Enfoque en calidad de código con PHPStan, PHP CS Fixer, Psalm y PHPCodeSniffer

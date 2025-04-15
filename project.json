@@ -1,0 +1,196 @@
+{
+  "project": {
+    "name": "CrediCarbSf",
+    "version": "1.0.0",
+    "description": "Sistema de gestión de proyectos con certificaciones y comercialización",
+    "architecture": {
+      "pattern": "Hexagonal",
+      "ddd": true,
+      "cqrs": true,
+      "eventSourcing": "implementation in progress",
+      "cleanCode": true,
+      "solid": true,
+      "tdd": true
+    },
+    "technology": {
+      "backend": "Symfony 6.4",
+      "language": "PHP 8.2",
+      "database": "MySQL",
+      "containerization": "Docker"
+    },
+    "entities": [
+      {
+        "name": "Project",
+        "description": "Main entity representing a project",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "name", "type": "string"},
+          {"name": "description", "type": "string"},
+          {"name": "areaHa", "type": "integer"},
+          {"name": "quantityInKg", "type": "integer"},
+          {"name": "priceInCents", "type": "integer"},
+          {"name": "projectType", "type": "string"},
+          {"name": "status", "type": "ProjectStatus"},
+          {"name": "startDate", "type": "DateTime"},
+          {"name": "endDate", "type": "DateTime"},
+          {"name": "owner", "type": "Company"},
+          {"name": "buyer", "type": "Company"}
+        ]
+      },
+      {
+        "name": "Company",
+        "description": "Represents a company that can own or buy projects",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "name", "type": "string"},
+          {"name": "fantasyName", "type": "FantasyName"},
+          {"name": "email", "type": "Email"}
+        ]
+      },
+      {
+        "name": "Certification",
+        "description": "Represents a certification issued for a project",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "project", "type": "Project"},
+          {"name": "authority", "type": "CertificationAuthority"},
+          {"name": "type", "type": "CertificationTypeEntity"},
+          {"name": "issueDate", "type": "DateTime"},
+          {"name": "expiryDate", "type": "DateTime"},
+          {"name": "status", "type": "string"}
+        ]
+      },
+      {
+        "name": "CertificationAuthority",
+        "description": "Entity that issues certifications",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "name", "type": "string"},
+          {"name": "description", "type": "string"},
+          {"name": "contactInfo", "type": "string"}
+        ]
+      },
+      {
+        "name": "CertificationTypeEntity",
+        "description": "Types of certifications available in the system",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "name", "type": "string"},
+          {"name": "description", "type": "string"}
+        ]
+      },
+      {
+        "name": "Discount",
+        "description": "Represents a discount applicable to purchases",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "code", "type": "string"},
+          {"name": "value", "type": "integer"},
+          {"name": "type", "type": "string"},
+          {"name": "validFrom", "type": "DateTime"},
+          {"name": "validTo", "type": "DateTime"}
+        ]
+      },
+      {
+        "name": "ShoppingCart",
+        "description": "Shopping cart for purchasing projects",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "user", "type": "User"},
+          {"name": "items", "type": "Collection<ShoppingCartItem>"},
+          {"name": "discount", "type": "Discount"},
+          {"name": "createdAt", "type": "DateTimeImmutable"},
+          {"name": "updatedAt", "type": "DateTime"}
+        ]
+      },
+      {
+        "name": "ShoppingCartItem",
+        "description": "Individual item in a shopping cart",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "shoppingCart", "type": "ShoppingCart"},
+          {"name": "project", "type": "Project"},
+          {"name": "quantity", "type": "integer"},
+          {"name": "price", "type": "integer"}
+        ]
+      },
+      {
+        "name": "User",
+        "description": "User account in the system",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "email", "type": "Email"},
+          {"name": "password", "type": "string"},
+          {"name": "roles", "type": "array"},
+          {"name": "company", "type": "Company"},
+          {"name": "isActive", "type": "boolean"}
+        ]
+      }
+    ],
+    "missingEntitiesForEventSourcing": [
+      {
+        "name": "EventStore",
+        "description": "Storage for all domain events for event sourcing",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "aggregateId", "type": "string"},
+          {"name": "aggregateType", "type": "string"},
+          {"name": "eventType", "type": "string"},
+          {"name": "payload", "type": "json"},
+          {"name": "metadata", "type": "json"},
+          {"name": "createdAt", "type": "DateTimeImmutable"}
+        ]
+      },
+      {
+        "name": "Snapshot",
+        "description": "Periodic state snapshots for aggregate reconstruction optimization",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "aggregateId", "type": "string"},
+          {"name": "aggregateType", "type": "string"},
+          {"name": "version", "type": "integer"},
+          {"name": "state", "type": "json"},
+          {"name": "createdAt", "type": "DateTimeImmutable"}
+        ]
+      },
+      {
+        "name": "Milestone",
+        "description": "Key achievements and deadlines in project lifecycle",
+        "properties": [
+          {"name": "id", "type": "UUID"},
+          {"name": "projectId", "type": "UUID"},
+          {"name": "name", "type": "string"},
+          {"name": "description", "type": "string"},
+          {"name": "dueDate", "type": "DateTime"},
+          {"name": "completedDate", "type": "DateTime"},
+          {"name": "status", "type": "string"}
+        ]
+      }
+    ],
+    "developmentApproach": {
+      "tdd": true,
+      "testTypes": [
+        "Unit Tests",
+        "Integration Tests",
+        "Functional Tests"
+      ],
+      "ciCd": true,
+      "codeQuality": [
+        "PHPStan",
+        "PHP CS Fixer",
+        "Psalm",
+        "PHPCodeSniffer"
+      ]
+    },
+    "eventsImplementation": {
+      "currentState": "Using Symfony Event Dispatcher with subscribers",
+      "targetState": "Full CQRS with Event Sourcing",
+      "pendingComponents": [
+        "EventStore implementation",
+        "Snapshot mechanism",
+        "Event-sourced aggregate roots",
+        "Projections for read models"
+      ]
+    }
+  }
+}

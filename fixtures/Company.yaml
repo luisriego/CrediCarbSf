@@ -2,7 +2,7 @@ App\Domain\Model\Company:
   company_1:
     __factory:
       'App\Domain\Factory\CompanyFactory::create':
-        - ''
+        - '75debfc7-12be-412d-8d19-d32017733c75'
         - '33592510000154'
         - 'Vale S.A. - Matriz'
   company_2:

@@ -94,7 +94,7 @@ final class DoctrineCompanyRepository extends ServiceEntityRepository implements
 
     public function validateTaxpayerUniqueness(string $taxpayer): void
     {
-        if (null ===  $this->findOneBy(['taxpayer' => $taxpayer])) {
+        if (!null ===  $this->findOneBy(['taxpayer' => $taxpayer])) {
             throw ResourceNotFoundException::createFromClassAndProperty(Company::class, 'Taxpayer', $taxpayer);
         }
     }

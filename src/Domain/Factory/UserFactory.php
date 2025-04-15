@@ -7,8 +7,8 @@ namespace App\Domain\Factory;
 use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use App\Domain\Security\PasswordHasherInterface;
-use App\Domain\ValueObjects\Email;
-use App\Domain\ValueObjects\Password;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Password;
 
 use function is_bool;
 

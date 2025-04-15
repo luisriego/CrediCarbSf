@@ -5,38 +5,42 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Domain\Model\Mother;
 
 use App\Domain\Model\Company;
-use App\Domain\ValueObjects\FantasyName;
-use App\Domain\ValueObjects\Taxpayer;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
+use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\Taxpayer;
+use App\Domain\ValueObject\Uuid;
 
 final class CompanyMother
 {
+    private const DEFAULT_ID = 'cbf070cc-80d2-4bfe-9fa6-a96b97ffb0da';
     private const DEFAULT_TAXPAYER = '33592510002521';
     private const DEFAULT_FANTASY_NAME = 'Test Company';
     
     public static function create(
-        ?Uuid $id = null,
-        ?Taxpayer $taxpayer = null,
-        ?FantasyName $fantasyName = null
+        ?string $id = null,
+        ?string $taxpayer = null,
+        ?string $fantasyName = null
     ): Company {
         return Company::create(
-            $id ? $id->value() : Uuid::random()->value(),
-            $taxpayer ? $taxpayer->getValue() : self::DEFAULT_TAXPAYER,
-            $fantasyName ? $fantasyName->value() : self::DEFAULT_FANTASY_NAME
+            CompanyId::fromString($id ?? self::DEFAULT_ID),
+            CompanyTaxpayer::fromString($taxpayer ?? self::DEFAULT_TAXPAYER),
+            CompanyName::fromString($fantasyName ?? self::DEFAULT_FANTASY_NAME)
         );
     }
 
     public static function withInvalidTaxpayer(string $invalidTaxpayer): Company
     {
         return self::create(
-            taxpayer: Taxpayer::fromString($invalidTaxpayer)
+            taxpayer: $invalidTaxpayer
         );
     }
 
     public static function withInvalidFantasyName(string $invalidFantasyName): Company
     {
         return self::create(
-            fantasyName: FantasyName::fromString($invalidFantasyName)
+            fantasyName: $invalidFantasyName
         );
     }
 
@@ -52,8 +56,8 @@ final class CompanyMother
         string $fantasyName
     ): Company {
         return self::create(
-            taxpayer: Taxpayer::fromString($taxpayer),
-            fantasyName: FantasyName::fromString($fantasyName)
+            taxpayer: $taxpayer,
+            fantasyName: $fantasyName
         );
     }
 }

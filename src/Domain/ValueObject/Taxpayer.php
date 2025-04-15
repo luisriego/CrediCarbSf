@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\ValueObjects;
+namespace App\Domain\ValueObject;
 
+use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
 
 class Taxpayer
@@ -11,9 +12,13 @@ class Taxpayer
     use AssertTaxpayerValidatorTrait;
     private string $value;
 
-    private function __construct(
+    protected function __construct(
         private readonly string $taxpayer,
     ) {
+        if (!$taxpayer) {
+            throw InvalidArgumentException::createFromMessage('The Taxpayer identifier cannot be empty.');
+        }
+
         $this->value = $this->validTaxpayer($taxpayer);
     }
 
@@ -22,7 +27,7 @@ class Taxpayer
         return new static($taxpayer);
     }
 
-    public function getValue(): string
+    public function value(): string
     {
         return $this->value;
     }

@@ -8,7 +8,7 @@ use App\Domain\Exception\Company\CompanyAlreadyExistsException;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Security\PasswordHasherInterface;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;

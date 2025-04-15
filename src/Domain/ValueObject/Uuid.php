@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\ValueObjects;
+namespace App\Domain\ValueObject;
 
 use InvalidArgumentException;
 use Stringable;
@@ -41,7 +41,7 @@ class Uuid implements Stringable
         return $this->value() === $other->value();
     }
 
-    private function ensureIsValidUuid(string $id): void
+    protected function ensureIsValidUuid(string $id): void
     {
         if (!\Symfony\Component\Uid\Uuid::isValid($id)) {
             throw new InvalidArgumentException(sprintf('<%s> does not allow the value <%s>.', static::class, $id));

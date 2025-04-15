@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\CreateCompany\Dto;
 
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 
-final class CreateCompanyInputDto
+final readonly class CreateCompanyInputDto
 {
     private function __construct(
-        public readonly string $id,
-        public readonly string $taxpayer,
-        public readonly string $fantasyName,
+        public string $id,
+        public string $taxpayer,
+        public string $fantasyName,
     ) {}
 
     public static function create(
-        ?string $id = null,
+        string $id,
         string $taxpayer,
         string $fantasyName,
     ): self {
         return new self(
-            $id ?? Uuid::random()->value(),
+            $id,
             $taxpayer,
             $fantasyName,
         );

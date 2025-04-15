@@ -4,6 +4,9 @@ namespace App\Application\Command\Company;
 
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
 
 final readonly class CreateCompanyCommandHandler
 {
@@ -17,9 +20,9 @@ final readonly class CreateCompanyCommandHandler
         $this->companyRepository->validateTaxpayerUniqueness($command->taxpayer());
 
         $company = Company::create(
-            $command->id(),
-            $command->taxpayer(),
-            $command->fantasyName(),
+            CompanyId::fromString($command->id()),
+            CompanyTaxpayer::fromString($command->taxpayer()),
+            CompanyName::fromString($command->fantasyName()),
         );
 
         $this->companyRepository->save($company, true);

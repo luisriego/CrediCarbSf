@@ -10,6 +10,10 @@ use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
 use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
+use App\Domain\ValueObject\CompanyEmail;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -55,9 +59,10 @@ class Company
     {
         $this->validateFantasyName($fantasyName);
 
-        $this->id = $id;
-        $this->taxpayer = $this->validTaxpayer($taxpayer);
-        $this->fantasyName = $fantasyName;
+        $this->id = CompanyId::fromString(id: $id)->value();
+        $this->taxpayer = CompanyTaxpayer::fromString(taxpayer: $taxpayer)->value();
+        $this->fantasyName = CompanyName::fromString($fantasyName)->value();
+
         $this->users = new ArrayCollection();
         $this->ownedProjects = new ArrayCollection();
         $this->boughtProjects = new ArrayCollection();
@@ -65,9 +70,12 @@ class Company
         $this->initializeCreatedOn();
     }
 
-    public static function create(string $id, string $taxpayer, string $fantasyName): self
+    public static function create(CompanyId $id, CompanyTaxpayer $taxpayer, CompanyName $fantasyName): self
     {
-        return new self($id, $taxpayer, $fantasyName);
+        return new self(
+            $id->value(),
+            $taxpayer->value(),
+            $fantasyName->value());
     }
 
     public function fantasyName(): string
