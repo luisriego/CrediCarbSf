@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Project;
 
-use App\Tests\Functional\Controller\ControllerTestBase;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function json_decode;
 
 class ProjectHealthCheckControllerTest extends FunctionalTestBase
 {

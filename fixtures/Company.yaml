@@ -1,7 +1,19 @@
 App\Domain\Model\Company:
   company_1:
-    __construct: ['33592510000154', 'Vale S.A. - Matriz']
+    __factory:
+      'App\Domain\Factory\CompanyFactory::create':
+        - '75debfc7-12be-412d-8d19-d32017733c75'
+        - '33592510000154'
+        - 'Vale S.A. - Matriz'
   company_2:
-    __construct: ['33592510002521', 'Vale S.A. - Filial (Pindaré Mirim)']
+    __factory:
+      'App\Domain\Factory\CompanyFactory::create':
+        - '71debfc7-12be-412d-8d19-d32017733c74'
+        - '33592510002521'
+        - 'Vale S.A. - Filial (Pindaré Mirim)'
   company_3:
-    __construct: ['33592510015500', 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)']
+    __factory:
+      'App\Domain\Factory\CompanyFactory::create':
+        - 'ed381cf0-8372-4b82-9f35-c0920631a6c9'
+        - '33592510015500'
+        - 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)'

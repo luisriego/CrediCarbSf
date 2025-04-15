@@ -10,7 +10,7 @@ use App\Domain\Repository\DiscountRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineDiscountRepository extends ServiceEntityRepository implements DiscountRepositoryInterface
+final class DoctrineDiscountRepository extends ServiceEntityRepository implements DiscountRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -60,6 +60,15 @@ class DoctrineDiscountRepository extends ServiceEntityRepository implements Disc
         }
 
         return $discount;
+    }
+
+    public function findOneByCode(?string $code): ?Discount
+    {
+        if ($code === null) {
+            return null;
+        }
+
+        return $this->findOneBy(['code' => $code]);
     }
 
     public function exists(Discount $discount): bool

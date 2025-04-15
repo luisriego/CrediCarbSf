@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 use function sprintf;
 
-class DoctrineCompanyRepository extends ServiceEntityRepository implements CompanyRepositoryInterface
+final class DoctrineCompanyRepository extends ServiceEntityRepository implements CompanyRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -26,11 +26,11 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
 
     public function add(Company $company, bool $flush): void
     {
-        if (empty($company->getFantasyName())) {
+        if (empty($company->fantasyName())) {
             throw new InvalidArgumentException('The company name cannot be empty.');
         }
 
-        if (empty($company->getTaxpayer())) {
+        if (empty($company->taxPayer())) {
             throw new InvalidArgumentException('The company taxpayer cannot be empty.');
         }
 
@@ -92,6 +92,13 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
         return $company;
     }
 
+    public function validateTaxpayerUniqueness(string $taxpayer): void
+    {
+        if (!null ===  $this->findOneBy(['taxpayer' => $taxpayer])) {
+            throw ResourceNotFoundException::createFromClassAndProperty(Company::class, 'Taxpayer', $taxpayer);
+        }
+    }
+
     public function findOneByTaxpayerOrFail(string $taxpayer): Company
     {
         if (null === $company = $this->findOneBy(['taxpayer' => $taxpayer])) {
@@ -99,11 +106,6 @@ class DoctrineCompanyRepository extends ServiceEntityRepository implements Compa
         }
 
         return $company;
-    }
-
-    public function existByTaxpayer(string $taxpayer): ?Company
-    {
-        return $this->findOneBy(['taxpayer' => $taxpayer]);
     }
 
     public function existById(string $id): bool

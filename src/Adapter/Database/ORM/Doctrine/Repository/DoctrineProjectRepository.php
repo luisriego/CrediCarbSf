@@ -19,7 +19,7 @@ use function mb_strtolower;
 use function sort;
 use function sprintf;
 
-class DoctrineProjectRepository extends ServiceEntityRepository implements ProjectRepositoryInterface
+final class DoctrineProjectRepository extends ServiceEntityRepository implements ProjectRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -68,13 +68,13 @@ class DoctrineProjectRepository extends ServiceEntityRepository implements Proje
             ->select('1')
             ->where('p.name = :name')
             ->andWhere('p.areaHa = :areaHa')
-            ->andWhere('p.quantity = :quantity')
-            ->andWhere('p.price = :price')
+            ->andWhere('p.quantityInKg = :quantityInKg')
+            ->andWhere('p.priceInCents = :priceInCents')
             ->andWhere('p.projectType = :projectType')
             ->setParameter('name', $project->getName())
-            ->setParameter('areaHa', $project->getAreaHa())
-            ->setParameter('quantity', $project->getQuantity())
-            ->setParameter('price', $project->getPrice())
+            ->setParameter('areaHa', $project->areaHa())
+            ->setParameter('quantityInKg', $project->quantityInKg())
+            ->setParameter('priceInCents', $project->priceInCents())
             ->setParameter('projectType', $project->getProjectType())
         ;
 

@@ -9,46 +9,52 @@ use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_decode;
+
 class ViewCartSummaryControllerTest extends FunctionalTestBase
 {
-    use RefreshDatabaseTrait;
+//    use RefreshDatabaseTrait;
     private const ENDPOINT = '/api/shopping-cart';
 
-    function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
-//        // Load the fixtures
-//        $this->loadFixtures([
-//            'fixtures/ShoppingCart.yaml',
-//            'fixtures/ShoppingCartItem.yaml',
-//        ]);
+        //        // Load the fixtures
+//                $this->loadFixtures([
+//                    'fixtures/ShoppingCart.yaml',
+//                    'fixtures/ShoppingCartItem.yaml',
+//                ]);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldViewCartSummarySuccessfully(): void
     {
         $this->addItemToShoppingCart();
 
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            self::ENDPOINT
+            self::ENDPOINT,
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true);
 
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         self::assertArrayHasKey('items', $responseData);
         self::assertArrayHasKey('total', $responseData);
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldNotViewCartSummaryWhenUnauthorized(): void
     {
         self::$baseClient->request(
             Request::METHOD_GET,
-            self::ENDPOINT
+            self::ENDPOINT,
         );
 
         $response = self::$baseClient->getResponse();

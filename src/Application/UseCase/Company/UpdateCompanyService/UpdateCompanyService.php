@@ -17,11 +17,11 @@ readonly class UpdateCompanyService
 
     public function handle(UpdateCompanyInputDto $inputDto): UpdateCompanyOutputDto
     {
-        if ($inputDto->company->getFantasyName() === $inputDto->fantasyName) {
+        if ($inputDto->company->fantasyName() === $inputDto->fantasyName) {
             throw new InvalidArgumentException('Fantasy name is the same');
         }
 
-        $inputDto->company->setFantasyName($inputDto->fantasyName);
+        $inputDto->company->updateFantasyName($inputDto->fantasyName);
         $this->companyRepository->save($inputDto->company, true);
 
         return UpdateCompanyOutputDto::create($inputDto->company);

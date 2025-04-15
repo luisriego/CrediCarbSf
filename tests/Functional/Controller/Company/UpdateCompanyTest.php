@@ -8,6 +8,9 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_encode;
+use function sprintf;
+
 class UpdateCompanyTest extends FunctionalTestBase
 {
     protected string $companyId;
@@ -20,13 +23,16 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanySuccessfully(): void
     {
         $payload = [
-            'fantasyName' => 'Updated Company Name'
+            'fantasyName' => 'Updated Company Name',
         ];
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -36,13 +42,16 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanyWithInvalidId(): void
     {
         $payload = [
-            'fantasyName' => 'Updated Company Name'
+            'fantasyName' => 'Updated Company Name',
         ];
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, 'invalid-id'),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -52,14 +61,17 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanyUnauthorized(): void
     {
         $payload = [
-            'fantasyName' => 'Updated Company Name'
+            'fantasyName' => 'Updated Company Name',
         ];
 
         // Simulate an unauthorized user
         self::$baseClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$baseClient->getResponse();
@@ -69,13 +81,16 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanyWithNullFantasyName(): void
     {
         $payload = [
-            'fantasyName' => null
+            'fantasyName' => null,
         ];
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -85,13 +100,16 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanyWithEmptyFantasyName(): void
     {
         $payload = [
-            'fantasyName' => ''
+            'fantasyName' => '',
         ];
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -101,13 +119,16 @@ class UpdateCompanyTest extends FunctionalTestBase
     public function testUpdateCompanyWithSameFantasyName(): void
     {
         $payload = [
-            'fantasyName' => 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)' // Assume this is the current name
+            'fantasyName' => 'Vale S.A. - Filial (Sao Gonçalo do Rio Abaixo)', // Assume this is the current name
         ];
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
             sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            [], [], [], json_encode($payload)
+            [],
+            [],
+            [],
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();

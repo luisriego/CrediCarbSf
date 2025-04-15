@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Project;
 
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function json_decode;
+use function sprintf;
 
 final class TrackProgressControllerTest extends FunctionalTestBase
 {
@@ -93,7 +96,7 @@ final class TrackProgressControllerTest extends FunctionalTestBase
         $response = self::$authenticatedClient->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
-        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());    
+        self::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testTrackProgressUnauthorized(): void

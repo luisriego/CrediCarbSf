@@ -8,7 +8,7 @@ use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressInputD
 use App\Application\UseCase\Project\TrackProgressService\Dto\TrackProgressOutputDto;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class TrackProgressService
+final readonly class TrackProgressService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

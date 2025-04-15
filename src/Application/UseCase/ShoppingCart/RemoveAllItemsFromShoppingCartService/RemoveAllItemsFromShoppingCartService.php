@@ -9,7 +9,7 @@ use App\Domain\Model\ShoppingCart;
 use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 
-readonly class RemoveAllItemsFromShoppingCartService
+final readonly class RemoveAllItemsFromShoppingCartService
 {
     public function __construct(
         //        private readonly ShoppingCartItemRepositoryInterface $shoppingCartItemRepository,

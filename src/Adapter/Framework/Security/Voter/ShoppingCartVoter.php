@@ -30,6 +30,6 @@ class ShoppingCartVoter extends Voter
         /** @var ShoppingCart $shoppingCart */
         $shoppingCart = $subject;
 
-        return $shoppingCart->isOwner($tokenUser->getCompany()->getId());
+        return $shoppingCart->isOwner($tokenUser->getCompany()->id());
     }
 }

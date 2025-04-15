@@ -4,33 +4,25 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\CreateCompany\Dto;
 
-use App\Domain\Validation\Traits\AssertNotNullTrait;
-use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
+use App\Domain\ValueObject\Uuid;
 
-class CreateCompanyInputDto
+final readonly class CreateCompanyInputDto
 {
-    use AssertNotNullTrait;
-    use AssertTaxpayerValidatorTrait;
+    private function __construct(
+        public string $id,
+        public string $taxpayer,
+        public string $fantasyName,
+    ) {}
 
-    private const ARGS = [
-        'fantasyName',
-        'taxpayer',
-    ];
-
-    public string $fantasyName;
-    public string $taxpayer;
-
-    public function __construct(string $fantasyName, string $taxpayer)
-    {
-        $this->fantasyName = $fantasyName;
-        $this->taxpayer = $this->cleanTaxpayer($taxpayer);
-
-        $this->assertNotNull(self::ARGS, [$this->fantasyName, $this->taxpayer]);
-        $this->assertValidTaxpayer($this->taxpayer);
-    }
-
-    public static function create(?string $fantasyName, ?string $taxpayer): self
-    {
-        return new static($fantasyName, $taxpayer);
+    public static function create(
+        string $id,
+        string $taxpayer,
+        string $fantasyName,
+    ): self {
+        return new self(
+            $id,
+            $taxpayer,
+            $fantasyName,
+        );
     }
 }

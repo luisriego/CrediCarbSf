@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Domain\Event\ShoppingCartCheckedOut;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
+use App\Domain\Repository\ShoppingCartItemRepositoryInterface;
 use App\Domain\Repository\ShoppingCartRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -19,15 +22,13 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function json_decode;
+use function json_encode;
+use function sprintf;
+
 class FunctionalTestBase extends WebTestCase
 {
     use ReloadDatabaseTrait;
-
-    private static ?KernelBrowser $client = null;
-    protected static ?KernelBrowser $baseClient = null;
-    protected static ?KernelBrowser $authenticatedClient = null;
-    protected static ?KernelBrowser $anotherAuthenticatedClient = null;
-    protected static ?KernelBrowser $superAdminClient = null;
 
     protected const ACTIVATE_USER_ENDPOINT = '/api/user/activate';
     protected const ADD_USER_TO_COMPANY_ENDPOINT = '/api/company/adduser';
@@ -38,6 +39,10 @@ class FunctionalTestBase extends WebTestCase
     protected const ENDPOINT_USER = '/api/user';
     protected const NON_EXISTING_COMPANY_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
+    protected static ?KernelBrowser $baseClient = null;
+    protected static ?KernelBrowser $authenticatedClient = null;
+    protected static ?KernelBrowser $anotherAuthenticatedClient = null;
+    protected static ?KernelBrowser $superAdminClient = null;
 
     protected string $companyId;
     protected Company $company;
@@ -46,6 +51,8 @@ class FunctionalTestBase extends WebTestCase
     protected string $adminId;
     protected string $shoppingCartId;
     protected string $shoppingCartItemId;
+
+    private static ?KernelBrowser $client = null;
 
     /**
      * @throws Exception
@@ -75,7 +82,7 @@ class FunctionalTestBase extends WebTestCase
             self::$authenticatedClient->setServerParameters([
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_ACCEPT' => 'application/json',
-                'HTTP_Authorization' => \sprintf('Bearer %s', $token),
+                'HTTP_Authorization' => sprintf('Bearer %s', $token),
             ]);
         }
 
@@ -89,7 +96,7 @@ class FunctionalTestBase extends WebTestCase
             self::$anotherAuthenticatedClient->setServerParameters([
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_ACCEPT' => 'application/json',
-                'HTTP_Authorization' => \sprintf('Bearer %s', $token),
+                'HTTP_Authorization' => sprintf('Bearer %s', $token),
             ]);
         }
 
@@ -102,9 +109,27 @@ class FunctionalTestBase extends WebTestCase
             self::$superAdminClient->setServerParameters([
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_ACCEPT' => 'application/json',
-                'HTTP_Authorization' => \sprintf('Bearer %s', $token),
+                'HTTP_Authorization' => sprintf('Bearer %s', $token),
             ]);
         }
+
+        // Get the event dispatcher
+        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        // Create a counter for events
+        $eventCounter = new class() {
+            public $count = 0;
+            public function increment(): void
+            { $this->count++; }
+        };
+        // Store eventCounter in the container for later use
+        static::getContainer()->set('test.event_counter', $eventCounter);
+        // Register the listener in the application container
+        $eventDispatcher->addListener(
+            ShoppingCartCheckedOut::class,
+            function (ShoppingCartCheckedOut $event) use ($eventCounter) {
+                $eventCounter->increment();
+            }
+        );
 
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneBy(['taxpayer' => '33592510015500']);
         $project = static::getContainer()->get(ProjectRepositoryInterface::class)->findOneBy(['name' => 'Project 2']);
@@ -112,6 +137,8 @@ class FunctionalTestBase extends WebTestCase
         $admin = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
         $user = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('user@api.com');
         $shoppingCart = static::getContainer()->get(ShoppingCartRepositoryInterface::class)->findOneBy(['owner' => $company]);
+        $shoppingCartItem = static::getContainer()->get(ShoppingCartItemRepositoryInterface::class)->findOneBy(['shoppingCart' => $shoppingCart]);
+        $repo = static::getContainer()->get(\App\Domain\Repository\UserRepositoryInterface::class);
         $this->adminId = $admin->getId();
         $this->userId = $user->getId();
         $this->companyId = $company->getId();
@@ -119,6 +146,14 @@ class FunctionalTestBase extends WebTestCase
         $this->projectId = $project->getId();
         $this->certificationAuthorityId = $authority->getId();
         $this->shoppingCartId = $shoppingCart->getId();
+        $this->shoppingCartItemId = $shoppingCartItem->getId();
+    }
+
+    protected function getBearerToken(): string
+    {
+        // Implement your token generation logic here
+        // This is just a placeholder
+        return 'your_bearer_token';
     }
 
     protected function createUser(string $name, string $email): void
@@ -130,7 +165,7 @@ class FunctionalTestBase extends WebTestCase
             'age' => 30,
         ];
 
-        self::$client->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], \json_encode($payload));
+        self::$client->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
     }
 
     protected function createNewCompany(string $fantasyName, string $taxpayer): void
@@ -143,7 +178,11 @@ class FunctionalTestBase extends WebTestCase
         self::$authenticatedClient->request(
             Request::METHOD_POST,
             self::CREATE_COMPANY_ENDPOINT,
-            [], [], [], \json_encode($payload));
+            [],
+            [],
+            [],
+            json_encode($payload),
+        );
     }
 
     protected function addItemToShoppingCart(): void
@@ -161,14 +200,35 @@ class FunctionalTestBase extends WebTestCase
             [],
             [],
             [],
-            \json_encode($payload)
+            json_encode($payload),
         );
 
         $response = self::$authenticatedClient->getResponse();
-        $responseData = \json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true);
         $this->shoppingCartId = $responseData['shoppingCartId'];
         $this->shoppingCartItemId = $responseData['itemIds'][0]['id'];
     }
+
+    protected function forceReloadDatabase(): void
+    {
+        $entityManager = self::getContainer()->get('doctrine.orm.entity_manager');
+
+        $entityManager->clear();
+        $entityManager->getConnection()->close();
+
+        $application = new \Symfony\Bundle\FrameworkBundle\Console\Application(static::$kernel);
+        $application->setAutoExit(false);
+
+        $input = new \Symfony\Component\Console\Input\ArrayInput([
+            'command' => 'hautelook:fixtures:load',
+            '--no-interaction' => true,
+            '--no-bundles' => true,
+        ]);
+
+        $output = new \Symfony\Component\Console\Output\NullOutput();
+        $application->run($input, $output);
+    }
+
 
     protected function purgeDatabase(): void
     {
@@ -186,7 +246,7 @@ class FunctionalTestBase extends WebTestCase
         ];
 
         foreach ($tables as $table) {
-            $connection->executeQuery("TRUNCATE TABLE `$table`");
+            $connection->executeQuery("TRUNCATE TABLE `{$table}`");
         }
 
         // Re-enable foreign key checks
@@ -196,7 +256,7 @@ class FunctionalTestBase extends WebTestCase
     protected static function initDBConnection(): Connection
     {
         if (null === static::$kernel) {
-            static ::bootKernel();
+            static::bootKernel();
         }
 
         return static::$kernel->getContainer()->get('doctrine')->getConnection();
@@ -205,7 +265,7 @@ class FunctionalTestBase extends WebTestCase
     protected function getResponseData(Response $response): array
     {
         try {
-            return \json_decode($response->getContent(), true);
+            return json_decode($response->getContent(), true);
         } catch (Exception $e) {
             throw $e;
         }

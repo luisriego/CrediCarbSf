@@ -8,7 +8,7 @@ use App\Domain\Repository\CertificationAuthorityRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -54,7 +54,7 @@ class CertificationAuthority
         );
     }
 
-    public function getTaxpayer(): ?string
+    public function taxPayer(): ?string
     {
         return $this->taxpayer;
     }

@@ -35,4 +35,9 @@ class InvalidArgumentException extends NativeInvalidArgumentException
     {
         return new static(sprintf('The email "%s" is not valid.', $email));
     }
+
+    public static function createFromMin(int $min): self
+    {
+        return new static(sprintf('Value must be min [%d]', $min));
+    }
 }

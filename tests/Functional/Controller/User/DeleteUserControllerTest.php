@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\User;
 
+use App\Domain\Model\User;
+use App\Domain\Repository\UserRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function sprintf;
 
 class DeleteUserControllerTest extends FunctionalTestBase
 {
@@ -15,7 +20,12 @@ class DeleteUserControllerTest extends FunctionalTestBase
     public function setUp(): void
     {
         parent::setUp();
-//        $adminUser = static::getContainer()->get(UserRepositoryInterface::class)->findOneByEmail('admin@api.com');
+
+        $userRepository = static::getContainer()->get(UserRepositoryInterface::class);
+        $testUser = User::create('For testing', 'for@testing.app', 'Password1!');
+        $userRepository->save($testUser, true);
+        $this->userId = $testUser->getId();
+
     }
 
     public function testDeleteUserSuccessfully(): void
@@ -41,7 +51,7 @@ class DeleteUserControllerTest extends FunctionalTestBase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDeleteUserWithoutPermission(): void
     {

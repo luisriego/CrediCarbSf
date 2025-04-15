@@ -11,27 +11,26 @@ use App\Domain\Model\Project;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class CreateProjectService
+final readonly class CreateProjectService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,
         private CompanyRepositoryInterface $companyRepository,
     ) {}
 
+    /**
+     * @throws ProjectAlreadyExistsException
+     */
     public function handle(CreateProjectInputDto $inputDto): CreateProjectOutputDto
     {
-        if ($this->companyRepository->existById($inputDto->owner) === false) {
-            throw ProjectAlreadyExistsException::ownerNotFound();
-        }
-
         $companyOwner = $this->companyRepository->findOneByIdOrFail($inputDto->owner);
 
         $project = Project::create(
             $inputDto->name,
             $inputDto->description,
             $inputDto->areaHa,
-            $inputDto->quantity,
-            $inputDto->price,
+            $inputDto->quantityInKg,
+            $inputDto->priceInCents,
             $inputDto->projectType,
             $companyOwner,
         );

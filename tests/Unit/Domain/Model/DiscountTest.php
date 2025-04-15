@@ -1,31 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Domain\Model;
 
+use App\Domain\Common\UserRole;
+use App\Domain\Factory\DiscountFactory;
 use App\Domain\Model\Discount;
 use App\Domain\Model\Project;
 use App\Domain\Model\User;
+use DateTimeImmutable;
+use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Random\RandomException;
+use ReflectionClass;
+use ReflectionException;
 
 class DiscountTest extends TestCase
 {
+    private DiscountFactory $factory;
+    private User $user;
+    private Discount $discount;
+    private string $expiresAtString;
+    private int $amount = 2050;
+
+    /**
+     * @throws Exception
+     * @throws RandomException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->factory = new DiscountFactory();
+        $this->user = $this->createMock(User::class);
+        $expiresAt = new DateTimeImmutable('+2 days');
+        $this->expiresAtString = $expiresAt->format('Y-m-d H:i:s');
+        $this->discount = $this->factory->create($this->user, $this->amount, $this->expiresAtString);
+    }
+
     /**
      * @throws RandomException
      */
     public function testApplyToAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
-
-        // Test with a percentage discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
-        $this->assertEquals(79.5, $discount->applyToAmount(100));
+        // This $amount = 2050;
+        $this->assertEquals(79.5, $this->discount->applyToAmount(100));
 
         $amount = 1369; // 13.69 units
-        // Test with a fixed amount discount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString, false);
         $this->assertEquals(86.31, $discount->applyToAmount(100));
     }
 
@@ -34,16 +58,12 @@ class DiscountTest extends TestCase
      */
     public function testZeroDiscountAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 0; // 0%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 0;
 
-        // Test with a zero percentage discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(100, $discount->applyToAmount(100));
 
-        // Test with a zero fixed amount discount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(100, $discount->applyToAmount(100));
     }
 
@@ -52,35 +72,32 @@ class DiscountTest extends TestCase
      */
     public function testFullDiscountAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 10000; // 100%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 10000;
 
-        // Test with a full percentage discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(0, $discount->applyToAmount(100));
     }
 
+    /**
+     * @throws RandomException
+     */
     public function testDiscountAmountGreaterThanOriginal(): void
     {
-        $user = $this->createMock(User::class);
         $amount = 15000; // 150 units
-        $expiresAt = new \DateTimeImmutable('+2 days');
 
-        // Test with a fixed amount discount greater than the original amount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
-        $this->assertEquals(0, $discount->applyToAmount(100));
+        $this->ExpectException(InvalidArgumentException::class);
+        $this->factory->create($this->user, $amount, $this->expiresAtString);
     }
 
+    /**
+     * @throws RandomException
+     */
     public function testNegativeDiscountAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = -500; // -50 units
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = -500;
 
-        // Test with a negative fixed amount discount
-        $this->expectException(\InvalidArgumentException::class);
-        Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $this->expectException(InvalidArgumentException::class);
+        $this->factory->create($this->user, $amount, $this->expiresAtString);
     }
 
     /**
@@ -88,12 +105,9 @@ class DiscountTest extends TestCase
      */
     public function testValidExpirationDate(): void
     {
-        $user = $this->createMock(User::class);
         $amount = 10;
 
-        // Test with a valid expiration date (+2 days)
-        $validExpiresAt = new \DateTimeImmutable('+2 days');
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $validExpiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertInstanceOf(Discount::class, $discount);
     }
 
@@ -102,14 +116,13 @@ class DiscountTest extends TestCase
      */
     public function testInvalidExpirationDate(): void
     {
-        $user = $this->createMock(User::class);
         $amount = 10;
 
-        // Test with an invalid expiration date (today)
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The expiration date must be at least +1 day from today.');
-        $invalidExpiresAt = new \DateTimeImmutable();
-        Discount::createWithAmountAndExpirationDate($user, $amount, $invalidExpiresAt);
+        $expiresAt = new DateTimeImmutable();
+        $invalidExpiresAt = $expiresAt->format('Y-m-d H:i:s');
+        $this->factory->create($this->user, $amount, $invalidExpiresAt);
     }
 
     /**
@@ -117,28 +130,21 @@ class DiscountTest extends TestCase
      */
     public function testZeroOriginalAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $this->assertEquals(0, $this->discount->applyToAmount(0));
 
-        // Test with a percentage discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
-        $this->assertEquals(0, $discount->applyToAmount(0));
-
-        $amount = 1369; // 13.69 units
-        // Test with a fixed amount discount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $amount = 1369;
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(0, $discount->applyToAmount(0));
     }
 
+    /**
+     * @throws RandomException
+     */
     public function testDiscountAmountEqualToOriginal(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 10000; // 100 units
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 10000;
 
-        // Test with a fixed amount discount equal to the original amount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(0, $discount->applyToAmount(100));
     }
 
@@ -147,38 +153,27 @@ class DiscountTest extends TestCase
      */
     public function testZeroDiscountAmountAndZeroOriginalAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 0; // 0%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 0;
 
-        // Test with a zero percentage discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(0, $discount->applyToAmount(0));
 
         // Test with a zero fixed amount discount
-        $discount = Discount::createWithAmountAndExpirationDateNotPercentage($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
         $this->assertEquals(0, $discount->applyToAmount(0));
     }
 
     /**
      * @throws RandomException
+     * @throws ReflectionException
      */
     public function testExpiredDiscount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 2050; // 20.5%
-        $validExpiresAt = new \DateTimeImmutable('+2 days');
-
-        // Create a discount with a valid expiration date
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $validExpiresAt);
-
-        // Manually set the expiration date to an expired date
-        $reflection = new \ReflectionClass($discount);
+        $reflection = new ReflectionClass($this->discount);
         $property = $reflection->getProperty('expiresAt');
-        $property->setAccessible(true);
-        $property->setValue($discount, new \DateTimeImmutable('-1 day'));
+        $property->setValue($this->discount, new DateTimeImmutable('-1 day'));
 
-        $this->assertFalse($discount->isValid());
+        $this->assertFalse($this->discount->isValid());
     }
 
     /**
@@ -186,44 +181,30 @@ class DiscountTest extends TestCase
      */
     public function testInactiveDiscount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
-
-        // Test with an inactive discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
-//        $discount->deactivate();
-        $this->assertFalse($discount->isValid());
+        $this->assertFalse($this->discount->isValid());
     }
 
     /**
-     * @throws RandomException
+     * @throws Exception
      */
     public function testItemSpecificDiscount(): void
     {
-        $user = $this->createMock(User::class);
         $project = $this->createMock(Project::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
 
-        // Test with an item-specific discount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
-        $discount->setTargetProject($project);
-        $this->assertEquals($project, $discount->getTargetProject());
+        $this->discount->setTargetProject($project);
+        $this->assertEquals($project, $this->discount->getTargetProject());
     }
 
     /**
      * @throws RandomException
+     * @throws Exception
      */
     public function testDiscountNotApplicableToAnyItems(): void
     {
-        $user = $this->createMock(User::class);
         $project = $this->createMock(Project::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 2050;
 
-        // Test with a discount that does not apply to any items
-        $discount = Discount::createWithProjectToApply($user, $amount, $expiresAt, $project);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString, true, $project);
         $this->assertEquals(100, $discount->applyToAmount(100));
     }
 
@@ -232,12 +213,142 @@ class DiscountTest extends TestCase
      */
     public function testDiscountApplicableToTotalAmount(): void
     {
-        $user = $this->createMock(User::class);
-        $amount = 2050; // 20.5%
-        $expiresAt = new \DateTimeImmutable('+2 days');
+        $amount = 2050;
 
-        // Test with a discount that applies to the total amount
-        $discount = Discount::createWithAmountAndExpirationDate($user, $amount, $expiresAt);
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
+        $this->assertEquals(79.5, $this->discount->applyToAmount(100));
+    }
+
+    /**
+     * @throws RandomException
+     * @throws Exception
+     */
+    public function testProjectSpecificDiscount(): void
+    {
+        $amount = 2000;
+        $project = $this->createMock(Project::class);
+
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString, null, $project);
+
+        $this->assertEquals(80, $discount->applyToAmount(100, $project));
+
+        $otherProject = $this->createMock(Project::class);
+        $this->assertEquals(100, $discount->applyToAmount(100, $otherProject));
+
+        // Test applying with no project specified
+        $this->assertEquals(100, $discount->applyToAmount(100));
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function testDiscountNotPercentage(): void
+    {
+        $amount = 2050;
+
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString, false);
         $this->assertEquals(79.5, $discount->applyToAmount(100));
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testCodeGenerator(): void
+    {
+        // Use reflection to access the private static method
+        $reflectionClass = new ReflectionClass(Discount::class);
+        $codeGeneratorMethod = $reflectionClass->getMethod('codeGenerator');
+
+        $code = $codeGeneratorMethod->invoke(null);
+
+        // Check it's a valid format (alphanumeric uppercase string)
+        $this->assertMatchesRegularExpression('/^[A-Z0-9]+$/', $code);
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function testExpirationDateValidation(): void
+    {
+        $amount = 2000;
+
+        // Test with past date (should throw exception)
+        $pastDate = new DateTimeImmutable('-2 days');
+        $pastDateString = $pastDate->format('Y-m-d H:i:s');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The expiration date must be at least +1 day from today.');
+        Discount::createWithAmountAndExpirationDate($this->user, $amount, $pastDateString);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testDiscountApproverCanApproveDiscount(): void
+    {
+        // Arrange
+        $this->user->method('hasRole')
+            ->willReturnCallback(function ($role) {
+                $roleValue = $role instanceof UserRole ? $role->value : $role;
+                return $roleValue === UserRole::DISCOUNT_APPROVER->value;
+            });
+
+        $canApprove = $this->discount->canBeApprovedBy($this->user);
+
+        // Assert
+        $this->assertTrue($canApprove);
+    }
+
+    public function testAdminCanApproveDiscount(): void
+    {
+        // Arrange
+        $user = $this->createMock(User::class);
+        $user->method('hasRole')
+            ->willReturnCallback(function($role) {
+                $roleValue = $role instanceof UserRole ? $role->value : $role;
+                return $roleValue === UserRole::ADMIN->value;
+            });
+
+        // Act
+        $canApprove = $this->discount->canBeApprovedBy($user);
+
+        // Assert
+        $this->assertTrue($canApprove);
+    }
+
+    public function testRegularUserCannotApproveDiscount(): void
+    {
+        // Arrange
+        $user = $this->createMock(User::class);
+        $user->method('hasRole')->willReturn(false);
+
+        // Act
+        $canApprove = $this->discount->canBeApprovedBy($user);
+
+        // Assert
+        $this->assertFalse($canApprove);
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function testUpdateExpirationDate(): void
+    {
+        $amount = 2000;
+
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
+
+        $newExpiresAt = new DateTimeImmutable('+5 days');
+        $discount->updateExpirationDate($newExpiresAt);
+
+        $this->assertEquals($newExpiresAt, $discount->expiresAt());
+    }
+
+    public function testCompleteValidExpirationDate(): void
+    {
+        $amount = 1000;
+
+        $discount = $this->factory->create($this->user, $amount, $this->expiresAtString);
+        $this->assertEquals($this->expiresAtString, $discount->expiresAt()->format('Y-m-d H:i:s'));
     }
 }

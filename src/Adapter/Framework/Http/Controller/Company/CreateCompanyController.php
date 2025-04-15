@@ -29,8 +29,9 @@ class CreateCompanyController
 
         $responseDto = $this->createCompany->handle(
             CreateCompanyInputDto::create(
-                $requestDto->fantasyName,
+                $requestDto->id,
                 $requestDto->taxpayer,
+                $requestDto->fantasyName,
             ),
         );
 

@@ -8,7 +8,7 @@ use App\Application\UseCase\Project\GetProjectByStatusService\Dto\GetProjectsByS
 use App\Application\UseCase\Project\GetProjectByStatusService\Dto\GetProjectsByStatusOutputDto;
 use App\Domain\Repository\ProjectRepositoryInterface;
 
-readonly class GetProjectsByStatusService
+final readonly class GetProjectsByStatusService
 {
     public function __construct(
         private ProjectRepositoryInterface $projectRepository,

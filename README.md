@@ -1,4 +1,4 @@
-# Symfony Base Repository
+docker --version# Symfony Base Repository
 
 This repository contains the basic configuration to run Symfony applications with MySQL database
 

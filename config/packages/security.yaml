@@ -22,7 +22,8 @@ security:
 
     role_hierarchy:
         ROLE_OPERATOR: ROLE_USER
-        ROLE_ADMIN: ROLE_OPERATOR
+        ROLE_DISCOUNT_APPROVER: ROLE_OPERATOR
+        ROLE_ADMIN: ROLE_DISCOUNT_APPROVER
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
 
     access_control:

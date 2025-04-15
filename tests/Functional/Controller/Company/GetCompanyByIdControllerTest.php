@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Company;
 
-use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function sprintf;
 
 class GetCompanyByIdControllerTest extends FunctionalTestBase
 {

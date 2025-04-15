@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Trait;
 
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\ValueObject\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 
 trait IdentifierTrait
@@ -12,6 +12,15 @@ trait IdentifierTrait
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 36, options: ['fixed' => true])]
     protected readonly string $id;
+
+    public function id(): ?string
+    {
+        if (!isset($this->id)) {
+            $this->initializeId();
+        }
+
+        return $this->id;
+    }
 
     public function getId(): string
     {

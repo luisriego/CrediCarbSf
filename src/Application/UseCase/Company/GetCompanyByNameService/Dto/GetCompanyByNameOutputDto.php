@@ -15,8 +15,8 @@ class GetCompanyByNameOutputDto
         $companies = array_map(function ($company) {
             return [
                 'id' => $company->getId(),
-                'fantasyName' => $company->getFantasyName(),
-                'taxpayer' => $company->getTaxpayer(),
+                'fantasyName' => $company->fantasyName(),
+                'taxpayer' => $company->taxPayer(),
             ];
         }, $arrayCompanies);
 

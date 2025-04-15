@@ -10,10 +10,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class UserEventSubscriber implements EventSubscriber
 {
-    //    public function __construct(private LoggerInterface $logger)
-    //    {
-    //    }
-
     public function getSubscribedEvents(): array
     {
         return [

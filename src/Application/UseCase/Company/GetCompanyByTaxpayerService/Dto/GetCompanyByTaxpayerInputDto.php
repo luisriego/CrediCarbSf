@@ -14,7 +14,7 @@ class GetCompanyByTaxpayerInputDto
     public function __construct(
         public readonly Company $company,
     ) {
-        $this->assertValidTaxpayer($this->company->getTaxpayer());
+        $this->assertValidTaxpayer($this->company->taxPayer());
     }
 
     public static function create(Company $company): self

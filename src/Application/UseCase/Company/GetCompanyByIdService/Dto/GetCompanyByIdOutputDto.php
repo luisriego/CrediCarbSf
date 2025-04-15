@@ -15,8 +15,8 @@ class GetCompanyByIdOutputDto
         return new self(
             [
                 'id' => $company->getId(),
-                'fantasyName' => $company->getFantasyName(),
-                'taxpayer' => $company->getTaxpayer(),
+                'fantasyName' => $company->fantasyName(),
+                'taxpayer' => $company->taxPayer(),
             ],
         );
     }

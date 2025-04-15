@@ -22,9 +22,9 @@ class CreateProjectInputDto
     public function __construct(
         public string $name,
         public string $description,
-        public string $areaHa,
-        public string $quantity,
-        public string $price,
+        public int $areaHa,
+        public int $quantityInKg,
+        public int $priceInCents,
         public string $projectType,
         public ?string $owner,
     ) {
@@ -32,8 +32,8 @@ class CreateProjectInputDto
             $this->name,
             $this->description,
             $this->areaHa,
-            $this->quantity,
-            $this->price,
+            $this->quantityInKg,
+            $this->priceInCents,
             $this->projectType,
         ]);
     }
@@ -41,12 +41,12 @@ class CreateProjectInputDto
     public static function create(
         ?string $name,
         ?string $description,
-        ?string $areaHa,
-        ?string $quantity,
-        ?string $price,
+        ?int $areaHa,
+        ?int $quantityInKg,
+        ?int $priceInCents,
         ?string $projectType,
         ?string $owner,
     ): self {
-        return new static($name, $description, $areaHa, $quantity, $price, $projectType, $owner);
+        return new static($name, $description, $areaHa, $quantityInKg, $priceInCents, $projectType, $owner);
     }
 }

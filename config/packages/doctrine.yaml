@@ -14,9 +14,9 @@ doctrine:
         report_fields_where_declared: true
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
+        auto_mapping: false
         controller_resolver:
-            auto_mapping: true
+            auto_mapping: false
         mappings:
             App:
                 type: attribute
@@ -24,6 +24,26 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Domain/Model'
                 prefix: 'App\Domain\Model'
                 alias: Model
+            ValueObjects:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Domain/ValueObject'
+                prefix: 'App\Domain\ValueObject'
+                alias: VO
+#            ValueObjects:
+#                type: xml
+#                is_bundle: false
+#                dir: '%kernel.project_dir%/config/doctrine/vo'
+#                prefix: 'App\Domain\ValueObject'
+#                alias: VO
+#            ModelXml:
+#                type: xml
+#                is_bundle: false
+#                dir: '%kernel.project_dir%/config/doctrine/model'
+#                prefix: 'App\Domain\Model'
+#                alias: ModelXml
+
+
 
 when@test:
     doctrine:

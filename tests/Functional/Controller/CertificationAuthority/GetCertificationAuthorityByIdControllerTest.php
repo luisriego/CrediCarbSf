@@ -8,18 +8,27 @@ use App\Tests\Functional\FunctionalTestBase;
 use Random\RandomException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
+
+use function array_splice;
+use function count;
+use function json_decode;
+use function random_int;
+use function sprintf;
 
 class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
 {
-    protected string $certificationAuthorityId;
     private const ENDPOINT = 'api/certification-authority';
+    protected string $certificationAuthorityId;
 
     public function setUp(): void
     {
         parent::setUp();
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldGetCertificationAuthorityByIdSuccessfully(): void
     {
         self::$authenticatedClient->request(
@@ -40,21 +49,7 @@ class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
      */
     public function shouldReturnNotFoundWhenCertificationAuthorityDoesNotExist(): void
     {
-        $currentId = $this->certificationAuthorityId;
-        $lastFourDigits = substr($currentId, -4);
-        $shuffledDigits = '';
-
-        $digitsArray = str_split($lastFourDigits);
-        while (count($digitsArray) > 0) {
-            $index = random_int(0, count($digitsArray) - 1);
-            $shuffledDigits .= $digitsArray[$index];
-            array_splice($digitsArray, $index, 1);
-        }
-
-        $modifiedId = substr($currentId, 0, -4) . $shuffledDigits;
-        $this->certificationAuthorityId = $modifiedId;
-
-        $nonExistentId = $modifiedId; // Assume this ID does not exist in the database
+        $nonExistentId =  Uuid::v4()->toRfc4122();
 
         self::$authenticatedClient->request(
             Request::METHOD_GET,
@@ -65,7 +60,9 @@ class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
         $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function shouldReturnForbiddenWhenUnauthorized(): void
     {
         self::$baseClient->request(

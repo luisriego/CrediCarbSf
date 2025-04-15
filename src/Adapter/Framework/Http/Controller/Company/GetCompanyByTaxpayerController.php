@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class GetCompanyByTaxpayerController
+readonly class GetCompanyByTaxpayerController
 {
     public function __construct(
-        private readonly GetCompanyByTaxpayerService $useCase,
-        private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private GetCompanyByTaxpayerService   $useCase,
+        private CompanyRepositoryInterface    $companyRepository,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(

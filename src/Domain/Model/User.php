@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
+use App\Domain\Common\UserRole;
+use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
-use App\Domain\ValueObjects\Uuid;
+use App\Domain\Validation\Traits\AssertLengthRangeTrait;
+use App\Domain\Validation\Traits\AssertPasswordValidatorTrait;
+use App\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function array_unique;
+use function in_array;
 use function sha1;
 use function uniqid;
 
@@ -25,6 +32,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use IdentifierTrait;
     use TimestampableTrait;
     use IsActiveTrait;
+    use AssertPasswordValidatorTrait;
+    use AssertLengthRangeTrait;
+
     public const MIN_AGE = 18;
     public const NAME_MIN_LENGTH = 2;
     public const NAME_MAX_LENGTH = 80;
@@ -62,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         string $password,
     ) {
         $this->id = Uuid::random()->value();
-        $this->name = $name;
+        $this->setName($name);
         $this->email = $email;
         $this->password = $password;
         $this->token = sha1(uniqid('', true));
@@ -93,6 +103,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setName(?string $name): void
     {
+        if (!$this->isValueRangeLengthValid($name, self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH)) {
+            throw InvalidArgumentException::createFromMinAndMaxLength(self::NAME_MIN_LENGTH, self::NAME_MAX_LENGTH);
+        }
+
         $this->name = $name;
     }
 
@@ -103,6 +117,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setAge(int $age): void
     {
+        if ($age < self::MIN_AGE) {
+            throw InvalidArgumentException::createFromMin(self::MIN_AGE);
+        }
         $this->age = $age;
     }
 
@@ -175,6 +192,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function hasRole(UserRole $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -183,11 +205,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password, PasswordHasherInterface $hasher): self
     {
-        $this->password = $password;
+        if (!$this->assertPassword($password)) {
+            throw InvalidArgumentException::createFromArgument('password');
+        }
+
+        $hashed = $hasher->hashPasswordForUser($this, $password);
+
+        $this->password = $hashed;
 
         return $this;
+    }
+
+    public function changePassword(string $newPassword, PasswordHasherInterface $hasher): void
+    {
+        $this->setPassword($newPassword, $hasher);
+
+        $this->markAsUpdated(); // I think this is already doing in a Doctrine listener, see it later
     }
 
     /**
@@ -214,7 +249,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return [
             'id' => $this->id,
+            'email' => $this->email,
             'name' => $this->name,
+            'age' => $this->age,
+            'roles' => $this->roles,
+            'isActive' => $this->isActive,
+            'createdOn' => $this->createdOn,
+            'updatedOn' => $this->updatedOn,
         ];
     }
 

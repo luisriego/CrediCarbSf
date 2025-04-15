@@ -9,12 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateCompanyRequestDto implements RequestDto
 {
-    public string $fantasyName;
+    public string $id;
     public string $taxpayer;
+    public string $fantasyName;
 
     public function __construct(Request $request)
     {
-        $this->fantasyName = $request->get('fantasyName');
+        $this->id = $request->get('id');
         $this->taxpayer = $request->get('taxpayer');
+        $this->fantasyName = $request->get('fantasyName');
     }
 }

@@ -9,6 +9,8 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class GetProjectsByStatusControllerTest extends FunctionalTestBase
 {
     protected string $validStatus = 'PLANNED';
@@ -25,9 +27,12 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByStatusSuccessfully(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validStatus),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -39,9 +44,12 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByStatusWithInvalidStatus(): void
     {
-        self::$authenticatedClient->request(Request::METHOD_GET,
+        self::$authenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->invalidStatus),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -51,9 +59,12 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
 
     public function testGetProjectsByStatusUnauthorized(): void
     {
-        self::$baseClient->request(Request::METHOD_GET,
+        self::$baseClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validStatus),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$baseClient->getResponse();
@@ -66,9 +77,12 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
      */
     public function testGetProjectsByStatusWithAnyLoggedInUser(): void
     {
-        self::$anotherAuthenticatedClient->request(Request::METHOD_GET,
+        self::$anotherAuthenticatedClient->request(
+            Request::METHOD_GET,
             sprintf('/api/projects/%s', $this->validStatus),
-            [], [], ['CONTENT_TYPE' => 'application/json']
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
         );
 
         $response = self::$anotherAuthenticatedClient->getResponse();

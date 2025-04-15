@@ -10,11 +10,11 @@ use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Repository\ProjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class GetProjectByIdService
+final readonly class GetProjectByIdService
 {
     public function __construct(
-        private readonly ProjectRepositoryInterface $projectRepository,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private ProjectRepositoryInterface    $projectRepository,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     public function handle(GetProjectByIdInputDto $inputDto): GetProjectByIdOutputDto

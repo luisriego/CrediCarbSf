@@ -9,6 +9,8 @@ use App\Tests\Functional\FunctionalTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
 {
     protected string $companyTaxpayer;
@@ -17,7 +19,7 @@ class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
     {
         parent::setUp();
         $company = static::getContainer()->get(CompanyRepositoryInterface::class)->findOneByTaxpayer('33592510015500');
-        $this->companyTaxpayer = $company->getTaxpayer();
+        $this->companyTaxpayer = $company->taxPayer();
     }
 
     public function testGetCompanyByTaxpayerSuccessfully(): void

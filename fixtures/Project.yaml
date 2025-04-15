@@ -3,9 +3,9 @@ App\Domain\Model\Project:
         __construct:
             - 'Project 1'                       
             - 'Description for project 1'       
-            - '100.00'                         
-            - '50.00'                          
-            - '10.00'                          
+            - 10000                         
+            - 5000                          
+            - 1000                          
             - 'Reforestation'
             - '@company_1'                     
             - null                    
@@ -14,9 +14,9 @@ App\Domain\Model\Project:
         __construct:
             - 'Project 2'
             - 'Description for project 2'
-            - '70.00'
-            - '1550.00'
-            - '10.00'
+            - 7000
+            - 155000
+            - 1000
             - 'Reforestation'
             - '@company_2'
             - null
@@ -25,9 +25,9 @@ App\Domain\Model\Project:
         __construct:
             - 'Project 3'
             - 'Description for project 3'
-            - '1000.00'
-            - '500.00'
-            - '12.50'
+            - 100000
+            - 50000
+            - 1250
             - 'Reforestation'
             - '@company_3'
             - null
