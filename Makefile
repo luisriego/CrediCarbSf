@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 UID = $(shell id -u)
@@ -56,8 +57,19 @@ db-create: ## Create the database
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
 
+test-db-create: ## Create the database for testing
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
+
 fixtures-load: ## Load fixtures
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console hautelook:fixtures:load --no-interaction
 
 setup-db: ## Create the database and load fixtures
 	$(MAKE) db-create && $(MAKE) fixtures-load
+
+test-setup-db: ## Create the database and load fixtures for testing
+	$(MAKE) test-db-create && $(MAKE) fixtures-load
+
+.PHONY: tests
+tests:
+	U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/phpunit -c phpunit.xml.dist
