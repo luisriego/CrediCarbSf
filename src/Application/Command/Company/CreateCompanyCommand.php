@@ -28,18 +28,18 @@ final readonly class CreateCompanyCommand
         );
     }
 
-    public function id(): CompanyId
+    public function id(): string
     {
-        return $this->id;
+        return $this->id->value();
     }
 
     public function fantasyName(): string
     {
-        return $this->fantasyName;
+        return $this->fantasyName->value();
     }
 
     public function taxpayer(): string
     {
-        return $this->taxpayer;
+        return $this->taxpayer->value();
     }
 }

@@ -1,3 +1,4 @@
+
 on:
   pull_request:
     branches:
@@ -29,11 +30,14 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
-          
+
+      - name: Generate JWT Keys
+        run: docker exec --user $(id -u) cch-app php bin/console lexik:jwt:generate-keypair --overwrite
+
       - name: Create test DB
-        run:
+        run: |
           docker exec --user $(id -u) cch-app php bin/console doctrine:database:create --if-not-exists --env=test
           docker exec --user $(id -u) cch-app php bin/console doctrine:schema:update --force --env=test
-        
+
       - name: Run tests
         run: make tests
