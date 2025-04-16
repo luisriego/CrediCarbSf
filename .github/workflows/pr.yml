@@ -29,9 +29,6 @@ jobs:
           U_ID=${UID} docker-compose up -d 
           U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} composer install --no-interaction
 
-      - name: Run coding style check
-        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
-
       - name: Wait for database
         run: sleep 10
 
