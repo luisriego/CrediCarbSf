@@ -29,6 +29,9 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
-
+          
+      - name: Create test DB
+        run: make test-db-create
+        
       - name: Run tests
         run: make tests
