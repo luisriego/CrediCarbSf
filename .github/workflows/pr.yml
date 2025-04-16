@@ -37,6 +37,8 @@ jobs:
       - name: Create test database
         run: 
           U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
+      - name: Update Schema test database
+        run: 
           U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
 
       - name: Run tests
