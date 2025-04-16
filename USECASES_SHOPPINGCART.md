@@ -117,7 +117,7 @@
 - Cart is cleared
 - User is redirected to payment
 
-### Use Case 7: Apply Discount Code
+### Use Case 7: Apply Discount Code ✅
 
 **Description:** As a user, I want to apply a discount code to my cart.
 
