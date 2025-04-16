@@ -6,8 +6,6 @@ namespace App\Application\UseCase\Company\CreateCompany;
 
 use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyInputDto;
 use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyOutputDto;
-use App\Domain\Exception\Company\CompanyAlreadyExistsException;
-use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\ValueObject\CompanyId;

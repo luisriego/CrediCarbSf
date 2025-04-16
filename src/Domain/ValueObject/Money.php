@@ -7,15 +7,17 @@ namespace App\Domain\ValueObject;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
+use function number_format;
+use function sprintf;
+
 #[ORM\Embeddable]
 class Money
 {
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private int $amountInCents;
 
-    #[ORM\Column(type: "string", length: 3)]
+    #[ORM\Column(type: 'string', length: 3)]
     private string $currency;
-
 
     public function __construct(int $amountInCents, string $currency)
     {
@@ -25,6 +27,11 @@ class Money
 
         $this->amountInCents = $amountInCents;
         $this->currency = $currency;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%.2f %s', $this->formattedAmount(), $this->currency);
     }
 
     public function amountInCents(): int
@@ -58,11 +65,6 @@ class Money
         }
 
         return $this->amountInCents === $other->amountInCents;
-    }
-
-    public function __toString(): string
-    {
-        return sprintf('%.2f %s', $this->formattedAmount(), $this->currency);
     }
 
     public function isGreaterThan(Money $budgetedAmount): bool

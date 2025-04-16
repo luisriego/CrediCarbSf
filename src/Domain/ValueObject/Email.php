@@ -7,6 +7,7 @@ namespace App\Domain\ValueObject;
 use App\Domain\Exception\InvalidArgumentException;
 
 use function filter_var;
+use function mb_strtolower;
 
 use const FILTER_VALIDATE_EMAIL;
 

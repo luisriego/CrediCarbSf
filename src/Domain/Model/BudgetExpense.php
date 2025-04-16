@@ -27,40 +27,39 @@ class BudgetExpense
     #[ORM\Column(type: 'string', length: 36, options: ['fixed' => true])]
     private Uuid $id;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[ORM\Embedded(class: Money::class, columnPrefix: "budgeted_")]
+    #[ORM\Embedded(class: Money::class, columnPrefix: 'budgeted_')]
     private Money $budgetedAmount;
 
-    #[ORM\Embedded(class: Money::class, columnPrefix: "actual_")]
+    #[ORM\Embedded(class: Money::class, columnPrefix: 'actual_')]
     private ?Money $actualAmount = null;
 
-    #[ORM\Column(type: "string", length: 100)]
+    #[ORM\Column(type: 'string', length: 100)]
     private string $category;
 
-    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: "budgetExpenses")]
-    #[ORM\JoinColumn(name: "project_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[ORM\ManyToOne(targetEntity: Project::class, inversedBy: 'budgetExpenses')]
+    #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Project $project;
 
-    #[ORM\Column(type: "string", length: 20)]
+    #[ORM\Column(type: 'string', length: 20)]
     private string $status;
 
-    #[ORM\Column(type: "text", nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $notes = null;
 
-    #[ORM\Column(name: "receipt_url", type: "string", length: 255, nullable: true)]
+    #[ORM\Column(name: 'receipt_url', type: 'string', length: 255, nullable: true)]
     private ?string $receiptUrl = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $tags = null;
 
-    #[ORM\Column(type: "datetime", nullable: true)]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?DateTimeImmutable $completedAt = null;
-
 
     public function __construct(
         Uuid $id,
@@ -68,7 +67,7 @@ class BudgetExpense
         string $description,
         Money $budgetedAmount,
         string $category,
-        ?Project $project = null
+        ?Project $project = null,
     ) {
         $this->id = $id;
         $this->title = $title;
@@ -95,11 +94,12 @@ class BudgetExpense
     public function cancel(): self
     {
         $this->status = self::STATUS_CANCELLED;
+
         return $this;
     }
 
     /**
-     * Calculate the variance between budgeted and actual amounts
+     * Calculate the variance between budgeted and actual amounts.
      */
     public function getVariance(): ?Money
     {
@@ -111,7 +111,7 @@ class BudgetExpense
     }
 
     /**
-     * Check if the expense is over budget
+     * Check if the expense is over budget.
      */
     public function isOverBudget(): bool
     {

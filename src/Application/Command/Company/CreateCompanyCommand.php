@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command\Company;
 
 use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;
-use App\Domain\ValueObject\Uuid;
-use App\Domain\ValueObject\FantasyName;
-use App\Domain\ValueObject\Taxpayer;
-
 
 final readonly class CreateCompanyCommand
 {
@@ -16,18 +14,17 @@ final readonly class CreateCompanyCommand
         private CompanyId $id,
         private CompanyTaxpayer $taxpayer,
         private CompanyName $fantasyName,
-    ) {
-    }
+    ) {}
 
     public static function create(
         string $id,
         string $taxpayer,
-        string $fantasyName
+        string $fantasyName,
     ): self {
         return new self(
             CompanyId::fromString($id),
             CompanyTaxpayer::fromString($taxpayer),
-            CompanyName::fromString($fantasyName)
+            CompanyName::fromString($fantasyName),
         );
     }
 

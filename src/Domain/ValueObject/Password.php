@@ -6,6 +6,7 @@ namespace App\Domain\ValueObject;
 
 use App\Domain\Exception\InvalidArgumentException;
 
+use function mb_strlen;
 use function preg_match;
 
 class Password

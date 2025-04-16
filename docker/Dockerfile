@@ -68,4 +68,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 # Set memory limit
 RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
 
+RUN mkdir -p /var/www/html/var/cache /var/www/html/var/log
+RUN chmod -R 777 /var/www/html/var
+
 WORKDIR /var/www/html

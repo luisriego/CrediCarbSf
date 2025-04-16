@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Command\Company;
 
 use App\Domain\Model\Company;
@@ -11,9 +13,8 @@ use App\Domain\ValueObject\CompanyTaxpayer;
 final readonly class CreateCompanyCommandHandler
 {
     public function __construct(
-        private CompanyRepositoryInterface $companyRepository
-    ) {
-    }
+        private CompanyRepositoryInterface $companyRepository,
+    ) {}
 
     public function __invoke(CreateCompanyCommand $command): void
     {

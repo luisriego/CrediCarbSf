@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapter\Framework\Http\Controller\Company;
 
 use App\Adapter\Framework\Http\Dto\Company\CreateCompanyRequestDto;
@@ -12,9 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 readonly class NewCompanyController
 {
     public function __construct(
-        private MessageBusInterface $commandBus
-    ) {
-    }
+        private MessageBusInterface $commandBus,
+    ) {}
 
     #[Route('/api/company/{id}', methods: ['PUT'])]
     public function __invoke(string $id, CreateCompanyRequestDto $requestDto): JsonResponse
@@ -22,16 +23,16 @@ readonly class NewCompanyController
         $command = new CreateCompanyCommand(
             $id,
             $requestDto->fantasyName,
-            $requestDto->taxpayer
+            $requestDto->taxpayer,
         );
 
         $this->commandBus->dispatch($command);
 
         return new JsonResponse(
             [
-                'message' => 'Company created successfully'
+                'message' => 'Company created successfully',
             ],
-            Response::HTTP_CREATED
+            Response::HTTP_CREATED,
         );
     }
 }

@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Factory;
 
 use App\Domain\Model\Company;
 use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;
-use App\Domain\ValueObject\FantasyName;
-use App\Domain\ValueObject\Taxpayer;
-use App\Domain\ValueObject\Uuid;
 
 class CompanyFactory
 {

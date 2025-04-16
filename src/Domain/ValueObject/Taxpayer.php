@@ -22,17 +22,17 @@ class Taxpayer
         $this->value = $this->validTaxpayer($taxpayer);
     }
 
+    public function __toString(): string
+    {
+        return $this->value;
+    }
+
     public static function fromString(string $taxpayer): self
     {
         return new static($taxpayer);
     }
 
     public function value(): string
-    {
-        return $this->value;
-    }
-
-    public function __toString(): string
     {
         return $this->value;
     }

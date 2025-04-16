@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\GetCompanyByIdService;
 
-use App\Application\UseCase\Company\GetCompanyByIdService\Dto\GetCompanyByIdInputDto;
-use App\Application\UseCase\Company\GetCompanyByIdService\Dto\GetCompanyByIdOutputDto;
+use App\Domain\Model\Company;
+use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\ValueObject\CompanyId;
 
-class GetCompanyByIdService
+readonly class GetCompanyByIdService
 {
-    public function handle(GetCompanyByIdInputDto $inputDto): GetCompanyByIdOutputDto
+    public function __construct(
+        private CompanyRepositoryInterface $companyRepository,
+    ) {}
+
+    public function handle(string $id): Company
     {
-        return GetCompanyByIdOutputDto::create($inputDto->company);
+        $companyId = CompanyId::fromString($id);
+
+        return $this->companyRepository->findOneByIdOrFail($companyId->value());
     }
 }

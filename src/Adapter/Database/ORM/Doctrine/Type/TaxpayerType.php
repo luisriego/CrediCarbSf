@@ -15,7 +15,6 @@ class TaxpayerType extends Type
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getStringTypeDeclarationSQL($column);
-
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -32,5 +31,4 @@ class TaxpayerType extends Type
     {
         return self::NAME;
     }
-
 }

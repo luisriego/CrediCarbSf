@@ -5,21 +5,18 @@ declare(strict_types=1);
 namespace App\Adapter\Framework\Http\Controller\Company;
 
 use App\Adapter\Framework\Security\Voter\CompanyVoter;
-use App\Application\UseCase\Company\GetCompanyByIdService\Dto\GetCompanyByIdInputDto;
 use App\Application\UseCase\Company\GetCompanyByIdService\GetCompanyByIdService;
 use App\Domain\Exception\AccessDeniedException;
-use App\Domain\Repository\CompanyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class GetCompanyByIdController
+readonly class GetCompanyByIdController
 {
     public function __construct(
-        private readonly GetCompanyByIdService $useCase,
-        private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private GetCompanyByIdService $useCase,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(
@@ -28,18 +25,14 @@ class GetCompanyByIdController
         requirements: ['id' => '^.{36}$'],
         methods: ['GET'],
     )]
-    public function index(string $id): Response
+    public function __invoke(string $id): Response
     {
-        $company = $this->companyRepository->findOneByIdOrFail($id);
+        $companyReturned = $this->useCase->handle($id);
 
-        $inputDto = GetCompanyByIdInputDto::create($company);
-
-        if (!$this->authorizationChecker->isGranted(CompanyVoter::DELETE_COMPANY, $company)) {
+        if (!$this->authorizationChecker->isGranted(CompanyVoter::DELETE_COMPANY, $companyReturned)) {
             throw AccessDeniedException::VoterFail();
         }
 
-        $companyReturned = $this->useCase->handle($inputDto);
-
-        return new JsonResponse(['company' => $companyReturned->data], Response::HTTP_OK);
+        return new JsonResponse(['company' => $companyReturned->toArray()], Response::HTTP_OK);
     }
 }

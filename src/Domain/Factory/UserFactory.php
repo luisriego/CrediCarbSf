@@ -6,7 +6,6 @@ namespace App\Domain\Factory;
 
 use App\Domain\Model\Company;
 use App\Domain\Model\User;
-use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Password;
 
@@ -37,7 +36,6 @@ class UserFactory
         if ($isActive) {
             $user->setIsActive(is_bool($isActive));
         }
-
 
         return $user;
     }
