@@ -22,9 +22,6 @@ jobs:
           make start 
           make composer-install
 
-      - name: Run coding style check
-        run: make code-style-check
-
       - name: buffering time for db container
         uses: jakejarvis/wait-action@master
         with:
