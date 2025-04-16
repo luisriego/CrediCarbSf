@@ -24,11 +24,13 @@ jobs:
 
       - name: Prepare containers
         run: 
-          make start 
-          make composer-install
+          docker network create cch-network || true
+          cp -n docker-compose.yml.dist docker-compose.yml || true
+          U_ID=${UID} docker-compose up -d 
+          U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} composer install --no-interaction
 
       - name: Run coding style check
-        run: make code-style-check
+        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
 
       - name: buffering time for db container
         uses: jakejarvis/wait-action@master
@@ -36,7 +38,9 @@ jobs:
           time: '10s'
 
       - name: Create test database
-        run: make test-setup-db
+        run: 
+          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
+          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
 
       - name: Run tests
-        run: make tests
+        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/phpunit -c phpunit.xml.dist
