@@ -7,6 +7,9 @@ jobs:
   app_checks:
     name: App Checks
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,29 +20,20 @@ jobs:
           sudo apt-get install -y docker-compose
 
       - name: Pull docker-compose
-        run: docker-compose -f docker-compose.yml.dist pull
+        run: cp -n docker-compose.yml.dist docker-compose.yml && docker-compose -f docker-compose.yml pull
 
       - uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
 
+      - name: copy .env.example to .env for testing
+        run: cp -n .env.example .env
       - name: Prepare containers
-        run: 
-          docker network create cch-network || true
-          cp -n docker-compose.yml.dist docker-compose.yml || true
-          U_ID=${UID} docker-compose up -d 
-          U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} composer install --no-interaction
+        run: make start && make composer-install
 
       - name: buffering time for db container
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
 
-      - name: Create test database
-        run: 
-          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
-      - name: Update Schema test database
-        run: 
-          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
-
       - name: Run tests
-        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/phpunit -c phpunit.xml.dist
+        run: make tests
