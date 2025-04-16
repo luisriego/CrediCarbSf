@@ -22,8 +22,6 @@ jobs:
       - uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
 
-      - name: copy .env.example to .env for testing
-        run: cp -n .env.example .env
       - name: Prepare containers
         run: make start && make composer-install
 
