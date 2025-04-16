@@ -27,7 +27,7 @@ trait AssertTaxpayerValidatorTrait
     {
         $cleanTaxpayer = $this->cleanTaxpayer($taxpayer);
         $this->validateTaxpayer($cleanTaxpayer);
-        
+
         return $cleanTaxpayer;
     }
 

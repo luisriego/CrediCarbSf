@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 final class DoctrineShoppingCartRepository extends ServiceEntityRepository implements ShoppingCartRepositoryInterface
 {
     public function __construct(
-        ManagerRegistry                                 $registry,
+        ManagerRegistry $registry,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct($registry, ShoppingCart::class);

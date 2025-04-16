@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\ValueObject;
+declare(strict_types=1);
 
-use App\Domain\Exception\InvalidArgumentException;
+namespace App\Domain\ValueObject;
 
 class CompanyTaxpayer extends Taxpayer
 {

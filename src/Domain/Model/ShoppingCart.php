@@ -317,7 +317,6 @@ class ShoppingCart implements EventSourcedEntityInterface
 
     private function determineTaxRegime(): string
     {
-
         return 'normal';
     }
 

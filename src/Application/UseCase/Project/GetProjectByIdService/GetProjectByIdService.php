@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 final readonly class GetProjectByIdService
 {
     public function __construct(
-        private ProjectRepositoryInterface    $projectRepository,
+        private ProjectRepositoryInterface $projectRepository,
         private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 

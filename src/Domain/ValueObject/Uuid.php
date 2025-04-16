@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use InvalidArgumentException;
+use App\Domain\Exception\InvalidArgumentException;
 use Stringable;
 
 use function sprintf;
@@ -16,14 +16,14 @@ class Uuid implements Stringable
         $this->ensureIsValidUuid($value);
     }
 
-    public static function fromString(string $id): self
-    {
-        return new static($id);
-    }
-
     public function __toString(): string
     {
         return $this->value;
+    }
+
+    public static function fromString(string $id): self
+    {
+        return new static($id);
     }
 
     public static function random(): self

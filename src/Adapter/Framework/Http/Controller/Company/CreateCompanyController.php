@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class CreateCompanyController
+readonly class CreateCompanyController
 {
     public function __construct(
-        private readonly CreateCompany $createCompany,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private CreateCompany $createCompany,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route('/api/company/create', name: 'company_create', methods: ['POST'])]
@@ -35,6 +35,6 @@ class CreateCompanyController
             ),
         );
 
-        return new JsonResponse(['CompanyId' => $responseDto->companyId], Response::HTTP_CREATED);
+        return new JsonResponse(null, Response::HTTP_CREATED);
     }
 }

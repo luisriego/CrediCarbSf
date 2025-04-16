@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\CreateCompany\Dto;
 
-use App\Domain\ValueObject\Uuid;
-
 final readonly class CreateCompanyInputDto
 {
     private function __construct(

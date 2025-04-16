@@ -13,7 +13,7 @@ final readonly class RemoveItemFromShoppingCartService
 {
     public function __construct(
         private ShoppingCartItemRepositoryInterface $shoppingCartItemRepository,
-        private ShoppingCartRepositoryInterface     $shoppingCartRepository,
+        private ShoppingCartRepositoryInterface $shoppingCartRepository,
     ) {}
 
     public function handle(RemoveItemFromShoppingCartInputDto $inputDto): ?RemoveItemFromShoppingCartOutputDto

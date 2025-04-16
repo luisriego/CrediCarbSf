@@ -17,8 +17,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 readonly class GetCompanyByTaxpayerController
 {
     public function __construct(
-        private GetCompanyByTaxpayerService   $useCase,
-        private CompanyRepositoryInterface    $companyRepository,
+        private GetCompanyByTaxpayerService $useCase,
+        private CompanyRepositoryInterface $companyRepository,
         private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 

@@ -10,7 +10,6 @@ use App\Domain\Trait\IdentifierTrait;
 use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
 use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
-use App\Domain\ValueObject\CompanyEmail;
 use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;
@@ -75,7 +74,8 @@ class Company
         return new self(
             $id->value(),
             $taxpayer->value(),
-            $fantasyName->value());
+            $fantasyName->value(),
+        );
     }
 
     public function fantasyName(): string
@@ -127,6 +127,7 @@ class Company
     {
         return $this->isActive === self::STATUS_ACTIVE;
     }
+
     public function assignUserToCompany(User $user): void
     {
         if (!$this->isActive) {
