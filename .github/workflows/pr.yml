@@ -31,7 +31,9 @@ jobs:
           time: '10s'
           
       - name: Create test DB
-        run: make test-db-create
+        run:
+          U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test
+          U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
         
       - name: Run tests
         run: make tests
