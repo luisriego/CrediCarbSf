@@ -50,7 +50,7 @@ ssh-sudo:
 	U_ID=${UID} docker exec -it --user root ${DOCKER_BE} bash
 
 code-style-check:
-    U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
+  U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
 
 db-create: ## Create the database
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists
