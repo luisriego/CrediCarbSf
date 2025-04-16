@@ -5,27 +5,33 @@ on:
 
 jobs:
   app_checks:
-    name: app checks
+    name: App Checks
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Pull docker-compose
         run: docker-compose -f docker-compose.yml.dist pull
+
       - uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
+
       - name: Prepare containers
-        run: make start && make composer-install
+        run: 
+          make start 
+          make composer-install
+
       - name: Run coding style check
         run: make code-style-check
+
       - name: buffering time for db container
         uses: jakejarvis/wait-action@master
         with:
           time: '10s'
+
       - name: Create test database
         run: make test-setup-db
+        
       - name: Run tests
         run: make tests
