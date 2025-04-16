@@ -1,5 +1,3 @@
-name: Pull Request Checks
-
 on:
   pull_request:
     branches:
@@ -9,35 +7,38 @@ jobs:
   app_checks:
     name: App Checks
     runs-on: ubuntu-latest
-    env:
-      DOCKER_BE: cch-app
-      U_ID: 1001
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Create Docker network
-        run: docker network create cch-network || true
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      - name: Copy docker-compose config
-        run: cp -n docker-compose.yml.dist docker-compose.yml || true
+      - name: Pull docker-compose
+        run: docker-compose -f docker-compose.yml.dist pull
 
-      - name: Start containers
-        run: docker-compose up -d
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
 
-      - name: Install dependencies
-        run: docker exec --user ${U_ID} ${DOCKER_BE} composer install --no-interaction
+      - name: Prepare containers
+        run: 
+          docker network create cch-network || true
+          cp -n docker-compose.yml.dist docker-compose.yml || true
+          U_ID=${UID} docker-compose up -d 
+          U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} composer install --no-interaction
 
       - name: Run coding style check
-        run: docker exec --user ${U_ID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
+        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/php-cs-fixer fix --dry-run
 
       - name: Wait for database
         run: sleep 10
 
-      - name: Setup test database
-        run: |
-          docker exec --user ${U_ID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test
-          docker exec --user ${U_ID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
+      - name: Create test database
+        run: 
+          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:database:create --if-not-exists --env=test 
+          U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php bin/console doctrine:schema:update --force --env=test
 
       - name: Run tests
-        run: docker exec --user ${U_ID} ${DOCKER_BE} vendor/bin/phpunit -c phpunit.xml.dist
+        run: U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} vendor/bin/phpunit -c phpunit.xml.dist
