@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\GetCompanyByNameService;
 
-use App\Adapter\Framework\Security\Voter\CompanyVoter;
-use App\Application\UseCase\Company\GetCompanyByNameService\Dto\GetCompanyByNameInputDto;
-use App\Application\UseCase\Company\GetCompanyByNameService\Dto\GetCompanyByNameOutputDto;
-use App\Domain\Exception\AccessDeniedException;
+use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use App\Domain\ValueObject\CompanyName;
 
-class GetCompanyByNameService
+readonly class GetCompanyByNameService
 {
     public function __construct(
-        private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private CompanyRepositoryInterface $companyRepository,
     ) {}
 
-    public function handle(GetCompanyByNameInputDto $inputDto): GetCompanyByNameOutputDto
+    /**
+     * @return Company[] Array of Company objects
+     */
+    public function handle(string $name): array
     {
-        $companies = $this->companyRepository->findByFantasyNameOrFail($inputDto->fantasyName);
+        $companyName = CompanyName::fromString($name);
 
-        if (!$this->authorizationChecker->isGranted(CompanyVoter::GET_COMPANIES, $companies)) {
-            throw AccessDeniedException::VoterFail();
-        }
-
-        return GetCompanyByNameOutputDto::create($companies);
+        return $this->companyRepository->findByFantasyNameOrFail($companyName->value());
     }
 }

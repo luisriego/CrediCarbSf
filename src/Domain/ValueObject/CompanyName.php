@@ -22,8 +22,15 @@ class CompanyName extends FantasyName
 
         if ($length < self::MIN_LENGTH || $length > self::MAX_LENGTH) {
             throw new InvalidArgumentException(
-                sprintf('Company name must be between %d and %d characters', self::MIN_LENGTH, self::MAX_LENGTH),
+                sprintf(
+                    'Company name must be between %d and %d characters',
+                    self::MIN_LENGTH, self::MAX_LENGTH),
             );
+        }
+
+        if (preg_match('/[<>{}[\]()\/\\\\^*!?+~`|=]/', $value)) {
+            throw new InvalidArgumentException(
+                'Company name contains disallowed special characters');
         }
     }
 }
