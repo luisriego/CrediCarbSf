@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\Controller\Company;
 
+use App\Adapter\Framework\Http\Dto\Company\GetCompanyByNameRequestDto;
 use App\Adapter\Framework\Security\Voter\CompanyVoter;
 use App\Application\UseCase\Company\GetCompanyByNameService\Dto\GetCompanyByNameInputDto;
 use App\Application\UseCase\Company\GetCompanyByNameService\GetCompanyByNameService;
 use App\Domain\Exception\AccessDeniedException;
+use App\Domain\Model\Company;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,16 +31,29 @@ class GetCompanyByNameController extends AbstractController
         methods: ['GET'],
     )]
     #[IsGranted("ROLE_USER")]
-    public function index(string $name): Response
+    public function index(GetCompanyByNameRequestDto $requestDto): Response
     {
-        $companyReturned = $this->useCase->handle($name);
+        $companiesReturned = $this->useCase->handle($requestDto->name);
 
-        if (!$this->authorizationChecker->isGranted(CompanyVoter::GET_COMPANY, $companyReturned)) {
-            throw AccessDeniedException::VoterFail();
-        }
-
-        $head = (count($companyReturned) === 1) ? 'company' : 'companies';
-
-        return new JsonResponse([$head => $companyReturned, 'quantity' => count($companyReturned)], Response::HTTP_OK);
+        $companies = array_map(
+            static fn (Company $company): array => [
+                'id' => $company->id(),
+                'taxpayer' => $company->taxpayer(),
+                'fantasyName' => $company->fantasyName(),
+                'isActive' => $company->isActive(),
+                'createdOn' => $company->getCreatedOn()->format('Y-m-d H:i:s'),
+            ],
+            $companiesReturned
+        );
+    
+        $head = (count($companies) === 1) ? 'company' : 'companies';
+    
+        return new JsonResponse(
+            [
+                $head => $companies,
+                'quantity' => count($companies)
+            ],
+            Response::HTTP_OK
+        );
     }
 }

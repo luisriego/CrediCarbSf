@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GetCompanyByNameControllerTest extends FunctionalTestBase
 {
     protected string $companyName;
-    private const API_ENDPOINT = '/api/company/by-name';
+    protected const ENDPOINT_COMPANY = '/api/company/by-name';
 
     public function setUp(): void
     {
@@ -24,7 +24,7 @@ class GetCompanyByNameControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyName),
+            sprintf('%s?name=%s', self::ENDPOINT_COMPANY, urlencode($this->companyName)),
         );
 
         $response = self::$authenticatedClient->getResponse();
