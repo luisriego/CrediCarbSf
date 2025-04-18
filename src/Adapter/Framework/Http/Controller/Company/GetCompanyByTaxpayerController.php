@@ -13,13 +13,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 readonly class GetCompanyByTaxpayerController
 {
     public function __construct(
-        private GetCompanyByTaxpayerService $useCase,
-        private CompanyRepositoryInterface $companyRepository,
-        private AuthorizationCheckerInterface $authorizationChecker,
+        private GetCompanyByTaxpayerService $useCase
     ) {}
 
     #[Route(
@@ -28,17 +27,10 @@ readonly class GetCompanyByTaxpayerController
         requirements: ['taxpayer' => '^(?!health-check$)(\d{11}|\d{14})$'],
         methods: ['GET'],
     )]
+    #[IsGranted('ROLE_USER')]
     public function index(string $taxpayer): Response
     {
-        $company = $this->companyRepository->findOneByTaxpayerOrFail($taxpayer);
-
-        $inputDto = GetCompanyByTaxpayerInputDto::create($company);
-
-        if (!$this->authorizationChecker->isGranted(CompanyVoter::DELETE_COMPANY, $company)) {
-            throw AccessDeniedException::VoterFail();
-        }
-
-        $companyReturned = $this->useCase->handle($inputDto);
+        $companyReturned = $this->useCase->handle($taxpayer);
 
         return new JsonResponse(['company' => $companyReturned->data], Response::HTTP_OK);
     }

@@ -6,11 +6,11 @@ namespace App\Adapter\Framework\Http\API\Response;
 
 use function ceil;
 
-final class PaginatedResponse
+final readonly class PaginatedResponse
 {
     private function __construct(
-        private readonly array $items,
-        private readonly array $meta,
+        private array $items,
+        private array $meta,
     ) {}
 
     public static function create(array $items, int $total, int $page, int $limit): self
