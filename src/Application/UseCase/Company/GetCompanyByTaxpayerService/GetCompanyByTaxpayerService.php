@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\GetCompanyByTaxpayerService;
 
-use App\Application\UseCase\Company\GetCompanyByTaxpayerService\Dto\GetCompanyByTaxpayerInputDto;
 use App\Application\UseCase\Company\GetCompanyByTaxpayerService\Dto\GetCompanyByTaxpayerOutputDto;
+use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\ValueObject\CompanyTaxpayer;
 
 class GetCompanyByTaxpayerService
 {
-    public function handle(GetCompanyByTaxpayerInputDto $inputDto): GetCompanyByTaxpayerOutputDto
+    public function __construct(
+        private readonly CompanyRepositoryInterface $companyRepo,
+    ) {
+    }
+
+    public function handle(string $taxpayer): GetCompanyByTaxpayerOutputDto
     {
-        return GetCompanyByTaxpayerOutputDto::create($inputDto->company);
+        $company = $this->companyRepo->findOneByTaxpayerOrFail(
+            CompanyTaxpayer::fromString($taxpayer)->value());
+
+        return GetCompanyByTaxpayerOutputDto::create($company);
     }
 }

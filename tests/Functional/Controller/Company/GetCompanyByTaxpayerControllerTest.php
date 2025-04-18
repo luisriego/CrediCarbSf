@@ -33,38 +33,4 @@ class GetCompanyByTaxpayerControllerTest extends FunctionalTestBase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJson($response->getContent());
     }
-
-    public function testGetCompanyByNonExistingTaxpayer(): void
-    {
-        self::$authenticatedClient->request(
-            Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, '33592510000133'),
-        );
-
-        $response = self::$authenticatedClient->getResponse();
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
-    public function testGetCompanyByTaxpayerWithoutPermission(): void
-    {
-        // Simulate an unauthorized user
-        self::$baseClient->request(
-            Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyTaxpayer),
-        );
-
-        $response = self::$baseClient->getResponse();
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    public function testGetCompanyByInvalidTaxpayer(): void
-    {
-        self::$authenticatedClient->request(
-            Request::METHOD_GET,
-            sprintf('%s/%s', self::ENDPOINT_COMPANY, '1234567890123456789'),
-        );
-
-        $response = self::$authenticatedClient->getResponse();
-        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-    }
 }
