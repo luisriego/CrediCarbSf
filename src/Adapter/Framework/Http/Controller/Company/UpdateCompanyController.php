@@ -26,13 +26,13 @@ readonly class UpdateCompanyController
         /** @var User $user */
         $user = $this->security->getToken()->getUser();
 
-        $inputDto = UpdateCompanyInputDto::create(
-            $id,
-            $requestDto->fantasyName,
-            $user->getId(),
+        $responseDto = $this->useCase->handle(
+            UpdateCompanyInputDto::create(
+                $id,
+                $requestDto->fantasyName,
+                $user->getId(),
+            )
         );
-
-        $responseDto = $this->useCase->handle($inputDto);
 
         return new JsonResponse($responseDto->company, Response::HTTP_OK);
     }

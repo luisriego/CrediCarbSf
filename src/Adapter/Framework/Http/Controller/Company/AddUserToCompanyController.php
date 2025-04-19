@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class AddUserToCompanyController
+readonly class AddUserToCompanyController
 {
     public function __construct(
-        private readonly AddUserToCompanyService $addUserToCompany,
+        private AddUserToCompanyService $addUserToCompany,
     ) {}
 
     #[Route('/api/v1/companies/adduser/{id}', name: 'company_add_user', methods: ['POST'])]

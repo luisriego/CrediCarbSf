@@ -10,7 +10,20 @@ use App\Domain\Policy\CompanyPolicyInterface;
 
 readonly class CompanyPolicyService implements CompanyPolicyInterface
 {
-    public function canCreate(string $userId): bool
+    public function canAddUser(User $user, string $companyId): bool
+    {
+        if ($user->hasRole(UserRole::ADMIN)) {
+            return true;
+        }
+
+        if ($user->belongsToCompany($companyId) && $user->hasRole(UserRole::ADMIN)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canCreate(User $user): bool
     {
         return true;
     }
@@ -41,7 +54,7 @@ readonly class CompanyPolicyService implements CompanyPolicyInterface
         return false;
     }
 
-    public function canView(string $userId, string $companyId): bool
+    public function canView(User $user, string $companyId): bool
     {
         return true;
     }

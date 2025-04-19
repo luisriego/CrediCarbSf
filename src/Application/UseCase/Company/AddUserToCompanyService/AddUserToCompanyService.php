@@ -6,15 +6,18 @@ namespace App\Application\UseCase\Company\AddUserToCompanyService;
 
 use App\Application\UseCase\Company\AddUserToCompanyService\Dto\AddUserToCompanyInputDto;
 use App\Application\UseCase\Company\AddUserToCompanyService\Dto\AddUserToCompanyOutputDto;
+use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Model\Company;
+use App\Domain\Policy\CompanyPolicyInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 
-class AddUserToCompanyService
+readonly class AddUserToCompanyService
 {
     public function __construct(
-        private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly UserRepositoryInterface $userRepository,
+        private CompanyRepositoryInterface $companyRepository,
+        private UserRepositoryInterface    $userRepository,
+        private CompanyPolicyInterface     $companyPolicy,
     ) {}
 
     public function handle(AddUserToCompanyInputDto $inputDto): AddUserToCompanyOutputDto
@@ -22,6 +25,10 @@ class AddUserToCompanyService
         /** @var Company $company */
         $company = $this->companyRepository->findOneByIdOrFail($inputDto->companyId);
         $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
+
+        if (!$this->companyPolicy->canAddUser($user, $company->id())) {
+            throw AccessDeniedException::UnauthorizedUser();
+        }
 
         $user->assignToCompany($company);
 
