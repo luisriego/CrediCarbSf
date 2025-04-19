@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Command\Company;
 
-use App\Domain\Bus\Command;
+use App\Domain\Bus\Command\Command;
 use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;

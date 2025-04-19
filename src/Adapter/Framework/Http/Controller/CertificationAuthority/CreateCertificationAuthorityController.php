@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class CreateCertificationAuthorityController
+readonly class CreateCertificationAuthorityController
 {
     public function __construct(
-        private readonly CreateCertificationAuthorityService $createCertificationAuthority,
+        private CreateCertificationAuthorityService $createCertificationAuthority,
     ) {}
 
-    #[Route('/api/certification-authority/create', name: 'certification_authority_create', methods: ['POST'])]
+    #[Route('/api/v1/certification-authorities/create', name: 'certification_authority_create', methods: ['POST'])]
     #[IsGranted('ROLE_OPERATOR')]
     public function __invoke(CreateCertificationAuthorityRequestDto $requestDto): Response
     {

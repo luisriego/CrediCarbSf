@@ -21,7 +21,7 @@ class GetProjectsByCompanyController extends AbstractController
     public function __construct(private readonly GetProjectsByCompanyService $useCase) {}
 
     #[Route(
-        path: '/api/projects/{company}',
+        path: '/api/v1/projectss/{company}',
         name: 'get-projects-by-company',
         requirements: ['company' => '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'],
         methods: ['GET'],

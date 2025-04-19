@@ -13,7 +13,7 @@ use function str_replace;
 
 class DeleteCertificationAuthorityControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/certification-authority/{id}';
+    private const ENDPOINT = '/api/v1/certification-authorities/{id}';
     protected string $certificationAuthorityId;
 
     public function setUp(): void
@@ -28,7 +28,7 @@ class DeleteCertificationAuthorityControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_DELETE,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
         );
 
         $response = self::$authenticatedClient->getResponse();
@@ -44,7 +44,7 @@ class DeleteCertificationAuthorityControllerTest extends FunctionalTestBase
     {
         self::$baseClient->request(
             Request::METHOD_DELETE,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
         );
 
         $response = self::$baseClient->getResponse();
@@ -71,7 +71,7 @@ class DeleteCertificationAuthorityControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],

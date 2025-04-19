@@ -16,7 +16,7 @@ readonly class GetProjectByIdController
         private GetProjectByIdService $useCase,
     ) {}
 
-    #[Route('/api/project/{id}', name: 'get_project_by_id', requirements: ['id' => '\b[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b'], methods: ['GET'])]
+    #[Route('/api/v1/projects/{id}', name: 'get_project_by_id', requirements: ['id' => '\b[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b'], methods: ['GET'])]
     public function __invoke(string $id): Response
     {
         $inputDto = GetProjectByIdInputDto::create($id);

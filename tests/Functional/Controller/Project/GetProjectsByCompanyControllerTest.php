@@ -28,7 +28,7 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->companyId),
+            sprintf('/api/v1/projectss/%s', $this->companyId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -45,7 +45,7 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->invalidCompanyId),
+            sprintf('/api/v1/projectss/%s', $this->invalidCompanyId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -60,7 +60,7 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
     {
         self::$baseClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->companyId),
+            sprintf('/api/v1/projectss/%s', $this->companyId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -78,7 +78,7 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
     {
         self::$anotherAuthenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->companyId),
+            sprintf('/api/v1/projectss/%s', $this->companyId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -100,7 +100,7 @@ class GetProjectsByCompanyControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $emptyCompanyId),
+            sprintf('/api/v1/projectss/%s', $emptyCompanyId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],

@@ -7,17 +7,19 @@ namespace App\Domain\Service;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
 
+use function array_filter;
+
 final readonly class CompanyFinder
 {
     public function __construct(
-        private CompanyRepositoryInterface $companyRepository
-    ) {
-    }
+        private CompanyRepositoryInterface $companyRepository,
+    ) {}
 
     /**
-     * Find companies by partial name match
+     * Find companies by partial name match.
      *
      * @param string $name The name or partial name to search for
+     *
      * @return array<Company> List of matching companies
      */
     public function findByName(string $name): array
@@ -26,9 +28,10 @@ final readonly class CompanyFinder
     }
 
     /**
-     * Find a single company by its exact taxpayer ID
+     * Find a single company by its exact taxpayer ID.
      *
      * @param string $taxpayerId The taxpayer ID to search for
+     *
      * @return Company|null The matching company or null if not found
      */
     public function findByTaxpayer(string $taxpayerId): ?Company
@@ -37,9 +40,10 @@ final readonly class CompanyFinder
     }
 
     /**
-     * Find active companies by partial name match
+     * Find active companies by partial name match.
      *
      * @param string $name The name or partial name to search for
+     *
      * @return array<Company> List of matching active companies
      */
     public function findActiveByName(string $name): array

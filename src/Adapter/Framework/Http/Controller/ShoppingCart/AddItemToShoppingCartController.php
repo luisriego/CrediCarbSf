@@ -18,7 +18,7 @@ final readonly class AddItemToShoppingCartController
         private AddItemToShoppingCartService $addItemToShoppingCartService,
     ) {}
 
-    #[Route('/api/shopping-cart/add-item', name: 'shopping_cart_add_item', methods: ['POST'])]
+    #[Route('/api/v1/shopping-carts/add-item', name: 'shopping_cart_add_item', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(AddItemToShoppingCartRequestDto $requestDto): Response
     {

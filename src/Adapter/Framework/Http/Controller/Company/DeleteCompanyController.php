@@ -20,7 +20,7 @@ readonly class DeleteCompanyController
         public AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
-    #[Route('/api/company/{id}', name: 'delete_company', methods: ['DELETE'])]
+    #[Route('/api/v1/companies/{id}', name: 'delete_company', methods: ['DELETE'])]
     public function invoke(string $id): Response
     {
         try {

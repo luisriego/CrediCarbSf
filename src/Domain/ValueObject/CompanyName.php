@@ -7,6 +7,7 @@ namespace App\Domain\ValueObject;
 use App\Domain\Exception\InvalidArgumentException;
 
 use function mb_strlen;
+use function preg_match;
 use function sprintf;
 
 class CompanyName extends FantasyName
@@ -24,13 +25,16 @@ class CompanyName extends FantasyName
             throw new InvalidArgumentException(
                 sprintf(
                     'Company name must be between %d and %d characters',
-                    self::MIN_LENGTH, self::MAX_LENGTH),
+                    self::MIN_LENGTH,
+                    self::MAX_LENGTH,
+                ),
             );
         }
 
-        if (preg_match('/[<>{}[\]()\/\\\\^*!?+~`|=]/', $value)) {
+        if (preg_match('/[<>{}[\]()\/\\\^*!?+~`|=]/', $value)) {
             throw new InvalidArgumentException(
-                'Company name contains disallowed special characters');
+                'Company name contains disallowed special characters',
+            );
         }
     }
 }
