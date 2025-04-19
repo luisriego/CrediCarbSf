@@ -29,7 +29,7 @@ class GetProjectByIdControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', '/api/project', $this->projectId),
+            sprintf('%s/%s', '/api/v1/projects', $this->projectId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -49,7 +49,7 @@ class GetProjectByIdControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', '/api/project', $this->invalidProjectId),
+            sprintf('%s/%s', '/api/v1/projects', $this->invalidProjectId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -67,7 +67,7 @@ class GetProjectByIdControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', '/api/project', $this->nonExistentProjectId),
+            sprintf('%s/%s', '/api/v1/projects', $this->nonExistentProjectId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -85,7 +85,7 @@ class GetProjectByIdControllerTest extends FunctionalTestBase
     {
         self::$baseClient->request(
             Request::METHOD_GET,
-            sprintf('%s/%s', '/api/project', $this->projectId),
+            sprintf('%s/%s', '/api/v1/projects', $this->projectId),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -105,7 +105,7 @@ class GetProjectByIdControllerTest extends FunctionalTestBase
     //        $this->setProjectAsInactive($this->projectId);
     //
     //        self::$authenticatedClient->request(Request::METHOD_GET,
-    //            sprintf('%s/%s', '/api/project', $this->validProjectId),
+    //            sprintf('%s/%s', '/api/v1/projects', $this->validProjectId),
     //            [], [], ['CONTENT_TYPE' => 'application/json']
     //        );
     //

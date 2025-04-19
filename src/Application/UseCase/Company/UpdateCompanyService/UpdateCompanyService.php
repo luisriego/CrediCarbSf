@@ -6,24 +6,37 @@ namespace App\Application\UseCase\Company\UpdateCompanyService;
 
 use App\Application\UseCase\Company\UpdateCompanyService\Dto\UpdateCompanyInputDto;
 use App\Application\UseCase\Company\UpdateCompanyService\Dto\UpdateCompanyOutputDto;
+use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Exception\InvalidArgumentException;
+use App\Domain\Policy\CompanyPolicyInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\Repository\UserRepositoryInterface;
 
 readonly class UpdateCompanyService
 {
     public function __construct(
         private CompanyRepositoryInterface $companyRepository,
+        private UserRepositoryInterface    $userRepository,
+        private CompanyPolicyInterface     $companyPolicy,
     ) {}
 
     public function handle(UpdateCompanyInputDto $inputDto): UpdateCompanyOutputDto
     {
-        if ($inputDto->company->fantasyName() === $inputDto->fantasyName) {
+        $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
+
+        if (!$this->companyPolicy->canUpdate($user, $inputDto->id)) {
+            throw AccessDeniedException::UnauthorizedUser();
+        }
+
+        $company = $this->companyRepository->findOneByIdOrFail($inputDto->id);
+
+        if ($company->fantasyName() === $inputDto->fantasyName) {
             throw new InvalidArgumentException('Fantasy name is the same');
         }
 
-        $inputDto->company->updateFantasyName($inputDto->fantasyName);
-        $this->companyRepository->save($inputDto->company, true);
+        $company->updateFantasyName($inputDto->fantasyName);
+        $this->companyRepository->save($company, true);
 
-        return UpdateCompanyOutputDto::create($inputDto->company);
+        return UpdateCompanyOutputDto::create($company->id());
     }
 }

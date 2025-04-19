@@ -12,7 +12,7 @@ use function json_decode;
 
 class GetAllCertificationsAuthorityTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/certification-authority/all';
+    private const ENDPOINT = '/api/v1/certification-authorities/all';
 
     /**
      * @test

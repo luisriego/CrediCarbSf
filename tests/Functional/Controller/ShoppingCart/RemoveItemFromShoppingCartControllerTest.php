@@ -14,8 +14,8 @@ use function json_encode;
 
 class RemoveItemFromShoppingCartControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/shopping-cart/remove-item/';
-    private const ENDPOINT_ADD_ITEM = '/api/shopping-cart/add-item';
+    private const ENDPOINT = '/api/v1/shopping-carts/remove-item/';
+    private const ENDPOINT_ADD_ITEM = '/api/v1/shopping-carts/add-item';
 
     public function setUp(): void
     {

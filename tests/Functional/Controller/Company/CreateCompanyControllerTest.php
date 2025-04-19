@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CreateCompanyControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/company/create';
+    private const ENDPOINT = '/api/v1/companies/create';
 
     /**
      * @throws \JsonException

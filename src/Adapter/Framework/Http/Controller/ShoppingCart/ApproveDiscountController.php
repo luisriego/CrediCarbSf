@@ -17,7 +17,7 @@ class ApproveDiscountController extends AbstractController
 {
     public function __construct(private readonly ApproveDiscountService $approveDiscountService) {}
 
-    #[Route('/api/discount/approve', name: 'discount_approve', methods: ['POST'])]
+    #[Route('/api/v1/discounts/approve', name: 'discount_approve', methods: ['POST'])]
     public function __invoke(ApproveDiscountRequestDto $requestDto): Response
     {
         $this->denyAccessUnlessGranted(DiscountVoter::APPROVE_DISCOUNT, $requestDto->discountId);

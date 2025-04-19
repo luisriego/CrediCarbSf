@@ -13,7 +13,7 @@ use function json_encode;
 
 class CreateCertificationAuthorityControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/certification-authority/create';
+    private const ENDPOINT = '/api/v1/certification-authorities/create';
     private array $payload = [
         'taxpayer' => '48.846.500/0001-75',
         'name' => 'Certification Authority Test',

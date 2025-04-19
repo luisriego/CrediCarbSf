@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SellCreditsController
 {
-    #[Route('/api/project/sell-credits', name: 'project_sell_credits', methods: ['GET'])]
+    #[Route('/api/v1/projects/sell-credits', name: 'project_sell_credits', methods: ['GET'])]
     public function __invoke(): Response
     {
         return new JsonResponse(['message' => 'Module Project up and running!']);

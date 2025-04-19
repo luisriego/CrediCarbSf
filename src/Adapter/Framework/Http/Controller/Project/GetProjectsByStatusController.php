@@ -20,7 +20,7 @@ readonly class GetProjectsByStatusController
     public function __construct(private GetProjectsByStatusService $useCase) {}
 
     #[Route(
-        '/api/projects/{status}',
+        '/api/v1/projectss/{status}',
         name: 'get_projects_by_status',
         requirements: ['status' => '(?i)PLANNED|IN_DEVELOPMENT|APPROVED|IN_EXECUTION|COMPLETED|CANCELED|SUSPENDED'],
         methods: ['GET'],

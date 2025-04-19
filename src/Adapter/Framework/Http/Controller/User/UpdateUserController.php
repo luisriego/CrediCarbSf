@@ -21,7 +21,7 @@ class UpdateUserController extends AbstractController
         private readonly UserRepositoryInterface $userRepo,
     ) {}
 
-    #[Route('/api/user/{id}', name: 'update_user', methods: ['PATCH'])]
+    #[Route('/api/v1/users/{id}', name: 'update_user', methods: ['PATCH'])]
     public function __invoke(UpdateUserRequestDto $request, string $id): Response
     {
         $inputDto = UpdateUserInputDto::create(

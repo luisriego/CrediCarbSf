@@ -138,22 +138,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->company;
     }
 
-    public function setCompany(?Company $company): void
+    public function assignToCompany(?Company $company): void
     {
         $this->company = $company;
     }
+//
+//    // for Nelmio\Alice\Fixtures\Fixture purposes
+//    public function setCompany(?Company $company): void
+//    {
+//        $this->company = $company;
+//    }
 
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    //    public function setEmail(string $email): self
-    //    {
-    //        $this->email = $email;
-    //
-    //        return $this;
-    //    }
+    public function belongsToCompany(string $companyId): bool
+    {
+        if ($this->company === null) {
+            return false;
+        }
+
+        return $this->company->getId() === $companyId;
+    }
+
 
     /**
      * A visual identifier that represents this user.

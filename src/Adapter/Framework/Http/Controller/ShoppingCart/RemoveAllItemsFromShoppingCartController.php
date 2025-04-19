@@ -18,7 +18,7 @@ final readonly class RemoveAllItemsFromShoppingCartController
     ) {}
 
     #[Route(
-        '/api/shopping-cart/{shoppingCartId}/remove-all-items',
+        '/api/v1/shopping-carts/{shoppingCartId}/remove-all-items',
         name: 'shopping_cart_remove_all_items',
         methods: ['DELETE'],
     )]

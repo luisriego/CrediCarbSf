@@ -17,7 +17,7 @@ class AddUserToCompanyController
         private readonly AddUserToCompanyService $addUserToCompany,
     ) {}
 
-    #[Route('/api/company/adduser/{id}', name: 'company_add_user', methods: ['POST'])]
+    #[Route('/api/v1/companies/adduser/{id}', name: 'company_add_user', methods: ['POST'])]
     public function __invoke(AddUserToCompanyRequestDto $request, string $id): Response
     {
         $responseDto = $this->addUserToCompany->handle(

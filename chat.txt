@@ -8,3 +8,5 @@ RESUMEN DEL PROYECTO:
 - Objetivo: Sistema de gestión de proyectos con certificaciones y comercialización
 - Repositorio de eventos pendiente para completar Event Sourcing
 - Enfoque en calidad de código con PHPStan, PHP CS Fixer, Psalm y PHPCodeSniffer
+
+Todas tus respuestas pueden estar en ingles, español o portugues pero comentarios dentro del codigo serán siempre, si o si en ingles.

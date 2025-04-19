@@ -10,23 +10,17 @@ use App\Domain\Validation\Traits\AssertNotNullTrait;
 
 class UpdateCompanyInputDto
 {
-    use AssertNotNullTrait;
-    use AssertNotEmptyTrait;
-
-    private const ARGS = [
-        'fantasyName',
-    ];
-
     public function __construct(
+        public readonly string $id,
         public readonly string $fantasyName,
-        public readonly Company $company,
-    ) {
-        $this->assertNotNull(self::ARGS, [$this->fantasyName]);
-        $this->assertNotEmpty(self::ARGS, [$this->fantasyName]);
-    }
+        public readonly string $userId,
+    ) {}
 
-    public static function create(?string $fantasyName, Company $company): self
+    public static function create(
+        string $id,
+        string $fantasyName,
+        string $userId): self
     {
-        return new static($fantasyName, $company);
+        return new static($id, $fantasyName, $userId);
     }
 }

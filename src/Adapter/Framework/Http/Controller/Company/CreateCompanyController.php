@@ -20,7 +20,7 @@ readonly class CreateCompanyController
         private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
-    #[Route('/api/company/create', name: 'company_create', methods: ['POST'])]
+    #[Route('/api/v1/companies/create', name: 'company_create', methods: ['POST'])]
     public function __invoke(CreateCompanyRequestDto $requestDto): JsonResponse
     {
         if (!$this->authorizationChecker->isGranted('ROLE_OPERATOR')) {

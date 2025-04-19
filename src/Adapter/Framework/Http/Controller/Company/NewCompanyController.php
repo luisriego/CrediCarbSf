@@ -17,7 +17,7 @@ readonly class NewCompanyController
         private MessageBusInterface $commandBus,
     ) {}
 
-    #[Route('/api/company/{id}', methods: ['PUT'])]
+    #[Route('/api/v1/companies/{id}', methods: ['PUT'])]
     public function __invoke(string $id, CreateCompanyRequestDto $requestDto): JsonResponse
     {
         $command = new CreateCompanyCommand(

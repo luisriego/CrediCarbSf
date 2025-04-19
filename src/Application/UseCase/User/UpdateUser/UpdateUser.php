@@ -39,7 +39,7 @@ class UpdateUser
 
             if ($param === 'company') {
                 $company = $this->companyRepository->findOneByIdOrFail($dto->company);
-                $user->setCompany($company);
+                $user->assignToCompany($company);
 
                 continue;
             }

@@ -22,7 +22,7 @@ final readonly class CreateProjectController
     /**
      * @throws ProjectAlreadyExistsException
      */
-    #[Route('/api/project/create', name: 'project_create', methods: ['POST'])]
+    #[Route('/api/v1/projects/create', name: 'project_create', methods: ['POST'])]
     #[IsGranted('ROLE_OPERATOR')]
     public function __invoke(CreateProjectRequestDto $requestDto): Response
     {

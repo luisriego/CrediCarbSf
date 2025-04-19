@@ -20,7 +20,7 @@ readonly class GetCompanyByIdController
     ) {}
 
     #[Route(
-        '/api/company/{id}',
+        '/api/v1/companies/{id}',
         name: 'get_company_by_id',
         requirements: ['id' => '^.{36}$'],
         methods: ['GET'],

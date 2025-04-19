@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckoutShoppingCartControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/shopping-cart/checkout';
-    private const ADD_ITEM_ENDPOINT = '/api/shopping-cart/add-item';
+    private const ENDPOINT = '/api/v1/shopping-carts/checkout';
+    private const ADD_ITEM_ENDPOINT = '/api/v1/shopping-carts/add-item';
 
     private array $payload;
 

@@ -30,13 +30,13 @@ class FunctionalTestBase extends WebTestCase
 {
     use ReloadDatabaseTrait;
 
-    protected const ACTIVATE_USER_ENDPOINT = '/api/user/activate';
-    protected const ADD_USER_TO_COMPANY_ENDPOINT = '/api/company/adduser';
-    protected const CHANGE_USER_PASSWORD_ENDPOINT = '/api/user/change-password';
-    protected const CREATE_COMPANY_ENDPOINT = '/api/company/create';
+    protected const ACTIVATE_USER_ENDPOINT = '/api/v1/users/activate';
+    protected const ADD_USER_TO_COMPANY_ENDPOINT = '/api/v1/companies/adduser';
+    protected const CHANGE_USER_PASSWORD_ENDPOINT = '/api/v1/users/change-password';
+    protected const CREATE_COMPANY_ENDPOINT = '/api/v1/companies/create';
     protected const CREATE_USER_ENDPOINT = '/register';
-    protected const ENDPOINT_COMPANY = '/api/company';
-    protected const ENDPOINT_USER = '/api/user';
+    protected const ENDPOINT_COMPANY = '/api/v1/companies';
+    protected const ENDPOINT_USER = '/api/v1/users';
     protected const NON_EXISTING_COMPANY_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected static ?KernelBrowser $baseClient = null;
@@ -196,7 +196,7 @@ class FunctionalTestBase extends WebTestCase
 
         self::$authenticatedClient->request(
             Request::METHOD_POST,
-            '/api/shopping-cart/add-item',
+            '/api/v1/shopping-carts/add-item',
             [],
             [],
             [],

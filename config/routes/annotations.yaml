@@ -5,11 +5,11 @@ kernel:
 user_controllers:
   resource: ../../src/Adapter/Framework/Http/Controller/User/
   type: annotation
-  prefix: /api/users
+  prefix: /api/v1/userss
   trailing_slash_on_root: false
 
 #Company_controllers:
 #  resource: ../../src/Adapter/Framework/Http/Controller/Company/
 #  type: annotation
-#  prefix: /api/Companys
+#  prefix: /api/v1/companiess
 #  trailing_slash_on_root: false

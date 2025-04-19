@@ -13,7 +13,7 @@ use function sprintf;
 
 class RemoveAllItemsFromShoppingCartControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/shopping-cart/%s/remove-all-items';
+    private const ENDPOINT = '/api/v1/shopping-carts/%s/remove-all-items';
 
     public function setUp(): void
     {

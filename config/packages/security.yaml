@@ -29,8 +29,8 @@ security:
     access_control:
         - { path: ^/.*/health-check,        roles: PUBLIC_ACCESS }
         - { path: ^/api/login,              roles: PUBLIC_ACCESS }
-        - { path: ^/api/user/register,      roles: PUBLIC_ACCESS }
-        - { path: ^/api/user/activate,      roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/users/register,      roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/users/activate,      roles: PUBLIC_ACCESS }
         - { path: ^/api,                    roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

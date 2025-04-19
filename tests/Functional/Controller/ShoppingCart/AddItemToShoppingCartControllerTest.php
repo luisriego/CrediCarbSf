@@ -14,7 +14,7 @@ use function json_encode;
 
 class AddItemToShoppingCartControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/shopping-cart/add-item';
+    private const ENDPOINT = '/api/v1/shopping-carts/add-item';
     private array $payload;
 
     public function setUp(): void

@@ -21,7 +21,7 @@ class GetUserByIdController extends AbstractController
         private readonly UserRepositoryInterface $userRepository,
     ) {}
 
-    #[Route('/api/user/{id}', name: 'get_user_by_id', requirements: ['id' => '\b[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b'], methods: ['GET'])]
+    #[Route('/api/v1/users/{id}', name: 'get_user_by_id', requirements: ['id' => '\b[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}\b'], methods: ['GET'])]
     public function __invoke(string $id): Response
     {
         $inputDto = GetUserByIdInputDto::create($id);

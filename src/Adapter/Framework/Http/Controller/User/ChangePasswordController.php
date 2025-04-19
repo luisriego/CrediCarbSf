@@ -21,7 +21,7 @@ class ChangePasswordController extends AbstractController
         private readonly UserRepositoryInterface $userRepo,
     ) {}
 
-    #[Route('/api/user/change-password/{id}', name: 'change_user_password', methods: ['PATCH'])]
+    #[Route('/api/v1/users/change-password/{id}', name: 'change_user_password', methods: ['PATCH'])]
     public function __invoke(ChangePasswordRequestDto $request, string $id): Response
     {
         $inputDto = ChangePasswordInputDto::create(

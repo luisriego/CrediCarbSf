@@ -14,7 +14,7 @@ use function sprintf;
 
 class UpdateItemQuantityInShoppingCartControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/shopping-cart/%s/quantity';
+    private const ENDPOINT = '/api/v1/shopping-carts/%s/quantity';
 
     private array $payload;
 

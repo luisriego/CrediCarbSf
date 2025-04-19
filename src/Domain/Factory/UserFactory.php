@@ -28,7 +28,7 @@ class UserFactory
         );
 
         if ($company) {
-            $user->setCompany($company);
+            $user->assignToCompany($company);
         }
 
         $user->setRoles($roles);

@@ -17,7 +17,7 @@ final readonly class RemoveItemFromShoppingCartController
         private RemoveItemFromShoppingCartService $removeItemFromShoppingCartService,
     ) {}
 
-    #[Route('/api/shopping-cart/remove-item/{shoppingCartItemId}', name: 'shopping_cart_remove_item', methods: ['DELETE'])]
+    #[Route('/api/v1/shopping-carts/remove-item/{shoppingCartItemId}', name: 'shopping_cart_remove_item', methods: ['DELETE'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(string $shoppingCartItemId): Response
     {

@@ -15,7 +15,7 @@ class GetCompanyByNameRequestDto implements RequestDto
     public function __construct(Request $request)
     {
         $name = $request->query->get('name');
-        
+
         $this->name = CompanyName::fromString($name)->value();
     }
 }

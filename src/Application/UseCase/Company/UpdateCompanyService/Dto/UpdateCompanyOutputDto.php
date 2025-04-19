@@ -9,11 +9,11 @@ use App\Domain\Model\Company;
 readonly class UpdateCompanyOutputDto
 {
     public function __construct(
-        public Company $company,
+        public array $company,
     ) {}
 
-    public static function create(Company $company): self
+    public static function create(string $companyId): self
     {
-        return new static($company);
+        return new self(['id' => $companyId]);
     }
 }

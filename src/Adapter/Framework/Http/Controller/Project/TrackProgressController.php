@@ -17,7 +17,7 @@ final class TrackProgressController
         private readonly TrackProgressService $trackProgressService,
     ) {}
 
-    #[Route('/api/project/{projectId}/progress', name: 'project_track_progress', methods: ['GET'])]
+    #[Route('/api/v1/projects/{projectId}/progress', name: 'project_track_progress', methods: ['GET'])]
     public function __invoke(TrackProgressRequestDto $requestDto): Response
     {
         $responseDto = $this->trackProgressService->handle(

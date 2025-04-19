@@ -26,7 +26,7 @@ class CheckoutShoppingCartController extends AbstractController
     /**
      * @throws InvalidDiscountException
      */
-    #[Route('/api/shopping-cart/checkout', name: 'checkout_shopping_cart', methods: ['POST'])]
+    #[Route('/api/v1/shopping-carts/checkout', name: 'checkout_shopping_cart', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(CheckoutRequestDto $requestDto): Response
     {

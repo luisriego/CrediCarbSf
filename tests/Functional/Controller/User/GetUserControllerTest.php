@@ -15,7 +15,7 @@ class GetUserControllerTest extends FunctionalTestBase
      */
     public function testGetAllUsers(): void
     {
-        self::$superAdminClient->request('GET', '/api/user/all', [], [], ['CONTENT_TYPE' => 'application/json']);
+        self::$superAdminClient->request('GET', '/api/v1/users/all', [], [], ['CONTENT_TYPE' => 'application/json']);
 
         $response = self::$superAdminClient->getResponse();
         $responseData = $this->getResponseData($response);

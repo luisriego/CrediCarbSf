@@ -12,7 +12,7 @@ use function json_decode;
 
 class CompanyHealthCheckControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/company/health-check';
+    private const ENDPOINT = '/api/v1/companies/health-check';
 
     public function testCompanyHealthCheck(): void
     {

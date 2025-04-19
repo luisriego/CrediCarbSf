@@ -15,7 +15,7 @@ readonly class GetAllProjectsController
         private GetAllProjectsService $useCase,
     ) {}
 
-    #[Route('/api/project/all', name: 'get_projects', methods: ['GET'])]
+    #[Route('/api/v1/projects/all', name: 'get_projects', methods: ['GET'])]
     public function __invoke(): Response
     {
         $responseDto = $this->useCase->handle();

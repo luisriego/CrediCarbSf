@@ -15,7 +15,7 @@ readonly class ActivateUserController
 {
     public function __construct(private ActivateUser $useCase) {}
 
-    #[Route('/api/user/activate', name: 'activate_user', methods: ['PUT'])]
+    #[Route('/api/v1/users/activate', name: 'activate_user', methods: ['PUT'])]
     public function __invoke(ActivateUserRequestDto $request): Response
     {
         $inputDto = ActivateUserInputDto::create($request->id, $request->token);

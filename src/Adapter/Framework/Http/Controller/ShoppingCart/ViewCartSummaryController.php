@@ -19,7 +19,7 @@ readonly class ViewCartSummaryController
         private Security $security,
     ) {}
 
-    #[Route('/api/shopping-cart', name: 'shopping_cart_summary', methods: ['GET'])]
+    #[Route('/api/v1/shopping-carts', name: 'shopping_cart_summary', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(): Response
     {

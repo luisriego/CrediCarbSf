@@ -18,7 +18,7 @@ readonly class UpdateItemQuantityInShoppingCartController
         private UpdateItemQuantityInShoppingCartService $updateItemQuantityInShoppingCartService,
     ) {}
 
-    #[Route('/api/shopping-cart/{shoppingCartId}/quantity', name: 'shopping_cart_update_item_quantity', methods: ['PUT'])]
+    #[Route('/api/v1/shopping-carts/{shoppingCartId}/quantity', name: 'shopping_cart_update_item_quantity', methods: ['PUT'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(UpdateItemQuantityInShoppingCartRequestDto $requestDto): JsonResponse
     {

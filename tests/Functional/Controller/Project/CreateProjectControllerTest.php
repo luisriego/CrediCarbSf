@@ -17,7 +17,7 @@ use const JSON_THROW_ON_ERROR;
 
 class CreateProjectControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/project/create';
+    private const ENDPOINT = '/api/v1/projects/create';
     private const PROJECT_NAME = 'Project Test';
     private const PROJECT_NAME_LIKE = 'Test Project';
     private const PROJECT_DESCRIPTION = 'Description Test';

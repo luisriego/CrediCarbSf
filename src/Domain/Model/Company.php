@@ -136,7 +136,7 @@ class Company
 
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setCompany($this);
+            $user->assignToCompany($this);
             //            $user->assignToCompany($this);
         }
     }
@@ -144,7 +144,7 @@ class Company
     public function removeUserFromCompany(User $user): void
     {
         if ($this->users->removeElement($user)) {
-            $user->setCompany(null);
+            $user->assignToCompany(null);
             //            $user->removeFromCompany($this); // more semantic sentence
         }
     }

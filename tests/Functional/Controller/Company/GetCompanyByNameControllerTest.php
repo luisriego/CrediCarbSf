@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GetCompanyByNameControllerTest extends FunctionalTestBase
 {
     protected string $companyName;
-    protected const ENDPOINT_COMPANY = '/api/company/by-name';
+    protected const ENDPOINT_COMPANY = '/api/v1/companies/by-name';
 
     public function setUp(): void
     {
