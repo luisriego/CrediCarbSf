@@ -16,8 +16,8 @@ readonly class UpdateCompanyService
 {
     public function __construct(
         private CompanyRepositoryInterface $companyRepository,
-        private UserRepositoryInterface    $userRepository,
-        private CompanyPolicyInterface     $companyPolicy,
+        private UserRepositoryInterface $userRepository,
+        private CompanyPolicyInterface $companyPolicy,
     ) {}
 
     public function handle(UpdateCompanyInputDto $inputDto): UpdateCompanyOutputDto

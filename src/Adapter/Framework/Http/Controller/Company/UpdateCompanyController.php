@@ -17,7 +17,7 @@ readonly class UpdateCompanyController
 {
     public function __construct(
         private UpdateCompanyService $useCase,
-        private Security             $security,
+        private Security $security,
     ) {}
 
     #[Route('/api/v1/companies/{id}', name: 'update_company', methods: ['PATCH'])]

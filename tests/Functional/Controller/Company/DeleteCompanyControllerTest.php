@@ -28,18 +28,8 @@ class DeleteCompanyControllerTest extends FunctionalTestBase
 
         $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_CONFLICT, $response->getStatusCode());
+        $this->assertEquals('{"error":"Cannot delete company with associated users"}', $response->getContent());
     }
-
-    /*     public function testDeleteCompanySuccessfully(): void
-        {
-            self::$authenticatedClient->request(
-                Request::METHOD_DELETE,
-                sprintf('%s/%s', self::ENDPOINT_COMPANY, $this->companyId),
-            );
-
-            $response = self::$authenticatedClient->getResponse();
-            $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        } */
 
     public function testDeleteNonExistingCompany(): void
     {
