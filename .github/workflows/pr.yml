@@ -20,7 +20,7 @@ jobs:
       - name: Pull docker-compose
         run: cp -n docker-compose.yml.dist docker-compose.yml && docker-compose -f docker-compose.yml pull
 
-      - uses: satackey/action-docker-layer-caching@v0.0.11
+      - uses: satackey/action-docker-layer-caching@latest
         continue-on-error: true
 
       - name: Prepare containers
