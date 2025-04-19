@@ -29,7 +29,7 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->validStatus),
+            sprintf('/api/v1/projectss/%s', $this->validStatus),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -46,7 +46,7 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
     {
         self::$authenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->invalidStatus),
+            sprintf('/api/v1/projectss/%s', $this->invalidStatus),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -61,7 +61,7 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
     {
         self::$baseClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->validStatus),
+            sprintf('/api/v1/projectss/%s', $this->validStatus),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
@@ -79,7 +79,7 @@ class GetProjectsByStatusControllerTest extends FunctionalTestBase
     {
         self::$anotherAuthenticatedClient->request(
             Request::METHOD_GET,
-            sprintf('/api/projects/%s', $this->validStatus),
+            sprintf('/api/v1/projectss/%s', $this->validStatus),
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],

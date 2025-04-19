@@ -14,7 +14,7 @@ use function json_decode;
 class ViewCartSummaryControllerTest extends FunctionalTestBase
 {
 //    use RefreshDatabaseTrait;
-    private const ENDPOINT = '/api/shopping-cart';
+    private const ENDPOINT = '/api/v1/shopping-carts';
 
     public function setUp(): void
     {

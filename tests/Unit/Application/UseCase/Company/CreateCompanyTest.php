@@ -26,7 +26,8 @@ final class CreateCompanyTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->companyRepository = $this->createMock(CompanyRepositoryInterface::class);
+        $this->companyRepository = $this->createMock(
+            CompanyRepositoryInterface::class);
         $this->createCompanyUseCase = new CreateCompany($this->companyRepository);
     }
 

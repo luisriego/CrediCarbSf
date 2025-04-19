@@ -30,7 +30,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
             [],
             [],
             [],
@@ -50,7 +50,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
-            sprintf('/api/certification-authority/%s', 'invalid-id'),
+            sprintf('/api/v1/certification-authorities/%s', 'invalid-id'),
             [],
             [],
             [],
@@ -71,7 +71,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
         // Simulate an unauthorized user
         self::$baseClient->request(
             Request::METHOD_PATCH,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
             [],
             [],
             [],
@@ -91,7 +91,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
             [],
             [],
             [],
@@ -111,7 +111,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
 
         self::$authenticatedClient->request(
             Request::METHOD_PATCH,
-            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
             [],
             [],
             [],
@@ -131,7 +131,7 @@ class UpdateCertificationAuthorityControllerTest extends FunctionalTestBase
     //
     //        self::$authenticatedClient->request(
     //            Request::METHOD_PATCH,
-    //            sprintf('/api/certification-authority/%s', $this->certificationAuthorityId),
+    //            sprintf('/api/v1/certification-authorities/%s', $this->certificationAuthorityId),
     //            [], [], [], json_encode($payload)
     //        );
     //

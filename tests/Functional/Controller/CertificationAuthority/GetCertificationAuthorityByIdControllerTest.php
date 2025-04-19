@@ -18,7 +18,7 @@ use function sprintf;
 
 class GetCertificationAuthorityByIdControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = 'api/certification-authority';
+    private const ENDPOINT = 'api/v1/certification-authorities';
     protected string $certificationAuthorityId;
 
     public function setUp(): void

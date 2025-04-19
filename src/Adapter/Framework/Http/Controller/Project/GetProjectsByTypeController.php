@@ -20,7 +20,7 @@ readonly class GetProjectsByTypeController
     public function __construct(private GetProjectsByTypeService $useCase) {}
 
     #[Route(
-        '/api/projects/{type}',
+        '/api/v1/projectss/{type}',
         'get-projects-by-type',
         requirements: ['type' => '(?i)Reforestation|Afforestation|Agroforestry|ForestConservation|RenewableEnergy|EnergyEfficiency|MethaneCapture|SoilCarbonSequestration|ImprovedCookstoves|FuelSwitching|Bioenergy|BlueCarbon|CarbonCaptureAndStorage|SustainableAgriculture|UrbanGreening'],
         methods: ['GET'],

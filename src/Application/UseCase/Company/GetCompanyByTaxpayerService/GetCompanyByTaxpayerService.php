@@ -8,7 +8,7 @@ use App\Application\UseCase\Company\GetCompanyByTaxpayerService\Dto\GetCompanyBy
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\ValueObject\CompanyTaxpayer;
 
-class GetCompanyByTaxpayerService
+readonly class GetCompanyByTaxpayerService
 {
     public function __construct(
         private readonly CompanyRepositoryInterface $companyRepo,

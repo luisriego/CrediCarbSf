@@ -23,7 +23,7 @@ class AddUserToCompanyService
         $company = $this->companyRepository->findOneByIdOrFail($inputDto->companyId);
         $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
 
-        $user->setCompany($company);
+        $user->assignToCompany($company);
 
         $company->assignUserToCompany($user);
 

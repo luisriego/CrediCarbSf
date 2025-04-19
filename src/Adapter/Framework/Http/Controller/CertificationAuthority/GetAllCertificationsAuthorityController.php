@@ -17,7 +17,7 @@ readonly class GetAllCertificationsAuthorityController
         private GetAllCertificationsAuthorityService $getAllCertificationsAuthorityService,
     ) {}
 
-    #[Route('/api/certification-authority/all', name: 'certification-authority-get-all', methods: ['GET'])]
+    #[Route('/api/v1/certification-authorities/all', name: 'certification-authority-get-all', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(): Response
     {

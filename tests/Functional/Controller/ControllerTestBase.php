@@ -29,20 +29,20 @@ abstract class ControllerTestBase extends WebTestCase
 {
     use ReloadDatabaseTrait;
 
-    protected const ENDPOINT_USER = '/api/user';
-    protected const ENDPOINT_COMPANY = '/api/company';
+    protected const ENDPOINT_USER = '/api/v1/users';
+    protected const ENDPOINT_COMPANY = '/api/v1/companies';
     protected const ADMIN_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MzU5MTY5MTQsImV4cCI6MTczNjI3NjkxNCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGFwaS5jb20iLCJpZCI6IjU1YjcyNzEwLTE4NjctNDIyZS1iYTVmLTgwNzJjODZmNmNjMiJ9.DwjRjDfVaHuPpTr-AILbeefpr5PyC_zK5s38Y2uhYmDSg_WBbRA9us9of7YYNIWg7lBQTIDtTJpDe3O27r-P5NE9LtAcAtHHz4B6nHZXTvhyq4BDTpkwlO_zbZmpcPgwfmq3Cpxx0mqSYanCdOFGDOOmfDJuaCImdm296zSui_CmpBVtiz8Qob04Hbmytx-w1Kbpcju8Un23lwGlYv0j1yt4QMbA3EDSs8PiSJlRi5si6X7JIZ3uJOMigoBtWCRUp2GPOdUXT1xgfYQuagui8lmsOl4y82F1i0ZK1Gm674jj5vCOQvia9EbkBX-L1CRgITmXqrgJdidC3pQ2Yd7TbQ';
     protected const NOT_VALID_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
     protected const NON_EXISTING_USER_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected const NON_EXISTING_COMPANY_ID = 'e0a1878f-dd52-4eea-959d-96f589a9f234';
     protected const CREATE_USER_ENDPOINT = '/register';
-    protected const CREATE_COMPANY_ENDPOINT = '/api/company/create';
-    protected const ACTIVATE_USER_ENDPOINT = '/api/user/activate';
-    protected const CHANGE_USER_PASSWORD_ENDPOINT = '/api/user/change-password';
+    protected const CREATE_COMPANY_ENDPOINT = '/api/v1/companies/create';
+    protected const ACTIVATE_USER_ENDPOINT = '/api/v1/users/activate';
+    protected const CHANGE_USER_PASSWORD_ENDPOINT = '/api/v1/users/change-password';
     protected const ACTIVATE_COMPANY_ENDPOINT = '/company/activate';
-    protected const ADD_USER_TO_COMPANY_ENDPOINT = '/api/company/adduser';
+    protected const ADD_USER_TO_COMPANY_ENDPOINT = '/api/v1/companies/adduser';
     protected const REMOVE_USER_FROM_COMPANY_ENDPOINT = '/company/remove-user-from-Company';
-    protected const ENDPOINT_UPDATE_USER = '/api/user';
+    protected const ENDPOINT_UPDATE_USER = '/api/v1/users';
 
     protected static ?AbstractBrowser $admin = null;
 

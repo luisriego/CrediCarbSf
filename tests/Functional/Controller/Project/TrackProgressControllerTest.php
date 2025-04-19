@@ -14,7 +14,7 @@ use function sprintf;
 
 final class TrackProgressControllerTest extends FunctionalTestBase
 {
-    private const ENDPOINT = '/api/project/%s/progress';
+    private const ENDPOINT = '/api/v1/projects/%s/progress';
 
     protected string $projectId;
 

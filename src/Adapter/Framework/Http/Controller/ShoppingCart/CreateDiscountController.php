@@ -24,7 +24,7 @@ class CreateDiscountController extends AbstractController
     /**
      * @throws DiscountAlreadyExistsException|RandomException
      */
-    #[Route('/api/discount', name: 'discount_create', methods: ['POST'])]
+    #[Route('/api/v1/discounts', name: 'discount_create', methods: ['POST'])]
     #[IsGranted('ROLE_OPERATOR')]
     public function __invoke(CreateDiscountRequestDto $requestDto): Response
     {

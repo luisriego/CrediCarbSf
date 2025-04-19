@@ -13,7 +13,7 @@ class GetAllProjectsControllerTest extends FunctionalTestBase
 {
 //    use RefreshDatabaseTrait;
 
-    private const ENDPOINT = '/api/project/all';
+    private const ENDPOINT = '/api/v1/projects/all';
 
     public function setUp(): void
     {

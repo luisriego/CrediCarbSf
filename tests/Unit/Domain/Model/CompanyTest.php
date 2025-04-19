@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Domain\Model;
 
 use App\Domain\Model\Company;
+use App\Domain\Model\Project;
+use App\Domain\Model\User;
 use App\Domain\ValueObject\FantasyName;
 use App\Domain\ValueObject\Taxpayer;
 use App\Tests\Unit\Domain\Model\Mother\CompanyMother;
 use DomainException;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 use function str_repeat;
@@ -130,5 +133,96 @@ class CompanyTest extends TestCase
         $this->expectExceptionMessage('Invalid CNPJ digits');
 
         CompanyMother::withInvalidTaxpayer('12345678901234');
+    }
+
+    /**
+     * @throws \ReflectionException
+     * @throws Exception
+     */
+    public function testRegisterOwnedProject(): void
+    {
+        $company = CompanyMother::create();
+        $project = $this->createMock(Project::class);
+
+        $company->registerOwnedProject($project);
+
+        $reflection = new \ReflectionClass($company);
+        $property = $reflection->getProperty('ownedProjects');
+        $ownedProjects = $property->getValue($company);
+
+        $this->assertTrue($ownedProjects->contains($project));
+    }
+
+    public function testRegisterOwnedProjectWithInactiveCompanyThrowsException(): void
+    {
+        $company = CompanyMother::inactive();
+        $project = $this->createMock(Project::class);
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Cannot register project for inactive company');
+
+        $company->registerOwnedProject($project);
+    }
+
+    public function testRemoveUserFromCompany(): void
+    {
+        $company = CompanyMother::create();
+        $user = $this->createMock(User::class);
+
+        // First add the user to the company
+        $reflection = new \ReflectionClass($company);
+        $property = $reflection->getProperty('users');
+        $users = $property->getValue($company);
+        $users->add($user);
+
+        // Now remove the user
+        $company->removeUserFromCompany($user);
+
+        // Assert the user has been removed
+        $this->assertFalse($users->contains($user));
+    }
+
+    public function testRemoveUserFromCompanyWhenUserNotInCompanyDoesNothing(): void
+    {
+        $company = CompanyMother::create();
+        $user = $this->createMock(User::class);
+
+        // Get initial user count
+        $reflection = new \ReflectionClass($company);
+        $property = $reflection->getProperty('users');
+        $users = $property->getValue($company);
+        $initialCount = $users->count();
+
+        // Try to remove a user that's not in the company
+        $company->removeUserFromCompany($user);
+
+        // Assert nothing has changed
+        $this->assertEquals($initialCount, $users->count());
+    }
+
+    public function testPurchaseProject(): void
+    {
+        $company = CompanyMother::create();
+        $project = $this->createMock(Project::class);
+
+        $company->purchaseProject($project);
+
+        // Assert the project is in the bought projects collection
+        $reflection = new \ReflectionClass($company);
+        $property = $reflection->getProperty('boughtProjects');
+        $boughtProjects = $property->getValue($company);
+
+        $this->assertTrue($boughtProjects->contains($project));
+    }
+
+    public function testPurchaseProjectWithInactiveCompanyThrowsException(): void
+    {
+        $company = CompanyMother::inactive();
+        $project = $this->createMock(Project::class);
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Cannot purchase project with inactive company');
+
+        $company->purchaseProject($project);
     }
 }

@@ -7,6 +7,7 @@ namespace App\Domain\ValueObject;
 use App\Domain\Exception\InvalidArgumentException;
 
 use function mb_strlen;
+use function preg_match;
 use function sprintf;
 
 class CompanyName extends FantasyName
