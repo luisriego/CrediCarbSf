@@ -8,12 +8,13 @@ use App\Application\UseCase\Company\GetCompanyByTaxpayerService\GetCompanyByTaxp
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 readonly class GetCompanyByTaxpayerController
 {
     public function __construct(
-        private GetCompanyByTaxpayerService $useCase,
+        private GetCompanyByTaxpayerService $useCase
     ) {}
 
     #[Route(
