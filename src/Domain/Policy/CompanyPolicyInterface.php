@@ -8,13 +8,13 @@ use App\Domain\Model\User;
 
 interface CompanyPolicyInterface
 {
-    public function canAddUser(User $user, string $companyId): bool;
+    public function canAddUserOrFail(string $companyId): void;
 
-    public function canCreate(User $user): bool;
+    public function canCreateOrFail(): void;
 
-    public function canDelete(User $user, string $companyId): bool;
+    public function canDeleteOrFail(string $companyId): void;
 
-    public function canUpdate(User $userId, string $companyId): bool;
+    public function canUpdateOrFail(string $companyId): void;
 
-    public function canView(User $user, string $companyId): bool;
+    public function canViewOrFail(): void;
 }

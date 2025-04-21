@@ -135,9 +135,14 @@ services:
 
     App\Domain\Event\DomainEventDispatcherInterface: '@App\Adapter\Framework\Event\SymfonyDomainEventDispatcher'
 
-
+    App\Domain\Security\CurrentUserProviderInterface:
+        class: App\Adapter\Framework\Security\SymfonyCurrentUserProvider
 
     App\Tests\Subscriber\ShoppingCartEventSubscriber:
         public: true
         tags:
             - { name: kernel.event_subscriber }
+
+    App\Adapter\Framework\Event\InMemorySymfonyEventBus:
+        arguments:
+            $subscribers: !tagged messenger.message_handler

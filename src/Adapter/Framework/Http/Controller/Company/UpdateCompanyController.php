@@ -31,7 +31,7 @@ readonly class UpdateCompanyController
                 $id,
                 $requestDto->fantasyName,
                 $user->getId(),
-            )
+            ),
         );
 
         return new JsonResponse($responseDto->company, Response::HTTP_OK);

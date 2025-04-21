@@ -9,6 +9,7 @@ use App\Adapter\Framework\Http\API\Response\PaginatedResponse;
 use App\Domain\Exception\ResourceNotFoundException;
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Domain\ValueObject\CompanyTaxpayer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -92,10 +93,10 @@ final class DoctrineCompanyRepository extends ServiceEntityRepository implements
         return $company;
     }
 
-    public function validateTaxpayerUniqueness(string $taxpayer): void
+    public function validateTaxpayerUniqueness(CompanyTaxpayer $taxpayer): void
     {
-        if (!null ===  $this->findOneBy(['taxpayer' => $taxpayer])) {
-            throw ResourceNotFoundException::createFromClassAndProperty(Company::class, 'Taxpayer', $taxpayer);
+        if (!null ===  $this->findOneBy(['taxpayer' => $taxpayer->value()])) {
+            throw ResourceNotFoundException::createFromClassAndProperty(Company::class, 'Taxpayer', $taxpayer->value());
         }
     }
 

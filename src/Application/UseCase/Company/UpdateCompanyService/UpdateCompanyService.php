@@ -24,9 +24,7 @@ readonly class UpdateCompanyService
     {
         $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
 
-        if (!$this->companyPolicy->canUpdate($user, $inputDto->id)) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
+        $this->companyPolicy->canUpdateOrFail($inputDto->id);
 
         $company = $this->companyRepository->findOneByIdOrFail($inputDto->id);
 

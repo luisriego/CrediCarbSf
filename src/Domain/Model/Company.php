@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Bus\Event\DomainEvent;
+use App\Domain\Common\AggregateRoot;
+use App\Domain\Event\CreateCompanyDomainEvent;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Domain\Trait\IdentifierTrait;
@@ -13,6 +16,8 @@ use App\Domain\Validation\Traits\AssertTaxpayerValidatorTrait;
 use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;
+use App\Domain\ValueObject\Uuid;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +29,7 @@ use function sprintf;
 
 #[ORM\Entity(repositoryClass: CompanyRepositoryInterface::class)]
 #[ORM\HasLifecycleCallbacks]
-class Company
+class Company extends AggregateRoot
 {
     use IdentifierTrait;
     use TimestampableTrait;
@@ -71,11 +76,23 @@ class Company
 
     public static function create(CompanyId $id, CompanyTaxpayer $taxpayer, CompanyName $fantasyName): self
     {
-        return new self(
+        $company = new self(
             $id->value(),
             $taxpayer->value(),
             $fantasyName->value(),
         );
+
+        $company->record(
+            new CreateCompanyDomainEvent(
+                $company->id(),
+                $company->taxpayer(),
+                $company->fantasyName(),
+                Uuid::random()->value(),
+                (new \DateTimeImmutable())->format(DateTimeInterface::ATOM),
+            )
+        );
+
+        return $company;
     }
 
     public function fantasyName(): string

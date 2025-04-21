@@ -67,9 +67,8 @@ class AddUserToCompanyTest extends TestCase
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canAddUser')
-            ->with($user, $company->id())
-            ->willReturn(true);
+            ->method('canAddUserOrFail')
+            ->with($company->id());
 
         $this->companyRepository
             ->expects($this->once())
@@ -134,7 +133,6 @@ class AddUserToCompanyTest extends TestCase
         // Arrange
         $inputDto = AddUserToCompanyInputDto::create(self::COMPANY_ID, self::USER_ID);
         $company = CompanyMother::create();
-        $user = UserMother::create();
 
         $this->companyRepository
             ->expects($this->once())
@@ -142,17 +140,11 @@ class AddUserToCompanyTest extends TestCase
             ->with(self::COMPANY_ID)
             ->willReturn($company);
 
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with(self::USER_ID)
-            ->willReturn($user);
-
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canAddUser')
-            ->with($user, $company->id())
-            ->willReturn(false);
+            ->method('canAddUserOrFail')
+            ->with($company->id())
+            ->willThrowException(new AccessDeniedException('User has no access'));
 
         // Assert
         $this->expectException(AccessDeniedException::class);

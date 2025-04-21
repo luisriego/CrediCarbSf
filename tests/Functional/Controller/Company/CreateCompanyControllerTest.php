@@ -4,15 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\Company;
 
-use App\Application\UseCase\Company\CreateCompany\CreateCompany;
-use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyInputDto;
-use App\Domain\Exception\InvalidArgumentException;
-use App\Domain\Model\Company;
-use App\Domain\Repository\CompanyRepositoryInterface;
 use App\Tests\Functional\FunctionalTestBase;
-use App\Tests\Unit\Domain\Model\Mother\CompanyMother;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
