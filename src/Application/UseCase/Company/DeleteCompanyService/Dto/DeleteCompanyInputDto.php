@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Company\DeleteCompanyService\Dto;
 
-use App\Domain\Exception\InvalidArgumentException;
-
-use function is_null;
-
-class DeleteCompanyInputDto
+readonly class DeleteCompanyInputDto
 {
     private function __construct(
-        public readonly string $id,
+        public string $id,
+        public string $userId,
     ) {}
 
-    public static function create(?string $id): self
+    public static function create(?string $id, string $userId): self
     {
-        if (is_null($id)) {
-            throw InvalidArgumentException::createFromMessage('Company ID can\'t be null');
-        }
-
-        return new static($id);
+        return new static($id, $userId);
     }
 }

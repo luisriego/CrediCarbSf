@@ -16,17 +16,15 @@ readonly class UpdateCompanyService
 {
     public function __construct(
         private CompanyRepositoryInterface $companyRepository,
-        private UserRepositoryInterface    $userRepository,
-        private CompanyPolicyInterface     $companyPolicy,
+        private UserRepositoryInterface $userRepository,
+        private CompanyPolicyInterface $companyPolicy,
     ) {}
 
     public function handle(UpdateCompanyInputDto $inputDto): UpdateCompanyOutputDto
     {
         $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
 
-        if (!$this->companyPolicy->canUpdate($user, $inputDto->id)) {
-            throw AccessDeniedException::UnauthorizedUser();
-        }
+        $this->companyPolicy->canUpdateOrFail($inputDto->id);
 
         $company = $this->companyRepository->findOneByIdOrFail($inputDto->id);
 

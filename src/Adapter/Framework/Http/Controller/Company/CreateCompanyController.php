@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Adapter\Framework\Http\Controller\Company;
 
 use App\Adapter\Framework\Http\Dto\Company\CreateCompanyRequestDto;
-use App\Application\UseCase\Company\CreateCompany\CreateCompany;
+use App\Application\UseCase\Company\CreateCompany\CreateCompanyService;
 use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyInputDto;
 use App\Domain\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 readonly class CreateCompanyController
 {
     public function __construct(
-        private CreateCompany $createCompany,
+        private CreateCompanyService $createCompany,
         private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 

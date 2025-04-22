@@ -50,7 +50,6 @@ class GetCompanyByIdTest extends TestCase
         // Arrange
         $id = self::INVALID_ID; // Use the invalid format ID here
 
-        // The repository should not be called with invalid ID
         $this->companyRepository->expects($this->never())
             ->method('findOneByIdOrFail');
 
@@ -68,7 +67,6 @@ class GetCompanyByIdTest extends TestCase
         // Arrange
         $id = self::EMPTY_ID;
 
-        // The repository should not be called with empty ID
         $this->companyRepository->expects($this->never())
             ->method('findOneByIdOrFail');
 

@@ -11,14 +11,14 @@ use App\Domain\ValueObject\CompanyTaxpayer;
 readonly class GetCompanyByTaxpayerService
 {
     public function __construct(
-        private readonly CompanyRepositoryInterface $companyRepo,
-    ) {
-    }
+        private CompanyRepositoryInterface $companyRepo,
+    ) {}
 
     public function handle(string $taxpayer): GetCompanyByTaxpayerOutputDto
     {
         $company = $this->companyRepo->findOneByTaxpayerOrFail(
-            CompanyTaxpayer::fromString($taxpayer)->value());
+            CompanyTaxpayer::fromString($taxpayer)->value(),
+        );
 
         return GetCompanyByTaxpayerOutputDto::create($company);
     }

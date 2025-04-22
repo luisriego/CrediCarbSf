@@ -7,6 +7,7 @@ namespace App\Domain\Repository;
 use App\Adapter\Framework\Http\API\Filter\CompanyFilter;
 use App\Adapter\Framework\Http\API\Response\PaginatedResponse;
 use App\Domain\Model\Company;
+use App\Domain\ValueObject\CompanyTaxpayer;
 
 interface CompanyRepositoryInterface
 {
@@ -24,7 +25,7 @@ interface CompanyRepositoryInterface
 
     public function findOneByTaxpayerOrFail(string $taxpayer): Company;
 
-    public function validateTaxpayerUniqueness(string $taxpayer): void;
+    public function validateTaxpayerUniqueness(CompanyTaxpayer $taxpayer): void;
 
     public function existById(string $id): bool;
 

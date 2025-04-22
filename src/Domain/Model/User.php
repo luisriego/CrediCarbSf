@@ -142,12 +142,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->company = $company;
     }
-//
-//    // for Nelmio\Alice\Fixtures\Fixture purposes
-//    public function setCompany(?Company $company): void
-//    {
-//        $this->company = $company;
-//    }
+    //
+    //    // for Nelmio\Alice\Fixtures\Fixture purposes
+    //    public function setCompany(?Company $company): void
+    //    {
+    //        $this->company = $company;
+    //    }
 
     public function getEmail(): ?string
     {
@@ -162,7 +162,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this->company->getId() === $companyId;
     }
-
 
     /**
      * A visual identifier that represents this user.
@@ -203,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function hasRole(UserRole $role): bool
     {
-        return in_array($role, $this->getRoles(), true);
+        return in_array($role->value, $this->getRoles(), true);
     }
 
     /**

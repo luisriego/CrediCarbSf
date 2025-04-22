@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace App\Application\Command\Company;
 
 use App\Domain\Bus\Command\Command;
-use App\Domain\ValueObject\CompanyId;
-use App\Domain\ValueObject\CompanyName;
-use App\Domain\ValueObject\CompanyTaxpayer;
 
 final readonly class CreateCompanyCommand implements Command
 {
     public function __construct(
-        private CompanyId $id,
-        private CompanyTaxpayer $taxpayer,
-        private CompanyName $fantasyName,
+        private string $id,
+        private string $taxpayer,
+        private string $fantasyName,
     ) {}
 
     public static function create(
@@ -22,11 +19,7 @@ final readonly class CreateCompanyCommand implements Command
         string $taxpayer,
         string $fantasyName,
     ): self {
-        return new self(
-            CompanyId::fromString($id),
-            CompanyTaxpayer::fromString($taxpayer),
-            CompanyName::fromString($fantasyName),
-        );
+        return new self($id, $taxpayer, $fantasyName);
     }
 
     public function id(): string

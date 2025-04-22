@@ -46,23 +46,10 @@ class UpdateCompanyTest extends TestCase
         // Arrange
         $nonExistingId = 'e7b6c15d-fa92-47bc-8289-9db382ae0378';
         $inputDto = UpdateCompanyInputDtoMother::withNonExistingId();
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $nonExistingId)
-            ->willReturn(true);
-
-        $this->companyRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
+            ->method('canUpdateOrFail')
             ->with($nonExistingId)
             ->willThrowException(new ResourceNotFoundException('Company not found'));
 
@@ -78,19 +65,12 @@ class UpdateCompanyTest extends TestCase
     {
         // Arrange
         $inputDto = UpdateCompanyInputDtoMother::withValidData();
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $inputDto->id)
-            ->willReturn(false);
+            ->method('canUpdateOrFail')
+            ->with($inputDto->id)
+            ->willThrowException(new AccessDeniedException('User has no access'));
 
         // Assert
         $this->expectException(AccessDeniedException::class);
@@ -106,25 +86,12 @@ class UpdateCompanyTest extends TestCase
         $inputDto = UpdateCompanyInputDtoMother::withValidData(
             fantasyName: 'Updated Company Name'
         );
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $inputDto->id)
-            ->willReturn(true);
-
-        $this->companyRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
+            ->method('canUpdateOrFail')
             ->with($inputDto->id)
-            ->willReturn($company);
+            ->willThrowException(new InvalidArgumentException('Fantasy name is the same'));
 
         // Assert
         $this->expectException(InvalidArgumentException::class);
@@ -160,25 +127,12 @@ class UpdateCompanyTest extends TestCase
         $inputDto = UpdateCompanyInputDtoMother::withValidData(
             fantasyName: ''
         );
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $inputDto->id)
-            ->willReturn(true);
-
-        $this->companyRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
+            ->method('canUpdateOrFail')
             ->with($inputDto->id)
-            ->willReturn($company);
+            ->willThrowException(new InvalidArgumentException('Fantasy name must be between 5 and 100 characters'));
 
         // Assert
         $this->expectException(InvalidArgumentException::class);
@@ -196,25 +150,12 @@ class UpdateCompanyTest extends TestCase
         $inputDto = UpdateCompanyInputDtoMother::withValidData(
             fantasyName: $tooLongName
         );
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $inputDto->id)
-            ->willReturn(true);
-
-        $this->companyRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
+            ->method('canUpdateOrFail')
             ->with($inputDto->id)
-            ->willReturn($company);
+            ->willThrowException(new InvalidArgumentException('Fantasy name must be between 5 and 100 characters'));
 
         // Assert
         $this->expectException(InvalidArgumentException::class);
@@ -231,25 +172,12 @@ class UpdateCompanyTest extends TestCase
         $inputDto = UpdateCompanyInputDtoMother::withValidData(
             fantasyName: ''
         );
-        $user = UserMother::create();
-
-        $this->userRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
-            ->with($inputDto->userId)
-            ->willReturn($user);
 
         $this->companyPolicy
             ->expects($this->once())
-            ->method('canUpdate')
-            ->with($user, $inputDto->id)
-            ->willReturn(true);
-
-        $this->companyRepository
-            ->expects($this->once())
-            ->method('findOneByIdOrFail')
+            ->method('canUpdateOrFail')
             ->with($inputDto->id)
-            ->willReturn($company);
+            ->willThrowException(new InvalidArgumentException('Fantasy name must be between 5 and 100 characters'));
 
         // Assert
         $this->expectException(InvalidArgumentException::class);

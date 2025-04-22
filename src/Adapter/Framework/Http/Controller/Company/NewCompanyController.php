@@ -6,6 +6,9 @@ namespace App\Adapter\Framework\Http\Controller\Company;
 
 use App\Adapter\Framework\Http\Dto\Company\CreateCompanyRequestDto;
 use App\Application\Command\Company\CreateCompanyCommand;
+use App\Domain\ValueObject\CompanyId;
+use App\Domain\ValueObject\CompanyName;
+use App\Domain\ValueObject\CompanyTaxpayer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -21,9 +24,9 @@ readonly class NewCompanyController
     public function __invoke(string $id, CreateCompanyRequestDto $requestDto): JsonResponse
     {
         $command = new CreateCompanyCommand(
-            $id,
-            $requestDto->fantasyName,
-            $requestDto->taxpayer,
+            CompanyId::fromString($id)->value(),
+            CompanyName::fromString($requestDto->fantasyName)->value(),
+            CompanyTaxpayer::fromString($requestDto->taxpayer)->value(),
         );
 
         $this->commandBus->dispatch($command);

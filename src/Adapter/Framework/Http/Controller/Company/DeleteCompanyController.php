@@ -4,33 +4,32 @@ declare(strict_types=1);
 
 namespace App\Adapter\Framework\Http\Controller\Company;
 
-use App\Adapter\Framework\Security\Voter\CompanyVoter;
-use App\Domain\Exception\AccessDeniedException;
-use App\Domain\Repository\CompanyRepositoryInterface;
+use App\Application\UseCase\Company\DeleteCompanyService\DeleteCompanyService;
+use App\Application\UseCase\Company\DeleteCompanyService\Dto\DeleteCompanyInputDto;
+use App\Domain\Model\User;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 readonly class DeleteCompanyController
 {
     public function __construct(
-        public CompanyRepositoryInterface $companyRepo,
-        public AuthorizationCheckerInterface $authorizationChecker,
+        public Security $security,
+        public DeleteCompanyService $useCase,
     ) {}
 
     #[Route('/api/v1/companies/{id}', name: 'delete_company', methods: ['DELETE'])]
     public function invoke(string $id): Response
     {
         try {
-            $companyToDelete = $this->companyRepo->findOneByIdOrFail($id);
+            /** @var User $user */
+            $user = $this->security->getToken()->getUser();
 
-            if (!$this->authorizationChecker->isGranted(CompanyVoter::DELETE_COMPANY, $companyToDelete)) {
-                throw AccessDeniedException::UnauthorizedUser();
-            }
+            $inputDto = DeleteCompanyInputDto::create($id, $user->getId());
 
-            $this->companyRepo->remove($companyToDelete, true);
+            $this->useCase->handle($inputDto);
 
             return new JsonResponse(null, Response::HTTP_NO_CONTENT);
         } catch (ForeignKeyConstraintViolationException $e) {

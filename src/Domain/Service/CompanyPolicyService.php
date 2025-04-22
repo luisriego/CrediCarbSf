@@ -1,38 +1,85 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Service;
 
 use App\Domain\Common\UserRole;
-use App\Domain\Model\User;
+use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Policy\CompanyPolicyInterface;
+use App\Domain\Security\CurrentUserProviderInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 readonly class CompanyPolicyService implements CompanyPolicyInterface
 {
-    public function canCreate(string $userId): bool
-    {
-        return true;
-    }
+    public function __construct(
+        private readonly CurrentUserProviderInterface $currentUserProvider,
+        private AuthorizationCheckerInterface $authorizationChecker,
+    ) {}
 
-    public function canDelete(string $userId, string $companyId): bool
+    public function canAddUserOrFail(string $companyId): void
     {
-        return false;
-    }
+        $user = $this->currentUserProvider->getCurrentUser();
 
-    public function canUpdate(User $user, string $companyId): bool
-    {
-        if ($user->belongsToCompany($companyId)) {
-            return true;
+        if ($this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
         }
 
-        if ($user->hasRole(UserRole::ADMIN)) {
-            return true;
+        if ($user->belongsToCompany($companyId)
+            && $this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
         }
 
-        return false;
+        throw AccessDeniedException::UnauthorizedUser();
     }
 
-    public function canView(string $userId, string $companyId): bool
+    public function canCreateOrFail(): void
     {
-        return true;
+        if ($this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
+        }
+
+        throw AccessDeniedException::UnauthorizedUser();
+    }
+
+    public function canDeleteOrFail(string $companyId): void
+    {
+        $user = $this->currentUserProvider->getCurrentUser();
+
+        if ($this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
+        }
+
+        if ($user->belongsToCompany($companyId)
+            && $this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
+        }
+
+        throw AccessDeniedException::UnauthorizedUser();
+    }
+
+    public function canUpdateOrFail(string $companyId): void
+    {
+        $user = $this->currentUserProvider->getCurrentUser();
+
+        if ($this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
+        }
+
+        if ($user->belongsToCompany($companyId)
+            && $this->authorizationChecker->isGranted(UserRole::OPERATOR->value)) {
+            return;
+        }
+
+        throw AccessDeniedException::UnauthorizedUser();
+    }
+
+    public function canViewOrFail(): void
+    {
+        if ($this->authorizationChecker->isGranted(UserRole::USER->value)) {
+            return;
+        }
+
+        throw AccessDeniedException::UnauthorizedUser();
     }
 }
