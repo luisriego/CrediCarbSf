@@ -36,5 +36,10 @@ class CompanyName extends FantasyName
                 'Company name contains disallowed special characters',
             );
         }
+
+        if (preg_match('/[<>{}[\]()\/\\\\^*!?+~`|=]/', $value)) {
+            throw new InvalidArgumentException(
+                'Company name contains disallowed special characters');
+        }
     }
 }

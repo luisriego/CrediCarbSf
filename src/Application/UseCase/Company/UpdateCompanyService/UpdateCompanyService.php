@@ -6,6 +6,7 @@ namespace App\Application\UseCase\Company\UpdateCompanyService;
 
 use App\Application\UseCase\Company\UpdateCompanyService\Dto\UpdateCompanyInputDto;
 use App\Application\UseCase\Company\UpdateCompanyService\Dto\UpdateCompanyOutputDto;
+use App\Domain\Exception\AccessDeniedException;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Policy\CompanyPolicyInterface;
 use App\Domain\Repository\CompanyRepositoryInterface;

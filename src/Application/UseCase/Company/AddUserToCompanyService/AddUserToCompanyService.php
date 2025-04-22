@@ -26,7 +26,6 @@ readonly class AddUserToCompanyService
         $user = $this->userRepository->findOneByIdOrFail($inputDto->userId);
 
         $this->companyPolicy->canAddUserOrFail($company->id());
-
         $user->assignToCompany($company);
 
         $company->assignUserToCompany($user);

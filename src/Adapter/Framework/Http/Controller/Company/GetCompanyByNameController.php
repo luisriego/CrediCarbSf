@@ -19,7 +19,7 @@ use function count;
 class GetCompanyByNameController extends AbstractController
 {
     public function __construct(
-        private readonly GetCompanyByNameService $useCase,
+        private readonly GetCompanyByNameService $useCase, private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(
