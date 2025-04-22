@@ -1,0 +1,78 @@
+services:
+  cch-app:
+    container_name: cch-app
+    build:
+      context: ./docker
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/var/www/html
+    environment:
+      XDEBUG_CLIENT_HOST: 172.17.0.1
+      XDEBUG_CLIENT_PORT: 9003
+      PHP_IDE_CONFIG: serverName=cch-server
+    ports:
+      - '1000:80'
+    networks:
+      - cch-network
+    depends_on:
+      - cch-mysql
+      - rabbitmq
+
+  cch-mysql:
+    container_name: cch-mysql
+    image: mysql:8.2.0
+    ports:
+      - '3336:3306'
+    environment:
+      MYSQL_DATABASE: cch-app
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - cch-mysql-data:/var/lib/mysql
+    networks:
+      - cch-network
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+  cch-mailpit:
+    container_name: cch-mailpit
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - cch-network
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - "11434:11434"
+    networks:
+      - cch-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - cch-network
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+networks:
+  cch-network:
+
+volumes:
+  cch-mysql-data:
+  ollama-data:
+  rabbitmq-data:
