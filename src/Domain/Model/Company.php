@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
-use App\Domain\Bus\Event\DomainEvent;
 use App\Domain\Common\AggregateRoot;
 use App\Domain\Event\CreateCompanyDomainEvent;
 use App\Domain\Exception\InvalidArgumentException;
@@ -17,6 +16,7 @@ use App\Domain\ValueObject\CompanyId;
 use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\CompanyTaxpayer;
 use App\Domain\ValueObject\Uuid;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -88,8 +88,8 @@ class Company extends AggregateRoot
                 $company->taxpayer(),
                 $company->fantasyName(),
                 Uuid::random()->value(),
-                (new \DateTimeImmutable())->format(DateTimeInterface::ATOM),
-            )
+                (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+            ),
         );
 
         return $company;

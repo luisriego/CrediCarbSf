@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domain\Bus\Event;
 
-abstract  class DomainEvent
+abstract class DomainEvent
 {
     public function __construct(
         private readonly string $aggregateId,
         private readonly string $eventId,
-        private readonly string $occurredOn)
-    { }
+        private readonly string $occurredOn,
+    ) {}
 
     abstract public static function fromPrimitives(
         string $aggregateId,
         array $body,
         string $eventId,
-        string $occurredOn
+        string $occurredOn,
     ): self;
 
     abstract public static function eventName(): string;

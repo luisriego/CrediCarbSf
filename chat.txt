@@ -1,12 +1,21 @@
-RESUMEN DEL PROYECTO:
-- Sistema desarrollado en PHP 8.2 con Symfony 6.4 y MySQL en ambiente dockerizado
-- Arquitectura Hexagonal, DDD, SOLID y Clean Code
-- Implementa Events y Subscriber Pattern
-- Desarrollo guiado por TDD con uso extensivo de testing
-- Requiere implementación progresiva de CQRS+Event Sourcing
-- Entidades principales: Certification, CertificationAuthority, CertificationTypeEntity, Company, Discount, Project, ShoppingCart, ShoppingCartItem, User
-- Objetivo: Sistema de gestión de proyectos con certificaciones y comercialización
-- Repositorio de eventos pendiente para completar Event Sourcing
-- Enfoque en calidad de código con PHPStan, PHP CS Fixer, Psalm y PHPCodeSniffer
+Project Summary:
 
-Todas tus respuestas pueden estar en ingles, español o portugues pero comentarios dentro del codigo serán siempre, si o si en ingles.
+System developed in PHP 8.2 with Symfony 6.4 and MySQL in a dockerized environment
+
+Hexagonal Architecture, DDD (Domain-Driven Design), SOLID principles, and Clean Code practices
+
+Implements Events and Subscriber Pattern
+
+Development guided by TDD (Test-Driven Development) with extensive use of testing
+
+Progressive implementation of CQRS (Command Query Responsibility Segregation) + Event Sourcing is required
+
+Main entities: Certification, CertificationAuthority, CertificationTypeEntity, Company, Discount, Project, ShoppingCart, ShoppingCartItem, User
+
+Objective: Project management system with certifications and commercialization features
+
+Event repository pending completion for Event Sourcing
+
+Focus on code quality with tools such as PHPStan, PHP CS Fixer, Psalm, and PHPCodeSniffer
+
+All responses can be in English, Spanish, or Portuguese, but comments within the code must always, without exception, be in English.

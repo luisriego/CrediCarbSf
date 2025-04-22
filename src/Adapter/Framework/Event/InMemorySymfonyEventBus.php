@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapter\Framework\Event;
 
 use App\Domain\Bus\Event\DomainEvent;
 use App\Domain\Bus\Event\EventBus;
-use phpDocumentor\Reflection\Types\Iterable_;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
@@ -19,9 +20,9 @@ class InMemorySymfonyEventBus implements EventBus
         $this->bus = new MessageBus(
             [
                 new HandleMessageMiddleware(
-                    new HandlersLocator(CallableFirstParameterExtractor::forPipedCallables($subscribers))
+                    new HandlersLocator(CallableFirstParameterExtractor::forPipedCallables($subscribers)),
                 ),
-            ]
+            ],
         );
     }
 

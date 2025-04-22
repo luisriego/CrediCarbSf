@@ -22,15 +22,14 @@ final class CreateCompanyDomainEvent extends DomainEvent
         string $aggregateId,
         array $body,
         string $eventId,
-        string $occurredOn
-    ): self
-    {
+        string $occurredOn,
+    ): self {
         return new self(
             $aggregateId,
             $body['taxpayer'],
             $body['fantasyName'],
             $eventId,
-            $occurredOn
+            $occurredOn,
         );
     }
 

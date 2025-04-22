@@ -6,7 +6,6 @@ namespace App\Domain\Service;
 
 use App\Domain\Common\UserRole;
 use App\Domain\Exception\AccessDeniedException;
-use App\Domain\Model\User;
 use App\Domain\Policy\CompanyPolicyInterface;
 use App\Domain\Security\CurrentUserProviderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

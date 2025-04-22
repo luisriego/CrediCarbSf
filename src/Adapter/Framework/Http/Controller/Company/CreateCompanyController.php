@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 readonly class CreateCompanyController
 {
     public function __construct(
-        private CreateCompanyService          $createCompany,
+        private CreateCompanyService $createCompany,
         private AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 

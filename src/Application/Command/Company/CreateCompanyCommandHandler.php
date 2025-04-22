@@ -14,7 +14,6 @@ final readonly class CreateCompanyCommandHandler implements CommandHandler
 {
     public function __construct(
         private CreateCompany $createCompany,
-
     ) {}
 
     public function __invoke(CreateCompanyCommand $command): void

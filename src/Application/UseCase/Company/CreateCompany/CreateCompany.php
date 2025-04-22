@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\UseCase\Company\CreateCompany;
 
-use App\Application\UseCase\Company\CreateCompany\Dto\CreateCompanyOutputDto;
 use App\Domain\Bus\Event\EventBus;
 use App\Domain\Model\Company;
 use App\Domain\Policy\CompanyPolicyInterface;
@@ -15,16 +16,15 @@ readonly class CreateCompany
 {
     public function __construct(
         private CompanyRepositoryInterface $companyRepository,
-        private CompanyPolicyInterface     $companyPolicy,
+        private CompanyPolicyInterface $companyPolicy,
         private EventBus $bus,
     ) {}
 
     public function create(
         CompanyId $id,
         CompanyTaxpayer $taxpayer,
-        CompanyName $fantasyName
-    ): void
-    {
+        CompanyName $fantasyName,
+    ): void {
         $this->companyPolicy->canCreateOrFail();
 
         $this->companyRepository->validateTaxpayerUniqueness($taxpayer);

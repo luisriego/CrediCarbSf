@@ -1,8 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapter\Framework\Event;
 
 use App\Domain\Bus\Event\DomainEventSubscriber;
+use ReflectionClass;
+
+use function map;
+use function reduce;
+use function reindex;
 
 final class CallableFirstParameterExtractor
 {
@@ -14,6 +21,18 @@ final class CallableFirstParameterExtractor
     public static function forPipedCallables(iterable $callables): array
     {
         return reduce(self::pipedCallablesReducer(), $callables, []);
+    }
+
+    public function extract(object $class): ?string
+    {
+        $reflector = new ReflectionClass($class);
+        $method = $reflector->getMethod('__invoke');
+
+        if ($this->hasOnlyOneParameter($method)) {
+            return $this->firstParameterClassFrom($method);
+        }
+
+        return null;
     }
 
     private static function classExtractor(self $parameterExtractor): callable
@@ -37,18 +56,6 @@ final class CallableFirstParameterExtractor
     private static function unflatten(): callable
     {
         return static fn (mixed $value): array => [$value];
-    }
-
-    public function extract(object $class): ?string
-    {
-        $reflector = new \ReflectionClass($class);
-        $method = $reflector->getMethod('__invoke');
-
-        if ($this->hasOnlyOneParameter($method)) {
-            return $this->firstParameterClassFrom($method);
-        }
-
-        return null;
     }
 
     private function firstParameterClassFrom(ReflectionMethod $method): string
