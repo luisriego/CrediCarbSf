@@ -24,16 +24,16 @@ final readonly class CreateCompanyCommand implements Command
 
     public function id(): string
     {
-        return $this->id->value();
+        return $this->id;
     }
 
     public function fantasyName(): string
     {
-        return $this->fantasyName->value();
+        return $this->fantasyName;
     }
 
     public function taxpayer(): string
     {
-        return $this->taxpayer->value();
+        return $this->taxpayer;
     }
 }
