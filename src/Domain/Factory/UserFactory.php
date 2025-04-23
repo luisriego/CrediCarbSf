@@ -8,12 +8,15 @@ use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Password;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\UserName;
 
 use function is_bool;
 
 class UserFactory
 {
-    public function createUser(
+    public static function createUser(
+        string $id,
         string $name,
         string $email,
         string $password,
@@ -22,9 +25,10 @@ class UserFactory
         bool $isActive = false,
     ): User {
         $user = User::create(
-            $name,
-            new Email($email),
-            new Password($password),
+            UserId::fromString($id),
+            UserName::fromString($name),
+            Email::fromString($email),
+            Password::fromString($password),
         );
 
         if ($company) {

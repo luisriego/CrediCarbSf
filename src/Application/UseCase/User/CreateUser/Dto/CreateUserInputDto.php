@@ -19,39 +19,23 @@ class CreateUserInputDto
     use AssertLengthRangeTrait;
     use AssertPasswordValidatorTrait;
 
-    private const ARGS = [
-        'name',
-        'email',
-        'password',
-        'age',
-    ];
-    private const MINIMUM_AGE = 18;
-
+    public string $id;
     public string $name;
     public string $email;
     public string $password;
     public int $age;
 
-    private function __construct(string $name, string $email, string $password, int $age)
+    private function __construct(string $id,string $name, string $email, string $password, int $age)
     {
-        $this->age = $age;
-        $this->password = $password;
+        $this->id = $id;
         $this->email = $email;
+        $this->password = $password;
         $this->name = $name;
-
-        $this->assertNotNull(self::ARGS, [$this->name, $this->email, $this->password, $this->age]);
-
-        $this->assertMinimumAge($this->age, User::MIN_AGE);
-
-        $this->assertValueRangeLength($this->password, 6, 50);
-
-        $this->assertValidEmail($this->email);
-
-        $this->assertPassword($this->password);
+        $this->age = $age;
     }
 
-    public static function create(?string $name, ?string $email, ?string $password, ?int $age): self
+    public static function create(?string $id,?string $name, ?string $email, ?string $password, ?int $age): self
     {
-        return new static($name, $email, $password, $age);
+        return new static($id, $name, $email, $password, $age);
     }
 }

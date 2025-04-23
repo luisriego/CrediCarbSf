@@ -20,6 +20,7 @@ class CreateUserController extends AbstractController
     {
         $responseDto = $this->createUserService->handle(
             CreateUserInputDto::create(
+                $request->id,
                 $request->name,
                 $request->email,
                 $request->password,

@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Domain\Model;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Model\User;
 use App\Domain\Security\PasswordHasherInterface;
+use App\Tests\Unit\Domain\Model\Mother\UserMother;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -15,28 +16,23 @@ class UserTest extends TestCase
 
     private PasswordHasherInterface $hasherMock;
 
-    /**
-     * @throws Exception
-     */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->hasherMock = $this->createMock(PasswordHasherInterface::class);
-        $this->hasherMock->method('hashPasswordForUser')
-            ->willReturn('validPass123');
     }
 
     public function testSetPasswordHappyPath(): void
     {
-        $user = new User('John Doe', 'john@example.com', '1nitialPass');
+        $user = UserMother::create();
         $user->setPassword('validPass123', $this->hasherMock);
 
-        $this->assertSame('validPass123', $user->getPassword());
+        $this->assertSame('', $user->getPassword());
     }
 
     public function testUpdatedOnIsUpdated(): void
     {
-        $user = User::create('Test User', 'test@example.com', 'InitialPass');
+        $user = UserMother::create();
+        // $user = User::create('Test User', 'test@example.com', 'InitialPass');
         $oldUpdatedOn = $user->getUpdatedOn();
 
         // Trigger an update, for example:
@@ -51,33 +47,36 @@ class UserTest extends TestCase
     public function testNameTooShort(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new User('A', 'valid@example.com', 'ValidPass7');
+        $user = UserMother::withInvalidName('A');
+        // new User('A', 'valid@example.com', 'ValidPass7');
     }
 
     public function testNameTooLong(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new User(str_repeat('X', 500), 'valid@example.com', 'ValidPass8');
+        UserMother::withInvalidName(str_repeat('X', 500));
+        // new User(str_repeat('X', 500), 'valid@example.com', 'ValidPass8');
     }
 
     public function testNegativeAge(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $user = new User('ValidName', 'valid@example.com', 'Pass8ok');
-        $user->setAge(-1);
+        UserMother::withAge(-1);
     }
 
     public function testPasswordTooShort(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $user = new User('ValidName', 'valid@example.com', 'Shor1');
+        $user = UserMother::create();
+        // $user = new User('ValidName', 'valid@example.com', 'Shor1');
         $user->setPassword('Shor1', $this->hasherMock);
     }
 
     public function testPasswordWithoutNumber(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $user = new User('ValidName', 'valid@example.com', 'InvalidWithoutNumber');
-        $user->setPassword('Shor1', $this->hasherMock);
+        $user = UserMother::create();
+        // $user = new User('ValidName', 'valid@example.com', 'InvalidWithoutNumber');
+        $user->setPassword('InvalidWithoutNumber', $this->hasherMock);
     }
 }

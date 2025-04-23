@@ -6,6 +6,10 @@ namespace App\Tests\Functional\Controller\User;
 
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Password;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\UserName;
 use App\Tests\Functional\FunctionalTestBase;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +26,11 @@ class DeleteUserControllerTest extends FunctionalTestBase
         parent::setUp();
 
         $userRepository = static::getContainer()->get(UserRepositoryInterface::class);
-        $testUser = User::create('For testing', 'for@testing.app', 'Password1!');
+        $testUser = User::create(
+            UserId::random(), 
+            UserName::fromString('For Testing'),
+            Email::fromString('for@testing.app'), 
+            Password::fromString('Password1!'));
         $userRepository->save($testUser, true);
         $this->userId = $testUser->getId();
 

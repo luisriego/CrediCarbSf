@@ -10,6 +10,10 @@ use App\Domain\Exception\User\UserAlreadyExistsException;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\Security\PasswordHasherInterface;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Password;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\UserName;
 
 readonly class CreateUser
 {
@@ -25,9 +29,10 @@ readonly class CreateUser
         }
 
         $user = User::create(
-            $inputDto->name,
-            $inputDto->email,
-            $inputDto->password,
+            UserId::fromString($inputDto->id),
+            UserName::fromString($inputDto->name),
+            Email::fromString($inputDto->email),
+            Password::fromString($inputDto->password),
         );
 
         //        $password = $this->passwordHasher->hashPasswordForUser($user, $inputDto->password);
