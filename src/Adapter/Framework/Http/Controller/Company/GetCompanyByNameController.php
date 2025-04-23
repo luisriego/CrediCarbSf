@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function array_map;
@@ -19,7 +20,8 @@ use function count;
 class GetCompanyByNameController extends AbstractController
 {
     public function __construct(
-        private readonly GetCompanyByNameService $useCase, private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly GetCompanyByNameService $useCase, 
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {}
 
     #[Route(
