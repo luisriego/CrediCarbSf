@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Controller\User;
 
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Password;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\UserName;
 use App\Tests\Functional\FunctionalTestBase;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +22,18 @@ class RegisterNewUserTest extends FunctionalTestBase
      */
     public function testCreateUser(): void
     {
+        $id = UserId::random();
+        $name = UserName::fromString('Test User');
+        $email = Email::fromString('test@example.com');
+        $password = Password::fromString('Password@123');
+
+
         $payload = [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'Password123',
-            'age' => 25,
+            'id' => $id->value(),
+            'name' => $name->value(),
+            'email' => $email->value(),
+            'password' => $password->value(),
+            'age' => 25
         ];
 
         self::$authenticatedClient->request(
@@ -45,6 +56,7 @@ class RegisterNewUserTest extends FunctionalTestBase
     public function testCreateUserWithMissingFields(): void
     {
         $payload = [
+            'id' => '123e4567-e89b-12d3-a456-426614174001',
             'name' => 'Test User',
             // Missing email and password
             'age' => 25,
@@ -63,6 +75,7 @@ class RegisterNewUserTest extends FunctionalTestBase
     public function testCreateUserWithInvalidEmail(): void
     {
         $payload = [
+            'id' => '123e4567-e89b-12d3-a456-426614174002',
             'name' => 'Test User',
             'email' => 'invalid-email',
             'password' => 'Password123',
@@ -82,6 +95,7 @@ class RegisterNewUserTest extends FunctionalTestBase
     public function testCreateUserWithShortPassword(): void
     {
         $payload = [
+            'id' => '123e4567-e89b-12d3-a456-426614174003',
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'Shor1',
@@ -100,18 +114,24 @@ class RegisterNewUserTest extends FunctionalTestBase
      */
     public function testCreateUserWithDuplicatedEmail(): void
     {
+        $id = UserId::random();
+        $name = UserName::fromString('Test User');
+        $email = Email::fromString('test@example.com');
+        $password = Password::fromString('Password@123');
+
         $payload = [
-            'name' => 'Test User',
-            'email' => 'duplicate@example.com',
-            'password' => 'Password123',
-            'age' => 25,
+            'id' => $id->value(),
+            'name' => $name->value(),
+            'email' => $email->value(),
+            'password' => $password->value(),
+            'age' => 25
         ];
 
         // Create the first user
         self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
         $response = self::$authenticatedClient->getResponse();
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-
+        dump($response);
         // Try to create another user with the same email
         self::$authenticatedClient->request(Request::METHOD_POST, self::CREATE_USER_ENDPOINT, [], [], [], json_encode($payload));
         $response = self::$authenticatedClient->getResponse();

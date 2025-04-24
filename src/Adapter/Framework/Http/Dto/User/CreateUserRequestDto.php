@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateUserRequestDto implements RequestDto
 {
+    public string $id;
     public string $name;
     public string $email;
     public string $password;
@@ -17,7 +18,8 @@ class CreateUserRequestDto implements RequestDto
 
     public function __construct(Request $request)
     {
-        if (empty($request->request->get('name'))
+        if (empty($request->request->get('id'))
+            || empty($request->request->get('name'))
             || empty($request->request->get('email'))
             || empty($request->request->get('password'))
             || empty($request->request->get('age'))
@@ -25,6 +27,7 @@ class CreateUserRequestDto implements RequestDto
             throw InvalidArgumentException::createFromMessage('All fields are required');
         }
 
+        $this->id = $request->request->get('id');
         $this->name = $request->request->get('name');
         $this->email = $request->request->get('email');
         $this->password = $request->request->get('password');

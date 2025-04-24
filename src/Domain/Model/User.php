@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Adapter\Database\ORM\Doctrine\Repository\DoctrineUserRepository;
+use App\Domain\Common\AggregateRoot;
 use App\Domain\Common\UserRole;
+use App\Domain\Event\CreateUserDomainEvent;
 use App\Domain\Exception\InvalidArgumentException;
 use App\Domain\Security\PasswordHasherInterface;
 use App\Domain\Trait\IdentifierTrait;
@@ -13,8 +15,13 @@ use App\Domain\Trait\IsActiveTrait;
 use App\Domain\Trait\TimestampableTrait;
 use App\Domain\Validation\Traits\AssertLengthRangeTrait;
 use App\Domain\Validation\Traits\AssertPasswordValidatorTrait;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\Password;
+use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\Uuid;
+use App\Domain\ValueObject\UserName;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -27,7 +34,7 @@ use function uniqid;
 
 #[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AggregateRoot implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use IdentifierTrait;
     use TimestampableTrait;
@@ -67,14 +74,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Company $company = null;
 
     public function __construct(
+        string $id,
         string $name,
         string $email,
         string $password,
     ) {
-        $this->id = Uuid::random()->value();
-        $this->setName($name);
-        $this->email = $email;
-        $this->password = $password;
+        $this->id = UserId::fromString(id: $id)->value();
+        $this->name = UserName::fromString(name: $name)->value();
+        $this->email = Email::fromString(email: $email)->value();
+        $this->password = Password::fromString(password: $password)->value();
         $this->token = sha1(uniqid('', true));
         $this->age = 18;
         $this->isActive = false;
@@ -82,13 +90,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->markAsUpdated();
     }
 
-    public static function create($name, $email, $password): self
+    public static function create(UserId $id, UserName $name, Email $email, Password $password): self
     {
-        return new static(
-            $name,
-            $email,
-            $password,
+        $user = new self(
+            $id->value(),
+            $name->value(),
+            $email->value(),
+            $password->value(),
         );
+
+        $user->record(
+            new CreateUserDomainEvent(
+                $user->id(),
+                $user->getName(),
+                $user->getEmail(),
+                $user->getPassword(),
+                Uuid::random()->value(),
+                (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+            ));
+
+        return $user;
     }
 
     public function getId(): ?string

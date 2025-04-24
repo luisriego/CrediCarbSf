@@ -17,6 +17,11 @@ class Password
         $this->assertValidPassword($this->value);
     }
 
+    public static function fromString(string $password): self
+    {
+        return new self($password);
+    }
+
     public function __toString(): string
     {
         return $this->value;

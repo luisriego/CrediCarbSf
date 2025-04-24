@@ -9,7 +9,7 @@ use App\Domain\Exception\InvalidArgumentException;
 use function mb_strlen;
 use function sprintf;
 
-class FantasyName
+class Name
 {
     protected const MIN_LENGTH = 5;
     protected const MAX_LENGTH = 100;

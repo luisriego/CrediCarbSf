@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Application\Command\Company;
 
 use App\Application\Command\Company\CreateCompanyCommand;
-use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\Taxpayer;
 use App\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ class CreateCompanyCommandTest extends TestCase
     {
         $id = Uuid::random();
         $taxpayer = Taxpayer::fromString('33592510002521');
-        $fantasyName = FantasyName::fromString('Valid Company Name');
+        $fantasyName = CompanyName::fromString('Valid Company Name');
 
         $command = CreateCompanyCommand::create(
             $id,
@@ -31,7 +31,7 @@ class CreateCompanyCommandTest extends TestCase
         $command = CreateCompanyCommand::create(
             Uuid::random(),
             Taxpayer::fromString('33592510002521'),
-            FantasyName::fromString('Valid Company Name')
+            CompanyName::fromString('Valid Company Name')
         );
 
         $reflectionClass = new \ReflectionClass($command);

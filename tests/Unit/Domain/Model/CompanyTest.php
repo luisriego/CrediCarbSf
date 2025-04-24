@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Domain\Model;
 use App\Domain\Model\Company;
 use App\Domain\Model\Project;
 use App\Domain\Model\User;
-use App\Domain\ValueObject\FantasyName;
+use App\Domain\ValueObject\CompanyName;
 use App\Domain\ValueObject\Taxpayer;
 use App\Tests\Unit\Domain\Model\Mother\CompanyMother;
 use DomainException;

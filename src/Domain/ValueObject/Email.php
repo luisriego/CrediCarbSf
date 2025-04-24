@@ -22,6 +22,11 @@ class Email
         $this->value = mb_strtolower($value);
     }
 
+    public static function fromString(string $email): self
+    {
+        return new self($email);
+    }
+
     public function __toString(): string
     {
         return $this->value;

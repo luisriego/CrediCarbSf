@@ -61,7 +61,7 @@ class Company extends AggregateRoot
 
     private function __construct(string $id, string $taxpayer, string $fantasyName)
     {
-        $this->validateFantasyName($fantasyName);
+        $this->validateName($fantasyName);
 
         $this->id = CompanyId::fromString(id: $id)->value();
         $this->taxpayer = CompanyTaxpayer::fromString(taxpayer: $taxpayer)->value();
@@ -107,7 +107,7 @@ class Company extends AggregateRoot
 
     public function updateFantasyName(string $fantasyName): void
     {
-        $this->validateFantasyName($fantasyName);
+        $this->validateName($fantasyName);
         $this->fantasyName = $fantasyName;
         $this->markAsUpdated();
     }
@@ -219,7 +219,7 @@ class Company extends AggregateRoot
         ];
     }
 
-    private function validateFantasyName(?string $fantasyName): void
+    private function validateName(?string $fantasyName): void
     {
         if ($fantasyName !== null
             && (mb_strlen($fantasyName) < self::NAME_MIN_LENGTH || mb_strlen($fantasyName) > self::NAME_MAX_LENGTH)
