@@ -1,0 +1,6 @@
+// src/components/MainContent.module.scss
+.mainContent {
+  padding: 20px 0; // Adjusted from original .main-content which had background
+  background: transparent; // Assuming sections inside will have their own backgrounds
+  margin-top: 20px; // From original .main-content
+}

@@ -1,0 +1,38 @@
+// src/components/CallToAction.module.scss
+.callToAction {
+  padding: 30px 0;
+  background-color: #e7f4e7; // Light green background from previous design
+  text-align: center;
+
+  h2 {
+    margin-bottom: 15px;
+    font-size: 1.8em;
+    color: #38761d; // Added to match original callout h2 color
+  }
+
+  .incentiveText { // Renamed from simple .incentive-text
+    font-weight: bold;
+    color: #2e8b57; // Darker green
+    margin-bottom: 15px;
+    font-size: 1.1em;
+  }
+
+  .ctaButton {
+    display: inline-block;
+    background: #4CAF50; // Vibrant green
+    color: white !important; // Ensure text is white
+    padding: 12px 25px; // Slightly more padding
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.3em; // Larger font for main CTA
+    font-weight: bold;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #45a049; // Darker shade on hover
+    }
+  }
+}

@@ -1,0 +1,20 @@
+// src/components/Header.module.scss
+.siteHeader {
+  background: #333; // From old 'header' tag style
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+
+  h1 { // Nesting for h1 within .siteHeader
+    margin: 0;
+    font-size: 2em; // From old 'header h1'
+  }
+
+  p { // Nesting for p within .siteHeader
+    font-size: 1.1em; // From old 'header p'
+    color: #ccc;
+    margin-top: 10px;
+  }
+}
+// .container style is global in main.scss, so no need to repeat here if used directly.
+// If a specific variant for the header's container is needed, it could be added.

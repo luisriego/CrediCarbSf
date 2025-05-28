@@ -1,0 +1,5 @@
+/* Dummy CSS bundle - index-DpIH2pj9.css */
+/* In a real build, this would contain all the compiled SCSS/CSS. */
+body { margin: 0; font-family: sans-serif; }
+/* Add a simple style to confirm it's loaded if possible during manual testing */
+#root:before { content: "React App Styles Loaded (Dummy)"; display:block; text-align: center; color: green; }

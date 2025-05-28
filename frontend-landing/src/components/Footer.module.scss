@@ -1,0 +1,12 @@
+// src/components/Footer.module.scss
+.siteFooter {
+  text-align: center;
+  padding: 20px;
+  background: #333; // From old 'footer' tag style
+  color: #fff;
+  margin-top: 20px; // From old 'footer' tag style
+
+  p {
+    margin: 0; // Usually good for footer text
+  }
+}
