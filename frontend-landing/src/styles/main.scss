@@ -1,0 +1,47 @@
+// src/styles/main.scss
+
+// Reset or basic normalization (optional, but good practice)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif; // Consider making this a variable later
+  line-height: 1.6;
+  background-color: #f4f4f4; // Site background
+  color: #333; // Default text color
+}
+
+// General container styling, if needed application-wide
+// .app-container {
+//   max-width: 1200px; // Example max-width
+//   margin: 0 auto;
+//   padding: 0 20px; // Example padding
+// }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 0.75em; // Basic spacing for headings
+}
+
+p {
+  margin-bottom: 1em; // Basic spacing for paragraphs
+}
+
+a {
+  color: #007bff; // Example link color
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.container {
+  max-width: 960px; // Or the preferred width
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
